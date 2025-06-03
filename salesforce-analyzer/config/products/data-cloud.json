@@ -1,0 +1,156 @@
+{
+  "name": "Data Cloud",
+  "key": "dataCloud",
+  "description": "Salesforce Data Cloud (formerly CDP) capabilities and features",
+  "features": [
+    {
+      "type": "feature",
+      "name": "Data Cloud Base",
+      "description": "Core Data Cloud functionality",
+      "productFamily": "Data Cloud",
+      "justification": "Presence of Data Cloud objects and settings indicates base functionality",
+      "detectionMethods": [
+        {"type": "metadata", "path": "DataCloudSettings", "enabled": true},
+        {"type": "object", "name": "DataCloudObject"},
+        {"type": "object", "name": "IdentityResolution"}
+      ],
+      "edition": "Enterprise+"
+    },
+    {
+      "type": "feature",
+      "name": "Data Streams",
+      "description": "Real-time data streaming capabilities",
+      "productFamily": "Data Cloud",
+      "justification": "Configured data streams indicate active data ingestion",
+      "detectionMethods": [
+        {"type": "object", "name": "DataStreamDefinition"},
+        {"type": "object", "name": "DataStreamInstance"}
+      ],
+      "edition": "Enterprise+"
+    },
+    {
+      "type": "feature",
+      "name": "Calculated Insights",
+      "description": "Custom calculations and metrics",
+      "productFamily": "Data Cloud",
+      "justification": "Presence of calculated insights indicates advanced usage",
+      "detectionMethods": [
+        {"type": "object", "name": "CalculatedInsightDefinition"},
+        {"type": "object", "name": "MetricDefinition"}
+      ],
+      "edition": "Enterprise+"
+    },
+    {
+      "type": "feature",
+      "name": "Identity Resolution",
+      "description": "Customer identity resolution and matching",
+      "productFamily": "Data Cloud",
+      "justification": "Configuration of identity resolution rules indicates usage",
+      "detectionMethods": [
+        {"type": "object", "name": "IdentityResolutionRule"},
+        {"type": "object", "name": "IdentityProfile"}
+      ],
+      "edition": "Enterprise+"
+    },
+    {
+      "type": "feature",
+      "name": "Data Models",
+      "description": "Custom data models and harmonization",
+      "productFamily": "Data Cloud",
+      "justification": "Presence of data models indicates data structure configuration",
+      "detectionMethods": [
+        {"type": "object", "name": "DataModel"},
+        {"type": "object", "name": "DataModelObject"},
+        {"type": "object", "name": "DataModelField"}
+      ],
+      "edition": "Enterprise+"
+    },
+    {
+      "type": "feature",
+      "name": "Segment Builder",
+      "description": "Customer segmentation capabilities",
+      "productFamily": "Data Cloud",
+      "justification": "Configured segments indicate advanced customer targeting",
+      "detectionMethods": [
+        {"type": "object", "name": "Segment"},
+        {"type": "object", "name": "SegmentCriteria"}
+      ],
+      "edition": "Enterprise+"
+    },
+    {
+      "type": "feature",
+      "name": "Data Lake Integration",
+      "description": "Integration with external data lakes",
+      "productFamily": "Data Cloud",
+      "justification": "Configured data lake connections indicate external data integration",
+      "detectionMethods": [
+        {"type": "object", "name": "DataLakeConnection"},
+        {"type": "object", "name": "ExternalDataSource", "pattern": "DataLake"}
+      ],
+      "edition": "Enterprise+"
+    },
+    {
+      "type": "feature",
+      "name": "Activation Rules",
+      "description": "Data activation and publishing rules",
+      "productFamily": "Data Cloud",
+      "justification": "Presence of activation rules indicates data publishing configuration",
+      "detectionMethods": [
+        {"type": "object", "name": "ActivationRule"},
+        {"type": "object", "name": "PublishingDefinition"}
+      ],
+      "edition": "Enterprise+"
+    },
+    {
+      "type": "feature",
+      "name": "Data Privacy",
+      "description": "Data privacy and consent management",
+      "productFamily": "Data Cloud",
+      "justification": "Configuration of privacy settings indicates compliance focus",
+      "detectionMethods": [
+        {"type": "object", "name": "PrivacySettings"},
+        {"type": "object", "name": "ConsentManagement"},
+        {"type": "object", "name": "DataUsePurpose"}
+      ],
+      "edition": "Enterprise+"
+    },
+    {
+      "type": "feature",
+      "name": "API Integration",
+      "description": "External API integration capabilities",
+      "productFamily": "Data Cloud",
+      "justification": "Configured API endpoints indicate external system integration",
+      "detectionMethods": [
+        {"type": "object", "name": "APIEndpoint"},
+        {"type": "object", "name": "ExternalConnection", "pattern": "DataCloud"},
+        {"type": "metadata", "path": "RemoteSiteSetting", "pattern": "DataCloud"}
+      ],
+      "edition": "Enterprise+"
+    }
+  ],
+  "detectionRules": {
+    "edition": {
+      "Enterprise": {
+        "requiredFeatures": ["Data Cloud Base"],
+        "minFeatures": 1
+      },
+      "Unlimited": {
+        "requiredFeatures": ["Data Cloud Base", "Data Streams"],
+        "minFeatures": 3
+      }
+    },
+    "usage": {
+      "Active": {
+        "minFeatures": 5,
+        "requiredFeatures": ["Data Cloud Base", "Data Streams"]
+      },
+      "Limited": {
+        "minFeatures": 3,
+        "requiredFeatures": ["Data Cloud Base"]
+      },
+      "Minimal": {
+        "minFeatures": 1
+      }
+    }
+  }
+} 
