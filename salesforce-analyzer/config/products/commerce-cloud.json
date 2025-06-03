@@ -1,0 +1,192 @@
+{
+  "name": "Commerce Cloud",
+  "key": "commerceCloud",
+  "description": "Salesforce Commerce Cloud (formerly Demandware) capabilities and features",
+  "features": [
+    {
+      "type": "feature",
+      "name": "B2C Commerce Base",
+      "description": "Core B2C e-commerce functionality",
+      "productFamily": "Commerce Cloud",
+      "justification": "Presence of commerce settings indicates B2C platform usage",
+      "detectionMethods": [
+        {"type": "metadata", "path": "CommerceSettings", "enabled": true},
+        {"type": "object", "name": "WebStore"},
+        {"type": "object", "name": "CommerceEntitlementPolicy"}
+      ],
+      "edition": "Starter+"
+    },
+    {
+      "type": "feature",
+      "name": "B2B Commerce",
+      "description": "B2B commerce capabilities",
+      "productFamily": "Commerce Cloud",
+      "justification": "B2B commerce configuration indicates business selling",
+      "detectionMethods": [
+        {"type": "object", "name": "CommercePriceBook"},
+        {"type": "object", "name": "BuyerGroup"},
+        {"type": "object", "name": "CommerceEntitlementBuyerGroup"}
+      ],
+      "edition": "Enterprise+"
+    },
+    {
+      "type": "feature",
+      "name": "Order Management",
+      "description": "Order processing and fulfillment",
+      "productFamily": "Commerce Cloud",
+      "justification": "Order management configuration indicates fulfillment capabilities",
+      "detectionMethods": [
+        {"type": "object", "name": "FulfillmentOrder"},
+        {"type": "object", "name": "OrderSummary"},
+        {"type": "object", "name": "ReturnOrder"}
+      ],
+      "edition": "Starter+"
+    },
+    {
+      "type": "feature",
+      "name": "Product Catalog",
+      "description": "Product information management",
+      "productFamily": "Commerce Cloud",
+      "justification": "Product catalog configuration indicates PIM usage",
+      "detectionMethods": [
+        {"type": "object", "name": "Product2"},
+        {"type": "object", "name": "ProductCategory"},
+        {"type": "object", "name": "ProductAttribute"}
+      ],
+      "edition": "Starter+"
+    },
+    {
+      "type": "feature",
+      "name": "Inventory Management",
+      "description": "Stock and inventory tracking",
+      "productFamily": "Commerce Cloud",
+      "justification": "Inventory management indicates stock control usage",
+      "detectionMethods": [
+        {"type": "object", "name": "LocationInventory"},
+        {"type": "object", "name": "InventoryAvailability"},
+        {"type": "object", "name": "InventoryReservation"}
+      ],
+      "edition": "Starter+"
+    },
+    {
+      "type": "feature",
+      "name": "Promotions Engine",
+      "description": "Promotional pricing and discounts",
+      "productFamily": "Commerce Cloud",
+      "justification": "Promotion configuration indicates discount management",
+      "detectionMethods": [
+        {"type": "object", "name": "Promotion"},
+        {"type": "object", "name": "PromotionQualifier"},
+        {"type": "object", "name": "PromotionTarget"}
+      ],
+      "edition": "Starter+"
+    },
+    {
+      "type": "feature",
+      "name": "Digital Experience",
+      "description": "Storefront and digital experience",
+      "productFamily": "Commerce Cloud",
+      "justification": "Digital experience configuration indicates storefront usage",
+      "detectionMethods": [
+        {"type": "object", "name": "DigitalStorefront"},
+        {"type": "object", "name": "CommerceSearchIndex"},
+        {"type": "object", "name": "CommerceWebsite"}
+      ],
+      "edition": "Starter+"
+    },
+    {
+      "type": "feature",
+      "name": "Payment Gateway",
+      "description": "Payment processing integration",
+      "productFamily": "Commerce Cloud",
+      "justification": "Payment gateway configuration indicates payment processing",
+      "detectionMethods": [
+        {"type": "object", "name": "PaymentGateway"},
+        {"type": "object", "name": "PaymentMethod"},
+        {"type": "object", "name": "PaymentAuthorization"}
+      ],
+      "edition": "Starter+"
+    },
+    {
+      "type": "feature",
+      "name": "Einstein Commerce",
+      "description": "AI-powered commerce recommendations",
+      "productFamily": "Commerce Cloud",
+      "justification": "Einstein features indicate AI-powered commerce usage",
+      "detectionMethods": [
+        {"type": "object", "name": "EinsteinRecommendation"},
+        {"type": "object", "name": "EinsteinActivity"},
+        {"type": "metadata", "path": "EinsteinSettings", "pattern": "Commerce"}
+      ],
+      "edition": "Enterprise+"
+    },
+    {
+      "type": "feature",
+      "name": "Commerce Analytics",
+      "description": "Commerce reporting and analytics",
+      "productFamily": "Commerce Cloud",
+      "justification": "Analytics configuration indicates reporting usage",
+      "detectionMethods": [
+        {"type": "object", "name": "CommerceAnalytics"},
+        {"type": "object", "name": "CommerceDashboard"},
+        {"type": "object", "name": "CommerceReport"}
+      ],
+      "edition": "Starter+"
+    },
+    {
+      "type": "feature",
+      "name": "Marketplace",
+      "description": "Multi-vendor marketplace capabilities",
+      "productFamily": "Commerce Cloud",
+      "justification": "Marketplace configuration indicates multi-vendor support",
+      "detectionMethods": [
+        {"type": "object", "name": "MarketplaceSettings"},
+        {"type": "object", "name": "Seller"},
+        {"type": "object", "name": "SellerProduct"}
+      ],
+      "edition": "Enterprise+"
+    },
+    {
+      "type": "feature",
+      "name": "Subscription Management",
+      "description": "Recurring billing and subscriptions",
+      "productFamily": "Commerce Cloud",
+      "justification": "Subscription configuration indicates recurring revenue",
+      "detectionMethods": [
+        {"type": "object", "name": "CommerceSubscription"},
+        {"type": "object", "name": "SubscriptionPlan"},
+        {"type": "object", "name": "SubscriptionTerm"}
+      ],
+      "edition": "Enterprise+"
+    }
+  ],
+  "detectionRules": {
+    "edition": {
+      "Starter": {
+        "requiredFeatures": ["B2C Commerce Base", "Product Catalog"],
+        "minFeatures": 3
+      },
+      "Growth": {
+        "requiredFeatures": ["B2C Commerce Base", "Product Catalog", "Order Management"],
+        "minFeatures": 5
+      },
+      "Enterprise": {
+        "requiredFeatures": ["B2C Commerce Base", "B2B Commerce", "Order Management"],
+        "minFeatures": 7
+      }
+    },
+    "usage": {
+      "Active": {
+        "minFeatures": 6,
+        "requiredFeatures": ["B2C Commerce Base", "Order Management"]
+      },
+      "Limited": {
+        "minFeatures": 3,
+        "requiredFeatures": ["B2C Commerce Base"]
+      },
+      "Minimal": {
+        "minFeatures": 1
+      }
+    }
+  }
+} 
