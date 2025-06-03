@@ -7,16 +7,16 @@ class Evidence {
    * 
    * @param {string} type - Type of evidence (object, feature, activity, etc.)
    * @param {string} name - Name of the evidence
-   * @param {string} productFamily - Product family this evidence belongs to (e.g., Sales, Service, Marketing)
    * @param {boolean} detected - Whether the evidence was detected
+   * @param {number} weight - The importance weight of this evidence
    * @param {Object} details - Additional details about the evidence
    * @param {Date} timestamp - When the evidence was collected or last observed
    */
-  constructor(type, name, productFamily, detected, details = {}, timestamp = new Date()) {
+  constructor(type, name, detected, weight, details = {}, timestamp = new Date()) {
     this.type = type;
     this.name = name;
-    this.productFamily = productFamily;
     this.detected = detected;
+    this.weight = weight;
     this.details = details;
     this.timestamp = timestamp;
   }
@@ -71,24 +71,9 @@ class EvidenceCollection {
   getDetectedEvidence() {
     return this.items.filter(item => item.detected);
   }
-  
-  /**
-   * Get evidence grouped by product family
-   * 
-   * @returns {Object} - Evidence items grouped by product family
-   */
-  getEvidenceByProductFamily() {
-    const byFamily = {};
-    
-    this.items.forEach(item => {
-      if (!byFamily[item.productFamily]) {
-        byFamily[item.productFamily] = [];
-      }
-      byFamily[item.productFamily].push(item);
-    });
-    
-    return byFamily;
-  }
 }
 
-module.exports = { Evidence, EvidenceCollection }; 
+module.exports = {
+  Evidence,
+  EvidenceCollection
+}; 

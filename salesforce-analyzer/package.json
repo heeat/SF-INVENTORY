@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Analyzer for Salesforce org technology stack usage",
   "main": "index.js",
-  "type": "commonjs",
   "scripts": {
     "start": "node index.js",
     "test": "jest"

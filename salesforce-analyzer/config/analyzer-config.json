@@ -1,10 +1,27 @@
 {
   "version": "1.0.0",
-  "analysis": {
-    "detectionThresholds": {
-      "active": 50,
-      "limited": 20,
-      "minimal": 1
+  "scoringEngine": {
+    "algorithms": {
+      "default": {
+        "evidenceWeights": {
+          "objectPresence": 1.0,
+          "objectUsage": 1.5,
+          "featureConfiguration": 1.2,
+          "codeReferences": 0.8,
+          "userActivity": 1.8,
+          "apiUsage": 1.3
+        },
+        "thresholds": {
+          "active": 70,
+          "limited": 30,
+          "inactive": 10
+        },
+        "decayFactors": {
+          "enableDecay": false,
+          "timeUnit": "day",
+          "rate": 0.01
+        }
+      }
     }
   }
 } 

@@ -4,7 +4,7 @@
  * This class provides methods to interact with Salesforce APIs
  * and collect evidence about product usage.
  */
-const { Evidence } = require('../models/evidence');
+const Evidence = require('../models/evidence');
 
 class EvidenceCollector {
   /**
@@ -24,14 +24,12 @@ class EvidenceCollector {
    * @returns {Promise<Evidence>} - Evidence about the object
    */
   async checkObject(objectName, options = {}) {
-    const productFamily = options.productFamily || this.determineProductFamily(objectName);
-    
     try {
       // Describe the object to check if it exists
       const objectInfo = await this.describeObject(objectName);
       
       if (!objectInfo) {
-        return new Evidence('objectPresence', objectName, productFamily, false);
+        return new Evidence('objectPresence', objectName, false, options.weight || 1.0);
       }
       
       // Check required fields if specified
@@ -59,8 +57,8 @@ class EvidenceCollector {
       return new Evidence(
         'objectPresence', 
         objectName, 
-        productFamily,
-        true,
+        true, 
+        options.weight || 1.0,
         {
           requiredFieldsPresent,
           recordCount,
@@ -76,9 +74,9 @@ class EvidenceCollector {
       console.error(`Error checking object ${objectName}:`, error);
       return new Evidence(
         'objectPresence', 
-        objectName,
-        productFamily,
-        false,
+        objectName, 
+        false, 
+        options.weight || 1.0,
         { error: error.message }
       );
     }
@@ -92,8 +90,6 @@ class EvidenceCollector {
    * @returns {Promise<Evidence>} - Evidence about object usage
    */
   async checkObjectUsage(objectName, options = {}) {
-    const productFamily = options.productFamily || this.determineProductFamily(objectName);
-    
     try {
       // Build SOQL query with appropriate time constraints
       let soql = `SELECT COUNT() FROM ${objectName}`;
@@ -118,8 +114,8 @@ class EvidenceCollector {
       return new Evidence(
         'objectUsage',
         `${objectName} Usage`,
-        productFamily,
         count > 0,
+        options.weight || 1.0,
         {
           count,
           threshold: options.threshold || 10,
@@ -131,8 +127,8 @@ class EvidenceCollector {
       return new Evidence(
         'objectUsage',
         `${objectName} Usage`,
-        productFamily,
         false,
+        options.weight || 1.0,
         { error: error.message }
       );
     }
@@ -147,8 +143,6 @@ class EvidenceCollector {
    * @returns {Promise<Evidence>} - Evidence about feature configuration
    */
   async checkFeature(featureName, detectionMethods, options = {}) {
-    const productFamily = options.productFamily || this.determineProductFamily(featureName);
-    
     try {
       // Try each detection method until one succeeds
       for (const method of detectionMethods) {
@@ -156,40 +150,34 @@ class EvidenceCollector {
         let details = {};
         
         switch (method.type) {
-          case 'metadata': {
+          case 'metadata':
             const result = await this.checkMetadata(method);
             detected = result.detected;
             details = { ...details, ...result.details };
             break;
-          }
             
-          case 'field': {
+          case 'field':
             const fieldResult = await this.checkField(method);
             detected = fieldResult.detected;
             details = { ...details, ...fieldResult.details };
             break;
-          }
             
-          case 'object': {
-            const objectResult = await this.checkObject(method.name, { 
-              checkRecordCount: true,
-              productFamily
-            });
+          case 'object':
+            const objectResult = await this.checkObject(method.name, { checkRecordCount: true });
             detected = objectResult.detected;
             if (detected && method.minCount) {
               detected = (objectResult.details.recordCount || 0) >= method.minCount;
             }
             details = { ...details, ...objectResult.details };
             break;
-          }
         }
         
         if (detected) {
           return new Evidence(
             'featureConfiguration',
             featureName,
-            productFamily,
             true,
+            options.weight || 1.0,
             details
           );
         }
@@ -199,16 +187,16 @@ class EvidenceCollector {
       return new Evidence(
         'featureConfiguration',
         featureName,
-        productFamily,
-        false
+        false,
+        options.weight || 1.0
       );
     } catch (error) {
       console.error(`Error checking feature ${featureName}:`, error);
       return new Evidence(
         'featureConfiguration',
         featureName,
-        productFamily,
         false,
+        options.weight || 1.0,
         { error: error.message }
       );
     }
@@ -222,8 +210,6 @@ class EvidenceCollector {
    * @returns {Promise<Evidence>} - Evidence about API usage
    */
   async checkApiUsage(name, options = {}) {
-    const productFamily = options.productFamily || this.determineProductFamily(name);
-    
     try {
       // In a real implementation, this would analyze API usage logs
       // For this prototype, we'll simulate the check
@@ -234,8 +220,8 @@ class EvidenceCollector {
       return new Evidence(
         'apiUsage',
         name,
-        productFamily,
         simulatedUsage > 0,
+        options.weight || 1.0,
         {
           count: simulatedUsage,
           threshold: options.threshold || 100,
@@ -248,8 +234,8 @@ class EvidenceCollector {
       return new Evidence(
         'apiUsage',
         name,
-        productFamily,
         false,
+        options.weight || 1.0,
         { error: error.message }
       );
     }
@@ -263,8 +249,6 @@ class EvidenceCollector {
    * @returns {Promise<Evidence>} - Evidence about user activity
    */
   async checkUserActivity(name, options = {}) {
-    const productFamily = options.productFamily || this.determineProductFamily(name);
-    
     try {
       // In a real implementation, this would analyze EventLogFile data
       // For this prototype, we'll simulate the check
@@ -276,8 +260,8 @@ class EvidenceCollector {
         return new Evidence(
           'userActivity',
           name,
-          productFamily,
           simulatedCount > 0,
+          options.weight || 1.0,
           {
             count: simulatedCount,
             threshold: options.threshold || 50,
@@ -291,8 +275,8 @@ class EvidenceCollector {
       return new Evidence(
         'userActivity',
         name,
-        productFamily,
         false,
+        options.weight || 1.0,
         { error: 'Unsupported activity type' }
       );
     } catch (error) {
@@ -300,8 +284,8 @@ class EvidenceCollector {
       return new Evidence(
         'userActivity',
         name,
-        productFamily,
         false,
+        options.weight || 1.0,
         { error: error.message }
       );
     }
@@ -315,8 +299,6 @@ class EvidenceCollector {
    * @returns {Promise<Evidence>} - Evidence about code references
    */
   async checkCodeReferences(name, options = {}) {
-    const productFamily = options.productFamily || this.determineProductFamily(name);
-    
     try {
       if (options.type === 'apex') {
         // Search for Apex code matching patterns
@@ -333,8 +315,8 @@ class EvidenceCollector {
           return new Evidence(
             'codeReferences',
             name,
-            productFamily,
             false,
+            options.weight || 1.0,
             { error: 'No search criteria specified' }
           );
         }
@@ -347,8 +329,8 @@ class EvidenceCollector {
         return new Evidence(
           'codeReferences',
           name,
-          productFamily,
           matchingClasses.length > 0,
+          options.weight || 1.0,
           {
             count: matchingClasses.length,
             matches: matchingClasses.map(cls => cls.Name),
@@ -361,8 +343,8 @@ class EvidenceCollector {
         return new Evidence(
           'codeReferences',
           name,
-          productFamily,
           Math.random() > 0.5, // Simulate 50% chance of finding components
+          options.weight || 1.0,
           {
             count: Math.floor(Math.random() * 5),
             matches: ['Component1', 'Component2'],
@@ -374,8 +356,8 @@ class EvidenceCollector {
       return new Evidence(
         'codeReferences',
         name,
-        productFamily,
         false,
+        options.weight || 1.0,
         { error: 'Unsupported code type' }
       );
     } catch (error) {
@@ -383,78 +365,14 @@ class EvidenceCollector {
       return new Evidence(
         'codeReferences',
         name,
-        productFamily,
         false,
+        options.weight || 1.0,
         { error: error.message }
       );
     }
   }
   
   // Utility methods
-  
-  /**
-   * Determine product family based on name/object
-   * 
-   * @param {string} name - Name to analyze
-   * @returns {string} - Determined product family
-   */
-  determineProductFamily(name) {
-    const nameLower = name.toLowerCase();
-    
-    // Sales Cloud objects/features
-    if (nameLower.includes('opportunity') || 
-        nameLower.includes('lead') || 
-        nameLower.includes('account') ||
-        nameLower.includes('contact') ||
-        nameLower.includes('campaign') ||
-        nameLower.includes('forecast')) {
-      return 'Sales Cloud';
-    }
-    
-    // Service Cloud objects/features
-    if (nameLower.includes('case') || 
-        nameLower.includes('solution') || 
-        nameLower.includes('knowledge') ||
-        nameLower.includes('entitlement') ||
-        nameLower.includes('milestone')) {
-      return 'Service Cloud';
-    }
-    
-    // Marketing Cloud objects/features
-    if (nameLower.includes('journey') || 
-        nameLower.includes('email') || 
-        nameLower.includes('campaign') ||
-        nameLower.includes('marketing')) {
-      return 'Marketing Cloud';
-    }
-    
-    // Experience Cloud objects/features
-    if (nameLower.includes('community') || 
-        nameLower.includes('network') || 
-        nameLower.includes('site') ||
-        nameLower.includes('experience')) {
-      return 'Experience Cloud';
-    }
-    
-    // Analytics Cloud objects/features
-    if (nameLower.includes('dashboard') || 
-        nameLower.includes('report') || 
-        nameLower.includes('analytics') ||
-        nameLower.includes('wave')) {
-      return 'Analytics Cloud';
-    }
-    
-    // Platform features
-    if (nameLower.includes('flow') || 
-        nameLower.includes('process') || 
-        nameLower.includes('apex') ||
-        nameLower.includes('trigger') ||
-        nameLower.includes('validation')) {
-      return 'Platform';
-    }
-    
-    return 'Other';
-  }
   
   /**
    * Describe a Salesforce object
@@ -594,7 +512,7 @@ class EvidenceCollector {
     if (timeframe.startsWith('last')) {
       const match = timeframe.match(/last(\d+)(Days|Months|Years)/i);
       if (match) {
-        const [, num, unit] = match;
+        const [_, num, unit] = match;
         return `CreatedDate = LAST_N_${unit.toUpperCase()}:${num}`;
       }
     }

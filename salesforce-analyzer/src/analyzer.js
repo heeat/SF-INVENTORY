@@ -1526,13 +1526,14 @@ class Analyzer {
         console.log(`Warning: Could not query NamedCredential: ${e.message}`);
       }
       
-      // Check for remote site settings using metadata API instead of SOQL
+      // Check for remote site settings
+      let remoteSiteQuery = `SELECT Id, Name, Url FROM RemoteSiteSetting LIMIT 50`;
       let remoteSites = [];
       try {
-        const result = await this.connection.metadata.list('RemoteSiteSetting');
-        remoteSites = Array.isArray(result) ? result : [result];
+        const result = await this.connection.query(remoteSiteQuery);
+        remoteSites = result.records;
       } catch (e) {
-        console.log(`Warning: Could not query RemoteSiteSetting metadata: ${e.message}`);
+        console.log(`Warning: Could not query RemoteSiteSetting: ${e.message}`);
       }
       
       // Check for auth providers

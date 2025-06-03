@@ -5,6 +5,7 @@
  * based on its definition in the configuration.
  */
 const EvidenceCollector = require('../core/evidence-collector');
+const ScoringEngine = require('../core/scoring-engine');
 const { EvidenceCollection } = require('../models/evidence');
 const AnalysisResult = require('../models/analysis-result');
 const { loadProductDefinition } = require('../utils/config-loader');
@@ -22,6 +23,7 @@ class ProductAnalyzer {
     this.config = config;
     this.productKey = productKey;
     this.evidenceCollector = new EvidenceCollector(connection);
+    this.scoringEngine = new ScoringEngine(config);
     
     // Load product definition from config
     this.productDefinition = config.products[productKey];
@@ -85,13 +87,10 @@ class ProductAnalyzer {
       }
     }
     
-    // Determine usage category based on detected features
-    const detectedFeatures = evidence.getAllEvidence().filter(e => e.detected).length;
-    const totalFeatures = evidence.getAllEvidence().length;
-    const usageCategory = this.determineUsageCategory(detectedFeatures, totalFeatures);
-    
-    // Determine edition based on detected features
-    const edition = this.determineEdition(this.productDefinition, evidence);
+    // Calculate score
+    const score = this.scoringEngine.calculateScore(this.productDefinition, evidence);
+    const category = this.scoringEngine.categorizeScore(score);
+    const edition = this.scoringEngine.determineEdition(this.productDefinition, evidence);
     
     // Generate findings
     const findings = this.generateFindings(evidence);
@@ -99,10 +98,12 @@ class ProductAnalyzer {
     // Create and return result
     return new AnalysisResult(
       this.productDefinition.name,
-      usageCategory,
+      score,
+      category,
       edition,
       this.summarizeEvidence(evidence),
-      findings
+      findings,
+      [] // Empty recommendations array
     );
   }
   
@@ -324,55 +325,18 @@ class ProductAnalyzer {
   }
   
   /**
-   * Determine usage category based on feature detection
-   * @param {number} detectedFeatures - Number of detected features
-   * @param {number} totalFeatures - Total number of features checked
-   * @returns {string} - Usage category
-   */
-  determineUsageCategory(detectedFeatures, totalFeatures) {
-    const detectionRate = (detectedFeatures / totalFeatures) * 100;
-    
-    if (detectionRate >= 50) return 'Active';
-    if (detectionRate >= 20) return 'Limited';
-    if (detectionRate > 0) return 'Minimal';
-    return 'Not Used';
-  }
-
-  /**
-   * Determine the most likely edition based on detected features
+   * Generate recommendations based on the analysis
    * 
-   * @param {Object} productDefinition - Definition of the product
-   * @param {EvidenceCollection} evidenceCollection - Collected evidence
-   * @returns {string} - Detected edition
+   * This method is no longer used as per requirement to not include recommendations
+   * 
+   * @param {EvidenceCollection} evidence - Collected evidence
+   * @param {number} score - Overall score
+   * @param {string} category - Usage category
+   * @returns {Array<string>} - Empty array of recommendations
    */
-  determineEdition(productDefinition, evidenceCollection) {
-    if (!productDefinition.editionSignals) return 'Unknown';
-    
-    // Get all detected features
-    const detectedFeatures = evidenceCollection.getEvidenceByType('featureConfiguration')
-      .filter(e => e.detected)
-      .map(e => e.name);
-      
-    // Check each edition from highest to lowest
-    const editions = Object.keys(productDefinition.editionSignals);
-    
-    // Sort from highest to lowest (assuming order in config is lowest to highest)
-    const sortedEditions = [...editions].reverse();
-    
-    for (const edition of sortedEditions) {
-      const signals = productDefinition.editionSignals[edition];
-      const matchedSignals = signals.filter(signal => 
-        detectedFeatures.some(f => f.includes(signal))
-      );
-      
-      // If half or more of the signals for this edition are matched, return it
-      if (matchedSignals.length >= Math.ceil(signals.length * 0.5)) {
-        return edition;
-      }
-    }
-    
-    // If we couldn't determine, return the lowest edition
-    return editions[0] || 'Unknown';
+  generateRecommendations(evidence, score, category) {
+    // Return empty array as recommendations are no longer required
+    return [];
   }
 }
 

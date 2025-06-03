@@ -13,40 +13,17 @@
 function generateSummaryReport(results) {
   const products = Object.values(results);
   
-  // Group by product family
-  const byFamily = {};
-  products.forEach(product => {
-    const family = product.productFamily || 'Other';
-    if (!byFamily[family]) {
-      byFamily[family] = [];
-    }
-    byFamily[family].push(product);
-  });
-  
   const report = {
     timestamp: new Date().toISOString(),
     summary: {
       totalProducts: products.length,
-      byFamily: Object.fromEntries(
-        Object.entries(byFamily).map(([family, prods]) => [
-          family,
-          {
-            total: prods.length,
-            active: prods.filter(p => p.category === 'Active').length,
-            limited: prods.filter(p => p.category === 'Limited').length,
-            minimal: prods.filter(p => p.category === 'Minimal').length,
-            notUsed: prods.filter(p => p.category === 'Not Used').length
-          }
-        ])
-      ),
       active: products.filter(p => p.category === 'Active').length,
       limited: products.filter(p => p.category === 'Limited').length,
-      minimal: products.filter(p => p.category === 'Minimal').length,
-      notUsed: products.filter(p => p.category === 'Not Used').length
+      inactive: products.filter(p => p.category === 'Inactive').length
     },
     products: products.map(product => ({
       name: product.productName,
-      family: product.productFamily || 'Other',
+      score: Math.round(product.probabilityScore),
       category: product.category,
       edition: product.edition
     }))
@@ -64,11 +41,11 @@ function generateSummaryReport(results) {
 function generateDetailedReport(result) {
   const report = {
     product: result.productName,
-    productFamily: result.productFamily || 'Other',
+    score: Math.round(result.probabilityScore),
     category: result.category,
     edition: result.edition,
     timestamp: result.timestamp.toISOString(),
-    summary: `${result.productName} usage is ${result.category.toLowerCase()} with likely ${result.edition} edition`,
+    summary: `${result.productName} is ${result.category.toLowerCase()} with a ${Math.round(result.probabilityScore)}% probability score`,
     findings: result.significantFindings,
     evidence: {}
   };
@@ -77,7 +54,6 @@ function generateDetailedReport(result) {
   Object.entries(result.evidenceSummary.byCategory).forEach(([category, items]) => {
     report.evidence[category] = items.map(item => ({
       name: item.name,
-      productFamily: item.productFamily || 'Other',
       details: summarizeItemDetails(item.details)
     }));
   });
@@ -92,15 +68,14 @@ function generateDetailedReport(result) {
  * @returns {string} - Text report
  */
 function generateTextReport(result) {
-  let output = `
+  let report = `
 =======================================================
   SALESFORCE PRODUCT ANALYSIS: ${result.productName.toUpperCase()}
 =======================================================
 
 SUMMARY
 -------
-Product Family: ${result.productFamily || 'Other'}
-${result.productName} usage is ${result.category.toLowerCase()}
+${result.productName} is ${result.category.toLowerCase()} (${Math.round(result.probabilityScore)}% probability)
 Edition: ${result.edition}
 Analyzed: ${result.timestamp.toLocaleString()}
 
@@ -118,13 +93,13 @@ Detected indicators: ${result.evidenceSummary.detectedItems}
   Object.entries(result.evidenceSummary.byCategory).forEach(([category, items]) => {
     if (items.length === 0) return;
     
-    output += `\n${category}:\n`;
+    report += `\n${category}:\n`;
     items.forEach(item => {
-      output += `- ${item.name} (${item.productFamily || 'Other'})\n`;
+      report += `- ${item.name}\n`;
     });
   });
 
-  return output;
+  return report;
 }
 
 /**
@@ -136,13 +111,10 @@ Detected indicators: ${result.evidenceSummary.detectedItems}
 function generateCsvReport(results) {
   const products = Object.values(results);
   
-  let csv = 'Product,Product Family,Category,Edition,Detected Features,Total Features\n';
+  let csv = 'Product,Score,Category,Edition\n';
   
   products.forEach(product => {
-    const detectedFeatures = product.evidenceSummary.detectedItems || 0;
-    const totalFeatures = product.evidenceSummary.totalItems || 0;
-    
-    csv += `"${product.productName}","${product.productFamily || 'Other'}","${product.category}","${product.edition}",${detectedFeatures},${totalFeatures}\n`;
+    csv += `"${product.productName}",${Math.round(product.probabilityScore)},"${product.category}","${product.edition}"\n`;
   });
   
   return csv;

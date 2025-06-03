@@ -142,8 +142,9 @@
         {
           "type": "feature",
           "name": "Einstein Lead Scoring",
+          "weight": 0.8,
           "description": "AI feature shows advanced Sales Cloud implementation",
-          "justification": "Einstein adoption indicates investment in AI-enhanced sales processes",
+          "justification": "Einstein adoption indicates investment in AI-enhanced sales processes. Very high weight (0.8) as it represents cutting-edge Sales Cloud usage and substantial investment in the platform.",
           "detectionMethods": [
             {"type": "metadata", "path": "EinsteinSettings", "leadScoring": true},
             {"type": "field", "object": "Lead", "pattern": "Einstein.*Score"}
@@ -153,8 +154,9 @@
         {
           "type": "feature",
           "name": "Enterprise Territory Management",
+          "weight": 0.7,
           "description": "Territory management indicates complex sales organization",
-          "justification": "Territory management indicates sophisticated sales team organization",
+          "justification": "Territory management indicates sophisticated sales team organization. High weight (0.7) as it shows deep commitment to managing complex sales operations in Salesforce.",
           "detectionMethods": [
             {"type": "metadata", "path": "Territory2Type", "minCount": 1},
             {"type": "metadata", "path": "Territory2Model", "minCount": 1}
@@ -164,8 +166,9 @@
         {
           "type": "feature",
           "name": "Opportunity Teams",
+          "weight": 0.6,
           "description": "Team selling approach indicates collaborative sales process",
-          "justification": "Opportunity Teams indicates collaborative selling processes",
+          "justification": "Opportunity Teams indicates collaborative selling processes. Medium-high weight (0.6) as it shows more sophisticated team selling approach.",
           "detectionMethods": [
             {"type": "metadata", "path": "OpportunityTeamMember", "enabled": true}
           ],
