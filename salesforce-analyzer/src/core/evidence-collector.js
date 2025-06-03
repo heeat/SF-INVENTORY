@@ -4,7 +4,7 @@
  * This class provides methods to interact with Salesforce APIs
  * and collect evidence about product usage.
  */
-import { Evidence } from '../models/evidence';
+const { Evidence } = require('../models/evidence');
 
 class EvidenceCollector {
   /**
@@ -604,4 +604,4 @@ class EvidenceCollector {
   }
 }
 
-export default EvidenceCollector; 
+module.exports = EvidenceCollector; 

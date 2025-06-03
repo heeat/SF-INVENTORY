@@ -4,10 +4,10 @@
  * A configurable analyzer that can detect and evaluate usage of any Salesforce product
  * based on its definition in the configuration.
  */
-import EvidenceCollector from '../core/evidence-collector';
-import { EvidenceCollection } from '../models/evidence';
-import AnalysisResult from '../models/analysis-result';
-import { loadProductDefinition } from '../utils/config-loader';
+const EvidenceCollector = require('../core/evidence-collector');
+const { EvidenceCollection } = require('../models/evidence');
+const AnalysisResult = require('../models/analysis-result');
+const { loadProductDefinition } = require('../utils/config-loader');
 
 class ProductAnalyzer {
   /**
@@ -376,4 +376,4 @@ class ProductAnalyzer {
   }
 }
 
-export default ProductAnalyzer; 
+module.exports = ProductAnalyzer; 

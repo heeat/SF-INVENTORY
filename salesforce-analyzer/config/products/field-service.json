@@ -2,136 +2,171 @@
   "name": "Field Service",
   "key": "fieldService",
   "description": "Salesforce Field Service capabilities and features",
-  "features": [
+  "indicators": [
     {
-      "type": "feature",
-      "name": "Field Service Core",
-      "description": "Core field service functionality",
-      "productFamily": "Field Service",
-      "justification": "Presence of field service objects indicates platform usage",
-      "detectionMethods": [
-        {"type": "metadata", "path": "FieldServiceSettings", "enabled": true},
-        {"type": "object", "name": "ServiceAppointment"},
-        {"type": "object", "name": "ServiceTerritory"}
-      ],
-      "edition": "Enterprise+"
+      "category": "Core Features",
+      "description": "Primary features that form the foundation of Field Service",
+      "justification": "These features are fundamental to field service operations",
+      "items": [
+        {
+          "type": "feature",
+          "name": "Field Service Core",
+          "weight": 0.9,
+          "description": "Core field service functionality",
+          "justification": "Presence of field service objects indicates platform usage",
+          "detectionMethods": [
+            {"type": "metadata", "path": "FieldServiceSettings", "enabled": true},
+            {"type": "object", "name": "ServiceAppointment"},
+            {"type": "object", "name": "ServiceTerritory"}
+          ],
+          "edition": "Enterprise+"
+        },
+        {
+          "type": "feature",
+          "name": "Resource Management",
+          "weight": 0.8,
+          "description": "Service resource scheduling and management",
+          "justification": "Resource configuration indicates workforce management",
+          "detectionMethods": [
+            {"type": "object", "name": "ServiceResource"},
+            {"type": "object", "name": "ResourceAbsence"},
+            {"type": "object", "name": "ServiceResourceSkill"}
+          ],
+          "edition": "Enterprise+"
+        },
+        {
+          "type": "feature",
+          "name": "Scheduling Optimization",
+          "weight": 0.7,
+          "description": "Automated scheduling and optimization",
+          "justification": "Optimization settings indicate advanced scheduling usage",
+          "detectionMethods": [
+            {"type": "object", "name": "FSLOperation"},
+            {"type": "object", "name": "OptimizationRequest"},
+            {"type": "metadata", "path": "SchedulingSettings", "enabled": true}
+          ],
+          "edition": "Enterprise+"
+        }
+      ]
     },
     {
-      "type": "feature",
-      "name": "Resource Management",
-      "description": "Service resource scheduling and management",
-      "productFamily": "Field Service",
-      "justification": "Resource configuration indicates workforce management",
-      "detectionMethods": [
-        {"type": "object", "name": "ServiceResource"},
-        {"type": "object", "name": "ResourceAbsence"},
-        {"type": "object", "name": "ServiceResourceSkill"}
-      ],
-      "edition": "Enterprise+"
+      "category": "Mobile Features",
+      "description": "Mobile application capabilities",
+      "justification": "Mobile features are essential for field workers",
+      "items": [
+        {
+          "type": "feature",
+          "name": "Mobile App Configuration",
+          "weight": 0.8,
+          "description": "Field Service mobile application setup",
+          "justification": "Mobile configuration indicates field worker app usage",
+          "detectionMethods": [
+            {"type": "object", "name": "MobileSettings"},
+            {"type": "object", "name": "FieldServiceMobileSettings"},
+            {"type": "object", "name": "BrandingSet"}
+          ],
+          "edition": "Enterprise+"
+        }
+      ]
     },
     {
-      "type": "feature",
-      "name": "Scheduling Optimization",
-      "description": "Automated scheduling and optimization",
-      "productFamily": "Field Service",
-      "justification": "Optimization settings indicate advanced scheduling usage",
-      "detectionMethods": [
-        {"type": "object", "name": "FSLOperation"},
-        {"type": "object", "name": "OptimizationRequest"},
-        {"type": "metadata", "path": "SchedulingSettings", "enabled": true}
-      ],
-      "edition": "Enterprise+"
+      "category": "Work Management",
+      "description": "Service work management capabilities",
+      "justification": "Work management features are core to service delivery",
+      "items": [
+        {
+          "type": "feature",
+          "name": "Work Order Management",
+          "weight": 0.9,
+          "description": "Service work order processing",
+          "justification": "Work order usage indicates service delivery management",
+          "detectionMethods": [
+            {"type": "object", "name": "WorkOrder"},
+            {"type": "object", "name": "WorkOrderLineItem"},
+            {"type": "object", "name": "WorkType"}
+          ],
+          "edition": "Enterprise+"
+        },
+        {
+          "type": "feature",
+          "name": "Inventory Management",
+          "weight": 0.7,
+          "description": "Parts and inventory tracking",
+          "justification": "Inventory tracking indicates parts management",
+          "detectionMethods": [
+            {"type": "object", "name": "ProductItem"},
+            {"type": "object", "name": "ProductRequest"},
+            {"type": "object", "name": "ProductTransfer"}
+          ],
+          "edition": "Enterprise+"
+        }
+      ]
     },
     {
-      "type": "feature",
-      "name": "Mobile App Configuration",
-      "description": "Field Service mobile application setup",
-      "productFamily": "Field Service",
-      "justification": "Mobile configuration indicates field worker app usage",
-      "detectionMethods": [
-        {"type": "object", "name": "MobileSettings"},
-        {"type": "object", "name": "FieldServiceMobileSettings"},
-        {"type": "object", "name": "BrandingSet"}
-      ],
-      "edition": "Enterprise+"
+      "category": "Asset Management",
+      "description": "Asset and maintenance tracking",
+      "justification": "Asset management features indicate equipment service",
+      "items": [
+        {
+          "type": "feature",
+          "name": "Asset Management",
+          "weight": 0.8,
+          "description": "Customer asset tracking and maintenance",
+          "justification": "Asset configuration indicates equipment management",
+          "detectionMethods": [
+            {"type": "object", "name": "Asset"},
+            {"type": "object", "name": "MaintenancePlan"},
+            {"type": "object", "name": "MaintenanceAsset"}
+          ],
+          "edition": "Enterprise+"
+        },
+        {
+          "type": "feature",
+          "name": "Service Contracts",
+          "weight": 0.7,
+          "description": "Contract and entitlement management",
+          "justification": "Service contracts indicate SLA management",
+          "detectionMethods": [
+            {"type": "object", "name": "ServiceContract"},
+            {"type": "object", "name": "ContractLineItem"},
+            {"type": "object", "name": "Entitlement"}
+          ],
+          "edition": "Enterprise+"
+        }
+      ]
     },
     {
-      "type": "feature",
-      "name": "Inventory Management",
-      "description": "Parts and inventory tracking",
-      "productFamily": "Field Service",
-      "justification": "Inventory tracking indicates parts management",
-      "detectionMethods": [
-        {"type": "object", "name": "ProductItem"},
-        {"type": "object", "name": "ProductRequest"},
-        {"type": "object", "name": "ProductTransfer"}
-      ],
-      "edition": "Enterprise+"
-    },
-    {
-      "type": "feature",
-      "name": "Work Order Management",
-      "description": "Service work order processing",
-      "productFamily": "Field Service",
-      "justification": "Work order usage indicates service delivery management",
-      "detectionMethods": [
-        {"type": "object", "name": "WorkOrder"},
-        {"type": "object", "name": "WorkOrderLineItem"},
-        {"type": "object", "name": "WorkType"}
-      ],
-      "edition": "Enterprise+"
-    },
-    {
-      "type": "feature",
-      "name": "Asset Management",
-      "description": "Customer asset tracking and maintenance",
-      "productFamily": "Field Service",
-      "justification": "Asset configuration indicates equipment management",
-      "detectionMethods": [
-        {"type": "object", "name": "Asset"},
-        {"type": "object", "name": "MaintenancePlan"},
-        {"type": "object", "name": "MaintenanceAsset"}
-      ],
-      "edition": "Enterprise+"
-    },
-    {
-      "type": "feature",
-      "name": "Service Contracts",
-      "description": "Contract and entitlement management",
-      "productFamily": "Field Service",
-      "justification": "Service contracts indicate SLA management",
-      "detectionMethods": [
-        {"type": "object", "name": "ServiceContract"},
-        {"type": "object", "name": "ContractLineItem"},
-        {"type": "object", "name": "Entitlement"}
-      ],
-      "edition": "Enterprise+"
-    },
-    {
-      "type": "feature",
-      "name": "Time Tracking",
-      "description": "Worker time and attendance tracking",
-      "productFamily": "Field Service",
-      "justification": "Time tracking indicates workforce management",
-      "detectionMethods": [
-        {"type": "object", "name": "TimeSheet"},
-        {"type": "object", "name": "TimeSheetEntry"},
-        {"type": "object", "name": "TimeSlot"}
-      ],
-      "edition": "Enterprise+"
-    },
-    {
-      "type": "feature",
-      "name": "Service Reports",
-      "description": "Field service reporting and analytics",
-      "productFamily": "Field Service",
-      "justification": "Service reports indicate performance tracking",
-      "detectionMethods": [
-        {"type": "object", "name": "ServiceReport"},
-        {"type": "object", "name": "ServiceReportTemplate"},
-        {"type": "object", "name": "ServiceReportLayout"}
-      ],
-      "edition": "Enterprise+"
+      "category": "Workforce Management",
+      "description": "Worker time and performance tracking",
+      "justification": "Workforce management features indicate operational maturity",
+      "items": [
+        {
+          "type": "feature",
+          "name": "Time Tracking",
+          "weight": 0.6,
+          "description": "Worker time and attendance tracking",
+          "justification": "Time tracking indicates workforce management",
+          "detectionMethods": [
+            {"type": "object", "name": "TimeSheet"},
+            {"type": "object", "name": "TimeSheetEntry"},
+            {"type": "object", "name": "TimeSlot"}
+          ],
+          "edition": "Enterprise+"
+        },
+        {
+          "type": "feature",
+          "name": "Service Reports",
+          "weight": 0.7,
+          "description": "Field service reporting and analytics",
+          "justification": "Service reports indicate performance tracking",
+          "detectionMethods": [
+            {"type": "object", "name": "ServiceReport"},
+            {"type": "object", "name": "ServiceReportTemplate"},
+            {"type": "object", "name": "ServiceReportLayout"}
+          ],
+          "edition": "Enterprise+"
+        }
+      ]
     }
   ],
   "detectionRules": {

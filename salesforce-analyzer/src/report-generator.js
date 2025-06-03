@@ -224,5 +224,8 @@ function addCloudSpecificIntegrationExplanation(productName) {
 }
 
 module.exports = {
-  generateUsageReport
+  generateUsageReport,
+  calculateCategoryScores,
+  formatDetails,
+  addCloudSpecificIntegrationExplanation
 }; 

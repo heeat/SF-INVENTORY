@@ -91,4 +91,4 @@ class EvidenceCollection {
   }
 }
 
-export { Evidence, EvidenceCollection }; 
+module.exports = { Evidence, EvidenceCollection }; 

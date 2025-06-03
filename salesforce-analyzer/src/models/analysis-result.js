@@ -46,4 +46,4 @@ class AnalysisResult {
   }
 }
 
-export default AnalysisResult; 
+module.exports = AnalysisResult; 

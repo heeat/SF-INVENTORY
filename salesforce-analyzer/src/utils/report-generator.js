@@ -184,7 +184,7 @@ function summarizeItemDetails(details) {
   return summary;
 }
 
-export {
+module.exports = {
   generateSummaryReport,
   generateDetailedReport,
   generateTextReport,
