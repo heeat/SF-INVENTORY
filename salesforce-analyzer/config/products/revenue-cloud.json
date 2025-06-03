@@ -1,0 +1,162 @@
+{
+  "name": "Revenue Cloud",
+  "key": "revenueCloud",
+  "description": "Salesforce Revenue Cloud (CPQ & Billing) capabilities and features",
+  "features": [
+    {
+      "type": "feature",
+      "name": "CPQ Core",
+      "description": "Core Configure, Price, Quote functionality",
+      "productFamily": "Revenue Cloud",
+      "justification": "Presence of CPQ objects indicates platform usage",
+      "detectionMethods": [
+        {"type": "metadata", "path": "CPQSettings", "enabled": true},
+        {"type": "object", "name": "SBQQ__Quote__c"},
+        {"type": "object", "name": "SBQQ__QuoteLine__c"}
+      ],
+      "edition": "Enterprise+"
+    },
+    {
+      "type": "feature",
+      "name": "Product Configuration",
+      "description": "Advanced product configuration rules",
+      "productFamily": "Revenue Cloud",
+      "justification": "Configuration rules indicate complex product setup",
+      "detectionMethods": [
+        {"type": "object", "name": "SBQQ__ProductRule__c"},
+        {"type": "object", "name": "SBQQ__ConfigurationRule__c"},
+        {"type": "object", "name": "SBQQ__ProductFeature__c"}
+      ],
+      "edition": "Enterprise+"
+    },
+    {
+      "type": "feature",
+      "name": "Pricing Rules",
+      "description": "Dynamic pricing and discounting",
+      "productFamily": "Revenue Cloud",
+      "justification": "Pricing rules indicate advanced pricing management",
+      "detectionMethods": [
+        {"type": "object", "name": "SBQQ__PriceRule__c"},
+        {"type": "object", "name": "SBQQ__PriceCondition__c"},
+        {"type": "object", "name": "SBQQ__PriceAction__c"}
+      ],
+      "edition": "Enterprise+"
+    },
+    {
+      "type": "feature",
+      "name": "Billing Management",
+      "description": "Invoice and billing functionality",
+      "productFamily": "Revenue Cloud",
+      "justification": "Billing configuration indicates revenue operations",
+      "detectionMethods": [
+        {"type": "object", "name": "blng__Invoice__c"},
+        {"type": "object", "name": "blng__Payment__c"},
+        {"type": "object", "name": "blng__BillingRule__c"}
+      ],
+      "edition": "Enterprise+"
+    },
+    {
+      "type": "feature",
+      "name": "Subscription Management",
+      "description": "Recurring revenue management",
+      "productFamily": "Revenue Cloud",
+      "justification": "Subscription objects indicate recurring business model",
+      "detectionMethods": [
+        {"type": "object", "name": "SBQQ__Subscription__c"},
+        {"type": "object", "name": "blng__Subscription__c"},
+        {"type": "object", "name": "blng__SubscriptionProduct__c"}
+      ],
+      "edition": "Enterprise+"
+    },
+    {
+      "type": "feature",
+      "name": "Contract Management",
+      "description": "Revenue contract lifecycle",
+      "productFamily": "Revenue Cloud",
+      "justification": "Contract management indicates revenue agreements",
+      "detectionMethods": [
+        {"type": "object", "name": "SBQQ__Contract__c"},
+        {"type": "object", "name": "blng__RevenueContract__c"},
+        {"type": "object", "name": "blng__RevenueElement__c"}
+      ],
+      "edition": "Enterprise+"
+    },
+    {
+      "type": "feature",
+      "name": "Advanced Approvals",
+      "description": "Quote and order approval processes",
+      "productFamily": "Revenue Cloud",
+      "justification": "Approval processes indicate governance",
+      "detectionMethods": [
+        {"type": "object", "name": "SBQQ__QuoteProcess__c"},
+        {"type": "object", "name": "SBQQ__ApprovalCondition__c"},
+        {"type": "object", "name": "ProcessInstance", "pattern": "SBQQ__Quote__c"}
+      ],
+      "edition": "Enterprise+"
+    },
+    {
+      "type": "feature",
+      "name": "Revenue Recognition",
+      "description": "Revenue scheduling and recognition",
+      "productFamily": "Revenue Cloud",
+      "justification": "Revenue recognition indicates financial compliance",
+      "detectionMethods": [
+        {"type": "object", "name": "blng__RevenueRecognitionRule__c"},
+        {"type": "object", "name": "blng__Revenue__c"},
+        {"type": "object", "name": "blng__RevenueSchedule__c"}
+      ],
+      "edition": "Enterprise+"
+    },
+    {
+      "type": "feature",
+      "name": "Tax Management",
+      "description": "Tax calculation and management",
+      "productFamily": "Revenue Cloud",
+      "justification": "Tax configuration indicates compliance management",
+      "detectionMethods": [
+        {"type": "object", "name": "blng__TaxRate__c"},
+        {"type": "object", "name": "blng__TaxRule__c"},
+        {"type": "object", "name": "blng__TaxTreatment__c"}
+      ],
+      "edition": "Enterprise+"
+    },
+    {
+      "type": "feature",
+      "name": "Payment Processing",
+      "description": "Payment gateway integration",
+      "productFamily": "Revenue Cloud",
+      "justification": "Payment processing indicates transaction handling",
+      "detectionMethods": [
+        {"type": "object", "name": "blng__PaymentGateway__c"},
+        {"type": "object", "name": "blng__PaymentMethod__c"},
+        {"type": "object", "name": "blng__PaymentTransaction__c"}
+      ],
+      "edition": "Enterprise+"
+    }
+  ],
+  "detectionRules": {
+    "edition": {
+      "Enterprise": {
+        "requiredFeatures": ["CPQ Core", "Pricing Rules"],
+        "minFeatures": 3
+      },
+      "Unlimited": {
+        "requiredFeatures": ["CPQ Core", "Billing Management", "Revenue Recognition"],
+        "minFeatures": 5
+      }
+    },
+    "usage": {
+      "Active": {
+        "minFeatures": 6,
+        "requiredFeatures": ["CPQ Core", "Billing Management"]
+      },
+      "Limited": {
+        "minFeatures": 3,
+        "requiredFeatures": ["CPQ Core"]
+      },
+      "Minimal": {
+        "minFeatures": 1
+      }
+    }
+  }
+} 

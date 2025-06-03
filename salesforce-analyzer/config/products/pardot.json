@@ -1,0 +1,170 @@
+{
+  "name": "Pardot",
+  "key": "pardot",
+  "description": "Salesforce Pardot (Account Engagement) B2B marketing automation capabilities",
+  "features": [
+    {
+      "type": "feature",
+      "name": "Pardot Core",
+      "description": "Core B2B marketing automation functionality",
+      "productFamily": "Pardot",
+      "justification": "Presence of Pardot objects indicates platform usage",
+      "detectionMethods": [
+        {"type": "metadata", "path": "PardotSettings", "enabled": true},
+        {"type": "object", "name": "pi__Prospect__c"},
+        {"type": "object", "name": "pi__Campaign__c"}
+      ],
+      "edition": "Growth+"
+    },
+    {
+      "type": "feature",
+      "name": "Email Marketing",
+      "description": "B2B email campaign capabilities",
+      "productFamily": "Pardot",
+      "justification": "Email marketing configuration indicates campaign usage",
+      "detectionMethods": [
+        {"type": "object", "name": "pi__Email__c"},
+        {"type": "object", "name": "pi__EmailTemplate__c"},
+        {"type": "object", "name": "pi__ListEmail__c"}
+      ],
+      "edition": "Growth+"
+    },
+    {
+      "type": "feature",
+      "name": "Lead Management",
+      "description": "Lead scoring and grading",
+      "productFamily": "Pardot",
+      "justification": "Lead management indicates prospect qualification",
+      "detectionMethods": [
+        {"type": "object", "name": "pi__Score__c"},
+        {"type": "object", "name": "pi__Grade__c"},
+        {"type": "object", "name": "pi__ProspectScore__c"}
+      ],
+      "edition": "Growth+"
+    },
+    {
+      "type": "feature",
+      "name": "Forms and Landing Pages",
+      "description": "Web form and landing page builder",
+      "productFamily": "Pardot",
+      "justification": "Form configuration indicates lead capture",
+      "detectionMethods": [
+        {"type": "object", "name": "pi__Form__c"},
+        {"type": "object", "name": "pi__LandingPage__c"},
+        {"type": "object", "name": "pi__FormHandler__c"}
+      ],
+      "edition": "Growth+"
+    },
+    {
+      "type": "feature",
+      "name": "Engagement Programs",
+      "description": "Automated nurture campaigns",
+      "productFamily": "Pardot",
+      "justification": "Engagement programs indicate nurture marketing",
+      "detectionMethods": [
+        {"type": "object", "name": "pi__EngagementProgram__c"},
+        {"type": "object", "name": "pi__EngagementProgramStep__c"},
+        {"type": "object", "name": "pi__EngagementPath__c"}
+      ],
+      "edition": "Plus+"
+    },
+    {
+      "type": "feature",
+      "name": "Social Marketing",
+      "description": "Social media marketing capabilities",
+      "productFamily": "Pardot",
+      "justification": "Social configuration indicates social marketing",
+      "detectionMethods": [
+        {"type": "object", "name": "pi__Social__c"},
+        {"type": "object", "name": "pi__SocialPost__c"},
+        {"type": "object", "name": "pi__SocialProfile__c"}
+      ],
+      "edition": "Advanced+"
+    },
+    {
+      "type": "feature",
+      "name": "Advanced Analytics",
+      "description": "B2B marketing analytics",
+      "productFamily": "Pardot",
+      "justification": "Analytics configuration indicates performance tracking",
+      "detectionMethods": [
+        {"type": "object", "name": "pi__Report__c"},
+        {"type": "object", "name": "pi__Dashboard__c"},
+        {"type": "object", "name": "pi__TrackerDomain__c"}
+      ],
+      "edition": "Plus+"
+    },
+    {
+      "type": "feature",
+      "name": "Account-Based Marketing",
+      "description": "ABM capabilities",
+      "productFamily": "Pardot",
+      "justification": "ABM configuration indicates targeted marketing",
+      "detectionMethods": [
+        {"type": "object", "name": "pi__AccountInsight__c"},
+        {"type": "object", "name": "pi__AccountScore__c"},
+        {"type": "object", "name": "pi__ViewThroughMetric__c"}
+      ],
+      "edition": "Advanced+"
+    },
+    {
+      "type": "feature",
+      "name": "Dynamic Content",
+      "description": "Personalized content delivery",
+      "productFamily": "Pardot",
+      "justification": "Dynamic content indicates personalization",
+      "detectionMethods": [
+        {"type": "object", "name": "pi__DynamicContent__c"},
+        {"type": "object", "name": "pi__ContentVersion__c"},
+        {"type": "object", "name": "pi__ContentVariation__c"}
+      ],
+      "edition": "Plus+"
+    },
+    {
+      "type": "feature",
+      "name": "Einstein for Pardot",
+      "description": "AI-powered B2B marketing",
+      "productFamily": "Pardot",
+      "justification": "Einstein features indicate AI marketing usage",
+      "detectionMethods": [
+        {"type": "object", "name": "pi__EinsteinBehavior__c"},
+        {"type": "object", "name": "pi__EinsteinInsight__c"},
+        {"type": "metadata", "path": "EinsteinSettings", "pattern": "Pardot"}
+      ],
+      "edition": "Premium+"
+    }
+  ],
+  "detectionRules": {
+    "edition": {
+      "Growth": {
+        "requiredFeatures": ["Pardot Core", "Email Marketing"],
+        "minFeatures": 3
+      },
+      "Plus": {
+        "requiredFeatures": ["Pardot Core", "Email Marketing", "Engagement Programs"],
+        "minFeatures": 5
+      },
+      "Advanced": {
+        "requiredFeatures": ["Pardot Core", "Email Marketing", "Account-Based Marketing"],
+        "minFeatures": 7
+      },
+      "Premium": {
+        "requiredFeatures": ["Pardot Core", "Email Marketing", "Einstein for Pardot"],
+        "minFeatures": 8
+      }
+    },
+    "usage": {
+      "Active": {
+        "minFeatures": 6,
+        "requiredFeatures": ["Pardot Core", "Email Marketing", "Lead Management"]
+      },
+      "Limited": {
+        "minFeatures": 3,
+        "requiredFeatures": ["Pardot Core"]
+      },
+      "Minimal": {
+        "minFeatures": 1
+      }
+    }
+  }
+} 
