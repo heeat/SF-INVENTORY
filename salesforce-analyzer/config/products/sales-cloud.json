@@ -1,0 +1,355 @@
+{
+  "name": "Sales Cloud",
+  "description": "Salesforce's core CRM for sales teams",
+  "justification": "Sales Cloud is a primary revenue driver for Salesforce and typically the first product implemented by customers. Analyzing its usage provides critical insights into the ROI of a customer's Salesforce investment.",
+  "indicators": [
+    {
+      "category": "Core Objects",
+      "description": "Primary objects that form the foundation of Sales Cloud",
+      "justification": "These objects are the fundamental building blocks of Sales Cloud. Their presence and usage directly indicate whether the organization is using Sales Cloud for its intended purpose. Weights are assigned based on the object's centrality to the sales process.",
+      "items": [
+        {
+          "type": "object",
+          "name": "Opportunity",
+          "weight": 0.9,
+          "description": "Key object for tracking sales deals - high weight as it's central to Sales Cloud",
+          "justification": "Opportunity tracking is the core functionality of Sales Cloud. Almost no organization can effectively use Sales Cloud without utilizing Opportunities. High weight (0.9) reflects this central importance.",
+          "requiredFields": ["StageName", "Amount", "CloseDate"],
+          "activityThreshold": 10
+        },
+        {
+          "type": "object",
+          "name": "Lead",
+          "weight": 0.8,
+          "description": "Prospecting object - high weight as it represents top of sales funnel",
+          "justification": "Lead management represents the top of the sales funnel and is critical for most organizations using Sales Cloud. High weight (0.8) reflects its importance, slightly below Opportunities.",
+          "activityThreshold": 20
+        },
+        {
+          "type": "object",
+          "name": "Campaign",
+          "weight": 0.5,
+          "description": "Marketing campaigns object - medium weight as it's often used with Sales Cloud but not essential",
+          "justification": "Campaign tracking bridges sales and marketing but is not essential for all Sales Cloud implementations. Medium weight (0.5) reflects its optional nature while still being a significant indicator when used.",
+          "activityThreshold": 5
+        },
+        {
+          "type": "object",
+          "name": "Quote",
+          "weight": 0.6,
+          "description": "Quote generation - medium-high weight as it indicates advanced sales process",
+          "justification": "Quote management indicates a more sophisticated sales process that includes formal pricing and proposals. Medium-high weight (0.6) reflects that it's an important indicator of more complete Sales Cloud adoption.",
+          "activityThreshold": 5,
+          "edition": "Professional+"
+        },
+        {
+          "type": "object",
+          "name": "Product2",
+          "weight": 0.6,
+          "description": "Product catalog - indicates more advanced use of Sales Cloud",
+          "justification": "Product catalog usage shows the organization has formalized their offerings within Salesforce. Weight (0.6) reflects that this is an important indicator of structured sales processes.",
+          "activityThreshold": 5,
+          "edition": "Professional+"
+        },
+        {
+          "type": "object",
+          "name": "PriceBook2",
+          "weight": 0.5,
+          "description": "Price books for products - indicates more advanced use of Sales Cloud",
+          "justification": "Price book configuration indicates sophisticated pricing strategies managed in Sales Cloud. Medium weight (0.5) reflects that it's significant but often implemented after core functionality.",
+          "activityThreshold": 1,
+          "edition": "Professional+"
+        }
+      ]
+    },
+    {
+      "category": "Sales Process Configuration",
+      "description": "Evidence of sales process customization",
+      "justification": "Configured sales processes indicate that an organization has tailored Sales Cloud to their specific business needs, which strongly correlates with successful adoption and long-term usage.",
+      "items": [
+        {
+          "type": "feature",
+          "name": "Custom Sales Process",
+          "weight": 0.7,
+          "description": "Custom sales stages indicate organization has tailored Sales Cloud to their process",
+          "justification": "Organizations that configure custom sales processes show commitment to aligning Salesforce with their business. High weight (0.7) because this customization is a strong indicator of serious platform adoption.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "SalesProcess"},
+            {"type": "field", "object": "Opportunity", "name": "StageName", "checkValues": true}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Lead Assignment Rules",
+          "weight": 0.6,
+          "description": "Lead routing indicates active lead management process",
+          "justification": "Lead assignment rules show process automation and distributed sales responsibility. Medium-high weight (0.6) as this indicates structured lead handling processes.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "AssignmentRule", "entity": "Lead"}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Web-to-Lead",
+          "weight": 0.5,
+          "description": "Web lead capture shows digital lead generation strategy",
+          "justification": "Web-to-Lead indicates digital integration with marketing efforts. Medium weight (0.5) as it shows expanded usage beyond core CRM but isn't essential for all businesses.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "WebToLeadSettings", "enabled": true}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Opportunity Record Types",
+          "weight": 0.6,
+          "description": "Multiple opportunity types indicate advanced sales segmentation",
+          "justification": "Multiple opportunity record types indicate sophisticated sales categorization. Medium-high weight (0.6) as this reflects a mature Sales Cloud implementation with differentiated processes.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "RecordType", "entity": "Opportunity", "minCount": 2}
+          ],
+          "edition": "Enterprise+"
+        }
+      ]
+    },
+    {
+      "category": "Advanced Features",
+      "description": "Premium Sales Cloud features",
+      "justification": "Advanced features indicate deeper platform adoption and are typically implemented after core functionality is established. Their presence strongly indicates committed, long-term Sales Cloud usage.",
+      "items": [
+        {
+          "type": "feature",
+          "name": "Forecasting",
+          "weight": 0.7,
+          "description": "Sales forecasting is a key advanced Sales Cloud feature",
+          "justification": "Forecasting represents strategic usage of Sales Cloud for business planning. High weight (0.7) as it indicates the organization is using Salesforce for business intelligence, not just transaction tracking.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "ForecastingSettings", "enabled": true},
+            {"type": "object", "name": "ForecastingQuota", "minCount": 1}
+          ],
+          "edition": "Enterprise+"
+        },
+        {
+          "type": "feature",
+          "name": "Collaborative Forecasts",
+          "weight": 0.6,
+          "description": "Advanced forecasting feature indicates mature sales operations",
+          "justification": "Collaborative forecasting indicates team-based sales planning and management. Medium-high weight (0.6) as it shows advanced forecasting utilization.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "ForecastingType", "minCount": 1}
+          ],
+          "edition": "Enterprise+"
+        },
+        {
+          "type": "feature",
+          "name": "Einstein Lead Scoring",
+          "description": "AI feature shows advanced Sales Cloud implementation",
+          "justification": "Einstein adoption indicates investment in AI-enhanced sales processes",
+          "detectionMethods": [
+            {"type": "metadata", "path": "EinsteinSettings", "leadScoring": true},
+            {"type": "field", "object": "Lead", "pattern": "Einstein.*Score"}
+          ],
+          "edition": "Enterprise+"
+        },
+        {
+          "type": "feature",
+          "name": "Enterprise Territory Management",
+          "description": "Territory management indicates complex sales organization",
+          "justification": "Territory management indicates sophisticated sales team organization",
+          "detectionMethods": [
+            {"type": "metadata", "path": "Territory2Type", "minCount": 1},
+            {"type": "metadata", "path": "Territory2Model", "minCount": 1}
+          ],
+          "edition": "Enterprise+"
+        },
+        {
+          "type": "feature",
+          "name": "Opportunity Teams",
+          "description": "Team selling approach indicates collaborative sales process",
+          "justification": "Opportunity Teams indicates collaborative selling processes",
+          "detectionMethods": [
+            {"type": "metadata", "path": "OpportunityTeamMember", "enabled": true}
+          ],
+          "edition": "Enterprise+"
+        },
+        {
+          "type": "feature",
+          "name": "Sales Engagement",
+          "weight": 0.8,
+          "description": "High velocity sales shows advanced outreach capabilities",
+          "justification": "Sales Engagement (High Velocity Sales) represents investment in premium sales acceleration tools. Very high weight (0.8) as it indicates significant financial commitment to Salesforce sales capabilities.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "CadenceSettings", "enabled": true},
+            {"type": "object", "name": "Cadence", "minCount": 1}
+          ],
+          "edition": "Unlimited+"
+        }
+      ]
+    },
+    {
+      "category": "User Activity",
+      "description": "Evidence of active usage by sales users",
+      "justification": "User activity is perhaps the strongest indicator of genuine adoption. Configuration without actual usage doesn't deliver business value, so these behavioral signals are weighted heavily.",
+      "items": [
+        {
+          "type": "activity",
+          "name": "Opportunity Views",
+          "weight": 0.8,
+          "description": "Direct evidence of sales reps working deals",
+          "justification": "Opportunity views provide direct evidence that sales representatives are actively using the system to manage deals. High weight (0.8) because this is one of the strongest behavioral indicators of adoption.",
+          "detectionMethods": [
+            {"type": "eventLog", "eventType": "URI", "pattern": "/lightning/o/Opportunity/", "timeframe": "last30Days", "threshold": 50}
+          ]
+        },
+        {
+          "type": "activity",
+          "name": "Lead Views",
+          "weight": 0.7,
+          "description": "Evidence of prospecting activity",
+          "justification": "Lead views indicate active prospecting and lead management. High weight (0.7) as this represents front-of-funnel engagement with the CRM.",
+          "detectionMethods": [
+            {"type": "eventLog", "eventType": "URI", "pattern": "/lightning/o/Lead/", "timeframe": "last30Days", "threshold": 50}
+          ]
+        },
+        {
+          "type": "activity",
+          "name": "Sales Dashboard Views",
+          "weight": 0.6,
+          "description": "Evidence of sales performance monitoring",
+          "justification": "Dashboard usage indicates management oversight and metric-driven sales processes. Medium-high weight (0.6) as it shows Sales Cloud being used for performance analytics.",
+          "detectionMethods": [
+            {"type": "eventLog", "eventType": "URI", "pattern": "/lightning/r/Dashboard/", "timeframe": "last30Days", "threshold": 20}
+          ]
+        },
+        {
+          "type": "activity",
+          "name": "Sales Reports",
+          "weight": 0.6,
+          "description": "Evidence of sales analytics usage",
+          "justification": "Report usage indicates data-driven sales management. Medium-high weight (0.6) as it shows analytical usage of Sales Cloud data.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "Report", "folder": "Sales*", "minCount": 5}
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Integration Points",
+      "description": "Evidence of Sales Cloud being integrated with other systems",
+      "justification": "Integrations indicate that Sales Cloud has been embedded into the broader technology ecosystem, which correlates with strategic commitment and lower churn risk.",
+      "items": [
+        {
+          "type": "integration",
+          "name": "Email Integration",
+          "weight": 0.7,
+          "description": "Email tracking shows Sales Cloud integrated into communication",
+          "justification": "Email integration embeds Salesforce into daily communication workflows. High weight (0.7) as this greatly increases user adoption by bringing CRM into core productivity tools.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "EmailIntegrationSettings", "enabled": true},
+            {"type": "object", "name": "EmailMessage", "relatedTo": "Opportunity", "minCount": 10}
+          ]
+        },
+        {
+          "type": "integration",
+          "name": "Calendar Sync",
+          "weight": 0.5,
+          "description": "Calendar integration shows Sales Cloud used for meeting management",
+          "justification": "Calendar sync integrates Salesforce with another daily workflow tool. Medium weight (0.5) as it enhances adoption but isn't as critical as email integration.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "EmailIntegrationSettings", "enableContactSync": true}
+          ]
+        },
+        {
+          "type": "integration",
+          "name": "CTI Integration",
+          "weight": 0.6,
+          "description": "Phone system integration indicates advanced usage",
+          "justification": "CTI integration shows investment in connecting telephony with CRM. Medium-high weight (0.6) as it requires additional implementation effort and budget.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "CallCenter", "minCount": 1},
+            {"type": "object", "name": "Task", "recordType": "Call", "minCount": 20}
+          ]
+        },
+        {
+          "type": "api",
+          "name": "Opportunity API Calls",
+          "weight": 0.7,
+          "description": "API integration with Opportunity object indicates programmatic sales process",
+          "justification": "API integration indicates Salesforce is being used programmatically, often with other enterprise systems. High weight (0.7) as it represents significant technical investment and importance to business processes.",
+          "detectionMethods": [
+            {"type": "apiUsage", "object": "Opportunity", "threshold": 100, "timeframe": "last7Days"}
+          ],
+          "edition": "Enterprise+"
+        }
+      ]
+    },
+    {
+      "category": "Code Customization",
+      "description": "Evidence of custom code interacting with Sales Cloud",
+      "justification": "Custom code development represents significant investment in tailoring Salesforce to specific business needs, indicating deep commitment to the platform.",
+      "items": [
+        {
+          "type": "code",
+          "name": "Opportunity Triggers",
+          "weight": 0.7,
+          "description": "Custom Apex on opportunities indicates advanced customization",
+          "justification": "Apex triggers on Opportunities show deep technical customization of core sales processes. High weight (0.7) as this represents significant development investment.",
+          "detectionMethods": [
+            {"type": "apex", "triggerObject": "Opportunity"}
+          ],
+          "edition": "Enterprise+"
+        },
+        {
+          "type": "code",
+          "name": "Lead Triggers",
+          "weight": 0.6,
+          "description": "Custom lead processing logic indicates specialized lead handling",
+          "justification": "Apex triggers on Leads indicate customized lead processing. Medium-high weight (0.6) shows importance but slightly less central than Opportunity customization.",
+          "detectionMethods": [
+            {"type": "apex", "triggerObject": "Lead"}
+          ],
+          "edition": "Enterprise+"
+        },
+        {
+          "type": "code",
+          "name": "Sales Cloud Lightning Components",
+          "weight": 0.6,
+          "description": "Custom UI components for Sales Cloud indicates deep customization",
+          "justification": "Custom Lightning components show investment in tailored user experiences. Medium-high weight (0.6) indicates significant UI customization effort.",
+          "detectionMethods": [
+            {"type": "lightning", "pattern": "Opportunity|Lead|Account", "minCount": 2}
+          ],
+          "edition": "Enterprise+"
+        }
+      ]
+    }
+  ],
+  "editionSignals": {
+    "Starter": ["BasicOpportunityMgmt", "BasicLeadMgmt"],
+    "Professional": ["Campaigns", "Quotes", "Products", "WebToLead"],
+    "Enterprise": ["API", "Territory", "AdvancedForecasting", "RecordTypes", "Workflows"],
+    "Unlimited": ["SalesEngagement", "EinsteinConversationInsights", "AdvancedTerritories"]
+  },
+  "editionJustification": "Edition detection is based on feature availability and usage patterns. Features are mapped to the editions where they first become available, with more advanced features appearing in higher editions. This helps identify both the currently licensed edition and potential upgrade paths.",
+  "findingsMap": {
+    "coreObjects": {
+      "Opportunity": "Core Opportunity management is in use",
+      "Lead": "Lead management is in use",
+      "Campaign": "Campaign tracking is in use",
+      "Quote": "Quote generation is being utilized",
+      "Product2": "Product catalog is being maintained",
+      "PriceBook2": "Price books are configured"
+    },
+    "features": {
+      "Custom Sales Process": "Sales process has been customized for your business needs",
+      "Lead Assignment Rules": "Automated lead routing is configured",
+      "Web-to-Lead": "Web lead capture is enabled for digital lead generation",
+      "Forecasting": "Sales forecasting is configured",
+      "Collaborative Forecasts": "Team-based forecasting is being utilized",
+      "Einstein Lead Scoring": "Einstein AI is being used for lead scoring",
+      "Enterprise Territory Management": "Advanced territory management is in use",
+      "Opportunity Teams": "Collaborative team selling is enabled",
+      "Sales Engagement": "High velocity sales capabilities are being utilized"
+    }
+  },
+  "findingsJustification": "Findings are mapped directly to detected evidence points, translating technical detection into business-meaningful insights. Each finding is phrased to be actionable and understandable by non-technical stakeholders."
+} 

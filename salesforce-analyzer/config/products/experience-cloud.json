@@ -1,0 +1,557 @@
+{
+  "name": "Experience Cloud",
+  "description": "Salesforce's platform for creating branded digital experiences and communities",
+  "justification": "Experience Cloud enables organizations to create branded digital experiences for customers, partners, and employees. Analyzing its usage provides insights into how effectively an organization has implemented external-facing or collaborative Salesforce solutions.",
+  "indicators": [
+    {
+      "category": "Core Components",
+      "description": "Primary objects and configurations that form the foundation of Experience Cloud",
+      "justification": "These components represent the fundamental building blocks of Experience Cloud. Their presence, customization, and active use are the strongest indicators of Experience Cloud adoption.",
+      "items": [
+        {
+          "type": "object",
+          "name": "Network",
+          "weight": 0.9,
+          "description": "The primary object representing an Experience (Community)",
+          "justification": "The Network object is the central component of Experience Cloud. It's impossible to use Experience Cloud without this object. High weight (0.9) reflects this critical importance.",
+          "requiredFields": ["Status", "Name"],
+          "activityThreshold": 1
+        },
+        {
+          "type": "object",
+          "name": "NetworkMember",
+          "weight": 0.8,
+          "description": "Members/users of the Experience",
+          "justification": "NetworkMember records indicate active users in the Experience. High weight (0.8) as they directly show adoption by end users.",
+          "activityThreshold": 10
+        },
+        {
+          "type": "feature",
+          "name": "Experience Builder",
+          "weight": 0.7,
+          "description": "Builder tool for creating custom Experiences",
+          "justification": "Experience Builder usage indicates investment in custom experiences. High weight (0.7) as it shows commitment to tailored user experiences.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "ExperienceBundle", "minCount": 1}
+          ]
+        },
+        {
+          "type": "object",
+          "name": "NetworkActivityAudit",
+          "weight": 0.6,
+          "description": "Audit records of Experience activity",
+          "justification": "Activity audit records show engagement within the Experience. Medium-high weight (0.6) as they indicate ongoing usage.",
+          "activityThreshold": 20
+        }
+      ]
+    },
+    {
+      "category": "Content Management",
+      "description": "Evidence of content management within Experiences",
+      "justification": "Content management is a key component of successful Experiences. Organizations with mature Experience Cloud implementations typically invest heavily in content.",
+      "items": [
+        {
+          "type": "object",
+          "name": "ContentDocument",
+          "weight": 0.7,
+          "description": "Content files shared in the Experience",
+          "justification": "Content documents indicate file sharing within Experiences. High weight (0.7) as content sharing is a common Experience Cloud use case.",
+          "activityThreshold": 15
+        },
+        {
+          "type": "feature",
+          "name": "CMS for Experience Cloud",
+          "weight": 0.8,
+          "description": "Content Management System usage",
+          "justification": "CMS usage indicates sophisticated content strategy. High weight (0.8) as it represents significant investment in Experience content.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "CmsSettings", "enabled": true},
+            {"type": "object", "name": "ManagedContent", "minCount": 5}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Topics",
+          "weight": 0.6,
+          "description": "Content organization through topics",
+          "justification": "Topics indicate organized content navigation. Medium-high weight (0.6) as they show investment in information architecture.",
+          "detectionMethods": [
+            {"type": "object", "name": "Topic", "minCount": 5}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Knowledge Integration",
+          "weight": 0.7,
+          "description": "Integration of Knowledge articles in Experience",
+          "justification": "Knowledge integration shows comprehensive self-service strategy. High weight (0.7) as it represents significant content investment.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "NetworkKnowledgeSettings", "enabled": true}
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Engagement Features",
+      "description": "Features enabling user interaction and engagement",
+      "justification": "Engagement features indicate investment in creating interactive Experiences rather than static portals, showing more mature use of Experience Cloud.",
+      "items": [
+        {
+          "type": "object",
+          "name": "FeedItem",
+          "weight": 0.8,
+          "description": "Chatter posts in the Experience",
+          "justification": "Feed activity shows social collaboration. High weight (0.8) as it directly measures user engagement.",
+          "activityThreshold": 30
+        },
+        {
+          "type": "object",
+          "name": "FeedComment",
+          "weight": 0.7,
+          "description": "Comments on Chatter posts",
+          "justification": "Feed comments indicate discussion engagement. High weight (0.7) as they show active conversation.",
+          "activityThreshold": 40
+        },
+        {
+          "type": "feature",
+          "name": "Question & Answer",
+          "weight": 0.7,
+          "description": "Q&A functionality in the Experience",
+          "justification": "Q&A features show knowledge-sharing focus. High weight (0.7) as they're a common collaborative use case.",
+          "detectionMethods": [
+            {"type": "object", "name": "Question", "minCount": 10}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Ideas",
+          "weight": 0.6,
+          "description": "Ideation functionality",
+          "justification": "Ideas show crowdsourcing engagement strategy. Medium-high weight (0.6) as they represent specific collaborative use case.",
+          "detectionMethods": [
+            {"type": "object", "name": "Idea", "minCount": 5}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Reputation Management",
+          "weight": 0.6,
+          "description": "Gamification through reputation points",
+          "justification": "Reputation features indicate gamification strategy. Medium-high weight (0.6) as they show investment in engagement tactics.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "ReputationLevelDefinitions", "minCount": 3}
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Self-Service Features",
+      "description": "Capabilities for customer or partner self-service",
+      "justification": "Self-service features indicate Experience Cloud is being used to deflect cases and empower external users, a common and valuable use case.",
+      "items": [
+        {
+          "type": "feature",
+          "name": "Case Management",
+          "weight": 0.8,
+          "description": "Self-service case management",
+          "justification": "Case management in Experiences indicates support deflection strategy. High weight (0.8) as it's a primary Experience Cloud use case.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "NetworkCaseSettings", "enabled": true}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Community Case Deflection",
+          "weight": 0.7,
+          "description": "Case deflection through suggested articles/posts",
+          "justification": "Case deflection shows sophisticated self-service strategy. High weight (0.7) as it indicates focus on support efficiency.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "CaseSettings", "communityDeflectionEnabled": true}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Service Not Available (SNA) Pages",
+          "weight": 0.5,
+          "description": "Custom maintenance pages",
+          "justification": "SNA pages indicate attention to user experience details. Medium weight (0.5) as they're important but not central to functionality.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "ServiceNotAvailablePage", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Self-Registration",
+          "weight": 0.6,
+          "description": "Self-service user registration",
+          "justification": "Self-registration shows focus on reducing administrative overhead. Medium-high weight (0.6) as it indicates mature community management.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "NetworkSelfRegistration", "enabled": true}
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Commerce Features",
+      "description": "B2B/B2C commerce capabilities in Experiences",
+      "justification": "Commerce features indicate advanced Experience Cloud usage for digital sales, typically seen in more sophisticated implementations.",
+      "items": [
+        {
+          "type": "feature",
+          "name": "B2B Commerce",
+          "weight": 0.8,
+          "description": "B2B commerce functionality",
+          "justification": "B2B Commerce represents significant investment in digital sales channels. High weight (0.8) as it indicates strategic Experience Cloud implementation.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "CommerceSettings", "b2bEnabled": true}
+          ],
+          "edition": "Enterprise+"
+        },
+        {
+          "type": "object",
+          "name": "WebStore",
+          "weight": 0.8,
+          "description": "Store configuration for commerce",
+          "justification": "WebStore objects indicate active commerce implementation. High weight (0.8) as they represent significant platform investment.",
+          "activityThreshold": 1,
+          "edition": "Enterprise+"
+        },
+        {
+          "type": "object",
+          "name": "WebCart",
+          "weight": 0.7,
+          "description": "Shopping carts in commerce experiences",
+          "justification": "WebCart activity shows active commerce usage. High weight (0.7) as it directly indicates transaction activity.",
+          "activityThreshold": 10,
+          "edition": "Enterprise+"
+        },
+        {
+          "type": "feature",
+          "name": "Checkout Flow",
+          "weight": 0.7,
+          "description": "Configured checkout experience",
+          "justification": "Checkout flows indicate complete commerce implementation. High weight (0.7) as they show end-to-end transaction capability.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "CheckoutFlowSettings", "enabled": true}
+          ],
+          "edition": "Enterprise+"
+        },
+        {
+          "type": "feature",
+          "name": "Payment Gateway Integration",
+          "weight": 0.8,
+          "description": "Integration with payment processing systems",
+          "justification": "Payment integration indicates complete commerce implementation. High weight (0.8) as it enables transactions.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "PaymentGatewayProvider", "minCount": 1}
+          ],
+          "edition": "Enterprise+"
+        }
+      ]
+    },
+    {
+      "category": "User Activity",
+      "description": "Evidence of active usage by Experience users",
+      "justification": "User activity provides direct evidence of actual Experience Cloud adoption, beyond mere configuration. These behavioral indicators are highly weighted as they demonstrate value realization.",
+      "items": [
+        {
+          "type": "activity",
+          "name": "Login Activity",
+          "weight": 0.9,
+          "description": "User logins to the Experience",
+          "justification": "Login activity directly indicates user adoption. Very high weight (0.9) as it's the clearest signal of active usage.",
+          "detectionMethods": [
+            {"type": "eventLog", "eventType": "Login", "application": "Community", "timeframe": "last30Days", "threshold": 50}
+          ]
+        },
+        {
+          "type": "activity",
+          "name": "Content Views",
+          "weight": 0.7,
+          "description": "Views of content in the Experience",
+          "justification": "Content views show consumption of Experience resources. High weight (0.7) as they indicate user engagement with provided content.",
+          "detectionMethods": [
+            {"type": "eventLog", "eventType": "URI", "pattern": "/s/content/", "timeframe": "last30Days", "threshold": 100}
+          ]
+        },
+        {
+          "type": "activity",
+          "name": "Record Views",
+          "weight": 0.8,
+          "description": "Views of Salesforce records in Experience",
+          "justification": "Record views show engagement with business data. High weight (0.8) as they indicate users leveraging Experience for data access.",
+          "detectionMethods": [
+            {"type": "eventLog", "eventType": "URI", "pattern": "/s/detail/", "timeframe": "last30Days", "threshold": 100}
+          ]
+        },
+        {
+          "type": "activity",
+          "name": "Experience Analytics Usage",
+          "weight": 0.6,
+          "description": "Usage of Experience analytics by admins",
+          "justification": "Analytics usage shows active management oversight. Medium-high weight (0.6) as it indicates investment in measuring Experience effectiveness.",
+          "detectionMethods": [
+            {"type": "eventLog", "eventType": "URI", "pattern": "/lightning/r/NetworkCommunitiesAnalytics", "timeframe": "last30Days", "threshold": 10}
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Customization",
+      "description": "Evidence of Experience customization",
+      "justification": "Customization indicates significant investment in tailoring the Experience to specific business needs, showing deeper commitment to Experience Cloud.",
+      "items": [
+        {
+          "type": "code",
+          "name": "Custom Lightning Components",
+          "weight": 0.8,
+          "description": "Custom Lightning components for Experiences",
+          "justification": "Custom components indicate investment in tailored user experiences. High weight (0.8) as they represent significant development effort.",
+          "detectionMethods": [
+            {"type": "lightning", "pattern": "Community|Experience", "minCount": 2}
+          ],
+          "edition": "Enterprise+"
+        },
+        {
+          "type": "feature",
+          "name": "Custom Themes",
+          "weight": 0.7,
+          "description": "Custom branding themes",
+          "justification": "Custom themes show investment in brand experience. High weight (0.7) as they indicate commitment to professional presentation.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "BrandingSet", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Custom Pages",
+          "weight": 0.7,
+          "description": "Custom Experience pages",
+          "justification": "Custom pages show tailored user journeys. High weight (0.7) as they indicate significant Experience design investment.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "ExperienceBundle", "pages": true, "minCount": 5}
+          ]
+        },
+        {
+          "type": "code",
+          "name": "Apex for Experiences",
+          "weight": 0.7,
+          "description": "Custom Apex code for Experience functionality",
+          "justification": "Experience-specific Apex indicates sophisticated customization. High weight (0.7) as it represents significant development investment.",
+          "detectionMethods": [
+            {"type": "apex", "pattern": "Site|Network|Community", "minCount": 1}
+          ],
+          "edition": "Enterprise+"
+        },
+        {
+          "type": "feature",
+          "name": "Progressive Web App Features",
+          "weight": 0.8,
+          "description": "Advanced PWA capabilities like offline support",
+          "justification": "PWA implementation indicates cutting-edge mobile experience. High weight (0.8) as it represents advanced web development.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "LightningComponentBundle", "pattern": "lightning__AppPage", "minCount": 1},
+            {"type": "file", "path": "staticresources", "pattern": "manifest.json|service-worker.js", "minCount": 1}
+          ],
+          "edition": "Enterprise+"
+        }
+      ]
+    },
+    {
+      "category": "Integration Points",
+      "description": "Evidence of Experience Cloud being integrated with other systems",
+      "justification": "Integrations indicate that Experience Cloud has been embedded into the broader digital ecosystem, showing strategic commitment.",
+      "items": [
+        {
+          "type": "integration",
+          "name": "External Authentication",
+          "weight": 0.7,
+          "description": "Integration with external identity providers",
+          "justification": "External authentication shows sophisticated identity strategy. High weight (0.7) as it indicates enterprise-grade implementation.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "SamlSsoConfig", "minCount": 1},
+            {"type": "metadata", "path": "AuthProvider", "minCount": 1}
+          ]
+        },
+        {
+          "type": "integration",
+          "name": "Experience API Usage",
+          "weight": 0.8,
+          "description": "API integration with Experience Cloud",
+          "justification": "API usage indicates programmatic Experience access. High weight (0.8) as it shows integration into broader ecosystem.",
+          "detectionMethods": [
+            {"type": "apiUsage", "object": "Network", "threshold": 50, "timeframe": "last7Days"}
+          ],
+          "edition": "Enterprise+"
+        },
+        {
+          "type": "integration",
+          "name": "Headless CMS",
+          "weight": 0.8,
+          "description": "Headless content delivery",
+          "justification": "Headless CMS usage indicates advanced content strategy. High weight (0.8) as it represents cutting-edge Experience implementation.",
+          "detectionMethods": [
+            {"type": "apiUsage", "object": "ManagedContent", "threshold": 50, "timeframe": "last7Days"}
+          ],
+          "edition": "Enterprise+"
+        }
+      ]
+    },
+    {
+      "category": "Advanced Authentication",
+      "description": "Specialized authentication and security features",
+      "justification": "Advanced authentication capabilities indicate a focus on security, user experience, and enterprise integration requirements.",
+      "items": [
+        {
+          "type": "feature",
+          "name": "Single Sign-On (SSO)",
+          "weight": 0.9,
+          "description": "SSO integration with identity providers",
+          "justification": "SSO implementation indicates enterprise-grade authentication strategy. Very high weight (0.9) as it's a critical enterprise requirement.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "SamlSsoConfig", "minCount": 1},
+            {"type": "metadata", "path": "AuthProvider", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Passwordless Login",
+          "weight": 0.8,
+          "description": "Email verification, biometric, or other passwordless login methods",
+          "justification": "Passwordless login shows modern authentication approach. High weight (0.8) as it enhances security and user experience.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "LoginFlow", "minCount": 1},
+            {"type": "apex", "pattern": "verification|passwordless|email.+verify", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Custom Login Flows",
+          "weight": 0.7,
+          "description": "Specialized login processes with additional verification",
+          "justification": "Custom login flows indicate tailored security processes. High weight (0.7) as they show investment in security customization.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "LoginFlow", "minCount": 1},
+            {"type": "apex", "pattern": "login.+flow|auth.+flow", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Just-in-time User Provisioning",
+          "weight": 0.7,
+          "description": "Automatic user creation during authentication",
+          "justification": "JIT provisioning indicates sophisticated user management. High weight (0.7) as it shows automated identity processes.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "SamlSsoConfig", "JitEnabled": true},
+            {"type": "apex", "pattern": "UserProvisioning|JIT", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Multi-factor Authentication",
+          "weight": 0.8,
+          "description": "Additional verification factors beyond password",
+          "justification": "MFA shows commitment to security best practices. High weight (0.8) as it's increasingly essential for secure implementations.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "TwoFactorInfo", "minCount": 1},
+            {"type": "metadata", "path": "SessionSettings", "mfa": true}
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Advanced Content Features",
+      "description": "Specialized content capabilities for enhanced experiences",
+      "justification": "Advanced content features indicate investment in sophisticated user experiences and content strategies.",
+      "items": [
+        {
+          "type": "feature",
+          "name": "Multi-language Support",
+          "weight": 0.7,
+          "description": "Multiple language capabilities in the Experience",
+          "justification": "Multi-language support indicates global audience strategy. High weight (0.7) as it shows investment in international user experience.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "ExperienceBundle", "languages": true, "minCount": 2},
+            {"type": "metadata", "path": "Translations", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "SEO Optimization",
+          "weight": 0.7,
+          "description": "Search engine optimization features",
+          "justification": "SEO optimization indicates focus on discoverability. High weight (0.7) as it's essential for public-facing sites.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "ExperienceBundle", "seo": true},
+            {"type": "file", "path": "staticresources", "pattern": "sitemap.xml|robots.txt", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Personalized Content",
+          "weight": 0.8,
+          "description": "Dynamic content based on user attributes",
+          "justification": "Personalization indicates sophisticated user experience. High weight (0.8) as it represents advanced Experience Cloud usage.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "ExperienceBundle", "personalization": true},
+            {"type": "apex", "pattern": "personaliz|target.+content", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Advanced Search",
+          "weight": 0.8,
+          "description": "Enhanced search capabilities beyond standard search",
+          "justification": "Advanced search indicates investment in content findability. High weight (0.8) as search is critical for user experience.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "SearchCustomization", "minCount": 1},
+            {"type": "apex", "pattern": "search.+custom|federated.+search", "minCount": 1}
+          ]
+        }
+      ]
+    }
+  ],
+  "editionSignals": {
+    "Starter": ["BasicExperienceCloud", "ContentSharing", "ChatterCollaboration"],
+    "Professional": ["CustomTheming", "TopicsForObjects", "SelfRegistration"],
+    "Enterprise": ["ExperienceBuilder", "ContentManagement", "CustomComponents"],
+    "Unlimited": ["B2BCommerce", "AdvancedAuthentication", "HeadlessCMS"]
+  },
+  "editionJustification": "Edition detection is based on feature availability and usage patterns. Features are mapped to the editions where they first become available, with more advanced features appearing in higher editions. This helps identify both the currently licensed edition and potential upgrade paths.",
+  "findingsMap": {
+    "coreObjects": {
+      "Network": "Experience Cloud site is configured",
+      "NetworkMember": "Experience has active members",
+      "FeedItem": "Social collaboration is being utilized",
+      "ContentDocument": "Content sharing is active",
+      "WebStore": "B2B/B2C Commerce is implemented",
+      "WebCart": "E-commerce transactions are occurring",
+      "Question": "Q&A functionality is being used",
+      "Idea": "Ideation features are being utilized"
+    },
+    "features": {
+      "Experience Builder": "Custom Experience Builder sites are deployed",
+      "CMS for Experience Cloud": "Content Management System is configured",
+      "Case Management": "Self-service case management is enabled",
+      "Community Case Deflection": "Case deflection features are implemented",
+      "B2B Commerce": "B2B Commerce functionality is configured",
+      "Checkout Flow": "E-commerce checkout is implemented",
+      "Knowledge Integration": "Knowledge articles are available in Experience",
+      "Topics": "Content organization through topics is implemented",
+      "Self-Registration": "User self-registration is enabled",
+      "Custom Themes": "Custom branding is applied",
+      "External Authentication": "External identity providers are configured",
+      "Single Sign-On (SSO)": "Single Sign-On is implemented for secure authentication",
+      "Passwordless Login": "Passwordless authentication methods are enabled",
+      "Multi-language Support": "Multiple languages are supported in the Experience",
+      "SEO Optimization": "Search engine optimization features are implemented",
+      "Personalized Content": "Dynamic personalized content is configured",
+      "Progressive Web App Features": "Progressive Web App capabilities are implemented",
+      "Just-in-time User Provisioning": "Automated user provisioning is configured",
+      "Multi-factor Authentication": "Additional security verification is enabled",
+      "Advanced Search": "Enhanced search experience is implemented",
+      "Payment Gateway Integration": "Payment processing is integrated"
+    }
+  },
+  "findingsJustification": "Findings are mapped directly to detected evidence points, translating technical detection into business-meaningful insights. Each finding is phrased to be actionable and understandable by non-technical stakeholders."
+} 

@@ -1,0 +1,25 @@
+{
+  "name": "salesforce-analyzer",
+  "version": "1.0.0",
+  "description": "Analyzer for Salesforce org technology stack usage",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "salesforce",
+    "analyzer",
+    "inventory",
+    "stack"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "jsforce": "^1.11.1",
+    "minimist": "^1.2.8"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0"
+  }
+} 

@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "analysis": {
+    "detectionThresholds": {
+      "active": 50,
+      "limited": 20,
+      "minimal": 1
+    }
+  }
+} 
