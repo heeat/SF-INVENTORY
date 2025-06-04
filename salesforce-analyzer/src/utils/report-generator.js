@@ -41,11 +41,15 @@ function generateSummaryReport(results) {
 function generateDetailedReport(result) {
   const report = {
     product: result.productName,
-    score: Math.round(result.probabilityScore),
-    category: result.category,
+    implementationStatus: {
+      implemented: result.implementationStatus.implemented.length,
+      notImplemented: result.implementationStatus.notImplemented.length,
+      implementedFeatures: result.implementationStatus.implemented.map(f => f.name),
+      notImplementedFeatures: result.implementationStatus.notImplemented.map(f => f.name)
+    },
     edition: result.edition,
     timestamp: result.timestamp.toISOString(),
-    summary: `${result.productName} is ${result.category.toLowerCase()} with a ${Math.round(result.probabilityScore)}% probability score`,
+    summary: `${result.productName} has ${result.implementationStatus.implemented.length} implemented features and ${result.implementationStatus.notImplemented.length} not implemented features`,
     findings: result.significantFindings,
     evidence: {}
   };
@@ -75,9 +79,19 @@ function generateTextReport(result) {
 
 SUMMARY
 -------
-${result.productName} is ${result.category.toLowerCase()} (${Math.round(result.probabilityScore)}% probability)
+${result.productName} Implementation Status:
+- Implemented Features: ${result.implementationStatus.implemented.length}
+- Not Implemented Features: ${result.implementationStatus.notImplemented.length}
 Edition: ${result.edition}
 Analyzed: ${result.timestamp.toLocaleString()}
+
+IMPLEMENTED FEATURES
+------------------
+${result.implementationStatus.implemented.map(f => `- ${f.name}`).join('\n')}
+
+NOT IMPLEMENTED FEATURES
+----------------------
+${result.implementationStatus.notImplemented.map(f => `- ${f.name}`).join('\n')}
 
 KEY FINDINGS
 -----------
@@ -121,39 +135,29 @@ function generateCsvReport(results) {
 }
 
 /**
- * Helper to summarize item details for reports
+ * Summarize the details of an evidence item
  * 
- * @param {Object} details - Raw item details
- * @returns {Object} - Summarized details
+ * @param {Object} details - Evidence details
+ * @returns {string} - Summarized details
  */
 function summarizeItemDetails(details) {
-  if (!details) return {};
+  if (!details) return '';
   
-  // Extract the most relevant information
-  const summary = {};
-  
-  if (details.recordCount !== undefined) {
-    summary.recordCount = details.recordCount;
-  }
-  
-  if (details.lastModified) {
-    summary.lastModified = details.lastModified;
-  }
-  
-  if (details.usage) {
-    summary.usage = details.usage;
-  }
+  const summary = [];
   
   if (details.count !== undefined) {
-    summary.count = details.count;
+    summary.push(`Count: ${details.count}`);
   }
   
   if (details.matches) {
-    summary.matches = details.matches;
+    summary.push(`Matches: ${details.matches.length}`);
   }
   
-  // Remove potentially large or sensitive data
-  return summary;
+  if (details.lastModified) {
+    summary.push(`Last Modified: ${new Date(details.lastModified).toLocaleDateString()}`);
+  }
+  
+  return summary.join(', ');
 }
 
 module.exports = {

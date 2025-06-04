@@ -6,57 +6,51 @@
     {
       "category": "Core Objects",
       "description": "Primary objects that form the foundation of Sales Cloud",
-      "justification": "These objects are the fundamental building blocks of Sales Cloud. Their presence and usage directly indicate whether the organization is using Sales Cloud for its intended purpose. Weights are assigned based on the object's centrality to the sales process.",
+      "justification": "These objects are the fundamental building blocks of Sales Cloud. Their presence and usage directly indicate whether the organization is using Sales Cloud for its intended purpose.",
       "items": [
         {
           "type": "object",
           "name": "Opportunity",
-          "weight": 0.9,
-          "description": "Key object for tracking sales deals - high weight as it's central to Sales Cloud",
-          "justification": "Opportunity tracking is the core functionality of Sales Cloud. Almost no organization can effectively use Sales Cloud without utilizing Opportunities. High weight (0.9) reflects this central importance.",
+          "description": "Key object for tracking sales deals",
+          "justification": "Opportunity tracking is the core functionality of Sales Cloud. Almost no organization can effectively use Sales Cloud without utilizing Opportunities.",
           "requiredFields": ["StageName", "Amount", "CloseDate"],
           "activityThreshold": 10
         },
         {
           "type": "object",
           "name": "Lead",
-          "weight": 0.8,
-          "description": "Prospecting object - high weight as it represents top of sales funnel",
-          "justification": "Lead management represents the top of the sales funnel and is critical for most organizations using Sales Cloud. High weight (0.8) reflects its importance, slightly below Opportunities.",
+          "description": "Prospecting object",
+          "justification": "Lead management represents the top of the sales funnel and is critical for most organizations using Sales Cloud.",
           "activityThreshold": 20
         },
         {
           "type": "object",
           "name": "Campaign",
-          "weight": 0.5,
-          "description": "Marketing campaigns object - medium weight as it's often used with Sales Cloud but not essential",
-          "justification": "Campaign tracking bridges sales and marketing but is not essential for all Sales Cloud implementations. Medium weight (0.5) reflects its optional nature while still being a significant indicator when used.",
+          "description": "Marketing campaigns object",
+          "justification": "Campaign tracking bridges sales and marketing but is not essential for all Sales Cloud implementations.",
           "activityThreshold": 5
         },
         {
           "type": "object",
           "name": "Quote",
-          "weight": 0.6,
-          "description": "Quote generation - medium-high weight as it indicates advanced sales process",
-          "justification": "Quote management indicates a more sophisticated sales process that includes formal pricing and proposals. Medium-high weight (0.6) reflects that it's an important indicator of more complete Sales Cloud adoption.",
+          "description": "Quote generation",
+          "justification": "Quote management indicates a more sophisticated sales process that includes formal pricing and proposals.",
           "activityThreshold": 5,
           "edition": "Professional+"
         },
         {
           "type": "object",
           "name": "Product2",
-          "weight": 0.6,
-          "description": "Product catalog - indicates more advanced use of Sales Cloud",
-          "justification": "Product catalog usage shows the organization has formalized their offerings within Salesforce. Weight (0.6) reflects that this is an important indicator of structured sales processes.",
+          "description": "Product catalog",
+          "justification": "Product catalog usage shows the organization has formalized their offerings within Salesforce.",
           "activityThreshold": 5,
           "edition": "Professional+"
         },
         {
           "type": "object",
           "name": "PriceBook2",
-          "weight": 0.5,
-          "description": "Price books for products - indicates more advanced use of Sales Cloud",
-          "justification": "Price book configuration indicates sophisticated pricing strategies managed in Sales Cloud. Medium weight (0.5) reflects that it's significant but often implemented after core functionality.",
+          "description": "Price books for products",
+          "justification": "Price book configuration indicates sophisticated pricing strategies managed in Sales Cloud.",
           "activityThreshold": 1,
           "edition": "Professional+"
         }
@@ -65,14 +59,13 @@
     {
       "category": "Sales Process Configuration",
       "description": "Evidence of sales process customization",
-      "justification": "Configured sales processes indicate that an organization has tailored Sales Cloud to their specific business needs, which strongly correlates with successful adoption and long-term usage.",
+      "justification": "Configured sales processes indicate that an organization has tailored Sales Cloud to their specific business needs.",
       "items": [
         {
           "type": "feature",
           "name": "Custom Sales Process",
-          "weight": 0.7,
           "description": "Custom sales stages indicate organization has tailored Sales Cloud to their process",
-          "justification": "Organizations that configure custom sales processes show commitment to aligning Salesforce with their business. High weight (0.7) because this customization is a strong indicator of serious platform adoption.",
+          "justification": "Organizations that configure custom sales processes show commitment to aligning Salesforce with their business.",
           "detectionMethods": [
             {"type": "metadata", "path": "SalesProcess"},
             {"type": "field", "object": "Opportunity", "name": "StageName", "checkValues": true}
@@ -81,9 +74,8 @@
         {
           "type": "feature",
           "name": "Lead Assignment Rules",
-          "weight": 0.6,
           "description": "Lead routing indicates active lead management process",
-          "justification": "Lead assignment rules show process automation and distributed sales responsibility. Medium-high weight (0.6) as this indicates structured lead handling processes.",
+          "justification": "Lead assignment rules show process automation and distributed sales responsibility.",
           "detectionMethods": [
             {"type": "metadata", "path": "AssignmentRule", "entity": "Lead"}
           ]
@@ -91,9 +83,8 @@
         {
           "type": "feature",
           "name": "Web-to-Lead",
-          "weight": 0.5,
           "description": "Web lead capture shows digital lead generation strategy",
-          "justification": "Web-to-Lead indicates digital integration with marketing efforts. Medium weight (0.5) as it shows expanded usage beyond core CRM but isn't essential for all businesses.",
+          "justification": "Web-to-Lead indicates digital integration with marketing efforts.",
           "detectionMethods": [
             {"type": "metadata", "path": "WebToLeadSettings", "enabled": true}
           ]
@@ -101,9 +92,8 @@
         {
           "type": "feature",
           "name": "Opportunity Record Types",
-          "weight": 0.6,
           "description": "Multiple opportunity types indicate advanced sales segmentation",
-          "justification": "Multiple opportunity record types indicate sophisticated sales categorization. Medium-high weight (0.6) as this reflects a mature Sales Cloud implementation with differentiated processes.",
+          "justification": "Multiple opportunity record types indicate sophisticated sales categorization.",
           "detectionMethods": [
             {"type": "metadata", "path": "RecordType", "entity": "Opportunity", "minCount": 2}
           ],

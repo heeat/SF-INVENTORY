@@ -1,0 +1,72 @@
+
+=== Experience Cloud USAGE REPORT ===
+
+Overall Usage Score: 6%
+Features Detected: 4/22 (13%)
+Features Actively Used: 0/22 (0%)
+
+CATEGORY BREAKDOWN
+------------------
+Core Objects: 0% utilized (0/5 features)
+Features: 0% utilized (0/9 features)
+Developer Features: 0% utilized (0/1 features)
+Mobile and App Features: 0% utilized (0/1 features)
+Content Management: 0% utilized (0/1 features)
+Security and Authentication: 0% utilized (0/2 features)
+Engagement Features: 0% utilized (0/1 features)
+Branding and Domain: 0% utilized (0/2 features)
+
+ACTIVELY USED FEATURES
+-----------------------
+No features are being actively used.
+
+AVAILABLE BUT UNUSED FEATURES
+-----------------------------
+⚠️ Core Objects - Network
+   Records: 1, Recent activity: 0 records in last 30 days, Custom fields: 0
+⚠️ Core Objects - NetworkMember
+   Records: 46, Recent activity: 0 records in last 30 days, Custom fields: 0
+⚠️ Core Objects - ContentDocument
+   Records: 4, Recent activity: 4 records in last 30 days, Custom fields: 0
+⚠️ Core Objects - Topic
+   Records: 1, Recent activity: 0 records in last 30 days, Custom fields: 0
+
+UNAVAILABLE FEATURES
+-------------------
+❌ Core Objects - ManagedContent
+   Reason: Not available or not detected
+❌ Features - Experience Builder
+   Reason: No detection method specified
+❌ Features - Branding Configuration
+   Reason: No detection method specified
+❌ Features - Mobile Publisher
+   Reason: No detection method specified
+❌ Features - CMS for Experience Cloud
+   Reason: No detection method specified
+❌ Features - Multi-language Support
+   Reason: No detection method specified
+❌ Features - Self-Registration
+   Reason: No detection method specified
+❌ Features - Case Deflection
+   Reason: No detection method specified
+❌ Features - Single Sign-On
+   Reason: No detection method specified
+❌ Features - Multi-factor Authentication
+   Reason: No detection method specified
+❌ Developer Features - Integration with External Systems
+   Reason: No detection method specified
+❌ Mobile and App Features - Mobile Publisher Configuration
+   Reason: No detection method specified
+❌ Content Management - Dynamic Content Delivery
+   Reason: No detection method specified
+❌ Security and Authentication - Single Sign-On Configuration
+   Reason: No detection method specified
+❌ Security and Authentication - Custom Sharing Rules
+   Reason: No detection method specified
+❌ Engagement Features - Gamification
+   Reason: No detection method specified
+❌ Branding and Domain - Custom Domain Configuration
+   Reason: No detection method specified
+❌ Branding and Domain - Custom Branding Theme
+   Reason: No detection method specified
+

@@ -4,113 +4,115 @@
  */
 
 /**
- * Generate a feature usage report
- * @param {Object} results Analysis results from the analyzer
- * @returns {String} Formatted report
+ * Generate a usage report from analysis results
+ * @param {Object} results Analysis results
+ * @returns {string} Formatted report
  */
 function generateUsageReport(results) {
-  const { product, indicatorResults, summary } = results;
-  
-  let report = `\n=== ${product} USAGE REPORT ===\n\n`;
-  
-  // Add summary statistics
-  report += `Overall Usage Score: ${summary.overallScore}%\n`;
-  report += `Features Detected: ${summary.detectedItems}/${summary.totalItems} (${summary.detectionScore}%)\n`;
-  report += `Features Actively Used: ${summary.activeItems}/${summary.totalItems} (${summary.usageScore}%)\n\n`;
-  
-  // Calculate category-specific usage scores
-  const categoryScores = calculateCategoryScores(indicatorResults);
-  
-  // Add category breakdown section
-  report += "CATEGORY BREAKDOWN\n";
-  report += "------------------\n";
-  Object.values(categoryScores).forEach(category => {
-    report += `${category.name}: ${category.usageRate}% utilized (${category.activeItems}/${category.totalItems} features)\n`;
-  });
-  report += "\n";
-  
-  // Create sections for used, available but unused, and unavailable features
-  const used = [];
-  const availableButUnused = [];
-  const unavailable = [];
-  
-  // Process each category
+  const { summary, indicatorResults } = results;
+  let report = `\n=== ${results.product} USAGE REPORT ===\n\n`;
+
+  // Summary section
+  report += `Features Detected: ${summary.detectedItems}/${summary.totalItems}\n`;
+  report += `Features Actively Used: ${summary.activeItems}/${summary.totalItems}\n\n`;
+
+  // Category breakdown
+  report += 'CATEGORY BREAKDOWN\n';
+  report += '------------------\n';
   for (const category of indicatorResults) {
-    const categoryName = category.category;
+    const totalItems = category.items.length;
+    const detectedItems = category.items.filter(item => item.detected).length;
+    const activeItems = category.items.filter(item => item.active).length;
     
-    // Process items in this category
-    for (const item of category.items) {
-      const itemName = item.name;
-      const fullName = `${categoryName} - ${itemName}`;
-      
-      if (item.active) {
-        // Feature is detected and actively used
-        const details = formatDetails(item.details);
-        used.push({ name: fullName, details });
-      } else if (item.detected) {
-        // Feature is detected but not actively used
-        const details = formatDetails(item.details);
-        availableButUnused.push({ name: fullName, details });
-      } else {
-        // Feature is not detected
-        const reason = item.details && item.details.error 
-          ? item.details.error
-          : item.details && item.details.message
-            ? item.details.message
-            : "Not available or not detected";
-        unavailable.push({ name: fullName, reason });
+    report += `${category.category}: ${activeItems}/${totalItems} features active\n`;
+  }
+  report += '\n';
+
+  // Active features
+  report += 'ACTIVELY USED FEATURES\n';
+  report += '-----------------------\n';
+  let hasActiveFeatures = false;
+  for (const category of indicatorResults) {
+    const activeFeatures = category.items.filter(item => item.detected && item.active);
+    if (activeFeatures.length > 0) {
+      hasActiveFeatures = true;
+      for (const feature of activeFeatures) {
+        report += `✅ ${category.category} - ${feature.name}\n`;
+        if (feature.details) {
+          if (feature.details.message) {
+            report += `   ${feature.details.message}\n`;
+          }
+          if (feature.details.recordCount !== undefined) {
+            report += `   Records: ${feature.details.recordCount}`;
+            if (feature.details.usage && feature.details.usage.count !== undefined) {
+              report += `, Recent activity: ${feature.details.usage.count} records in last 30 days`;
+            }
+            if (feature.details.customFields !== undefined) {
+              report += `, Custom fields: ${feature.details.customFields}`;
+            }
+            report += '\n';
+          }
+        }
       }
     }
   }
-  
-  // Add used features section
-  report += "ACTIVELY USED FEATURES\n";
-  report += "-----------------------\n";
-  if (used.length > 0) {
-    used.forEach(item => {
-      report += `✅ ${item.name}\n`;
-      if (item.details) {
-        report += `   ${item.details}\n`;
-      }
-    });
-  } else {
-    report += "No features are being actively used.\n";
+  if (!hasActiveFeatures) {
+    report += 'No features are being actively used.\n';
   }
-  report += "\n";
-  
-  // Add available but unused features section
-  report += "AVAILABLE BUT UNUSED FEATURES\n";
-  report += "-----------------------------\n";
-  if (availableButUnused.length > 0) {
-    availableButUnused.forEach(item => {
-      report += `⚠️ ${item.name}\n`;
-      if (item.details) {
-        report += `   ${item.details}\n`;
+  report += '\n';
+
+  // Available but unused features
+  report += 'AVAILABLE BUT UNUSED FEATURES\n';
+  report += '-----------------------------\n';
+  let hasUnusedFeatures = false;
+  for (const category of indicatorResults) {
+    const unusedFeatures = category.items.filter(item => item.detected && !item.active);
+    if (unusedFeatures.length > 0) {
+      hasUnusedFeatures = true;
+      for (const feature of unusedFeatures) {
+        report += `⚠️ ${category.category} - ${feature.name}\n`;
+        if (feature.details) {
+          if (feature.details.message) {
+            report += `   ${feature.details.message}\n`;
+          }
+          if (feature.details.recordCount !== undefined) {
+            report += `   Records: ${feature.details.recordCount}`;
+            if (feature.details.usage && feature.details.usage.count !== undefined) {
+              report += `, Recent activity: ${feature.details.usage.count} records in last 30 days`;
+            }
+            if (feature.details.customFields !== undefined) {
+              report += `, Custom fields: ${feature.details.customFields}`;
+            }
+            report += '\n';
+          }
+        }
       }
-    });
-  } else {
-    report += "No features are available but unused.\n";
+    }
   }
-  report += "\n";
-  
-  // Add unavailable features section
-  report += "UNAVAILABLE FEATURES\n";
-  report += "-------------------\n";
-  if (unavailable.length > 0) {
-    unavailable.forEach(item => {
-      report += `❌ ${item.name}\n`;
-      if (item.reason) {
-        report += `   Reason: ${item.reason}\n`;
+  if (!hasUnusedFeatures) {
+    report += 'No available but unused features.\n';
+  }
+  report += '\n';
+
+  // Unavailable features
+  report += 'UNAVAILABLE FEATURES\n';
+  report += '-------------------\n';
+  let hasUnavailableFeatures = false;
+  for (const category of indicatorResults) {
+    const unavailableFeatures = category.items.filter(item => !item.detected);
+    if (unavailableFeatures.length > 0) {
+      hasUnavailableFeatures = true;
+      for (const feature of unavailableFeatures) {
+        report += `❌ ${category.category} - ${feature.name}\n`;
+        report += `   Reason: ${feature.details?.error || 'Not available or not detected'}\n`;
       }
-    });
-  } else {
-    report += "All features are available.\n";
+    }
   }
-  
-  // Add explanation of cloud-specific integration detection
-  report += "\n";
-  report += addCloudSpecificIntegrationExplanation(product);
-  
+  if (!hasUnavailableFeatures) {
+    report += 'No unavailable features.\n';
+  }
+  report += '\n';
+
   return report;
 }
 

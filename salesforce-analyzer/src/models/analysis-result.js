@@ -6,22 +6,17 @@ class AnalysisResult {
    * Create a new analysis result
    * 
    * @param {string} productName - The name of the product that was analyzed
-   * @param {number} probabilityScore - Score indicating likelihood of product usage (0-100)
-   * @param {string} category - Usage category (Active, Limited, Inactive, Not Used)
+   * @param {Object} implementationStatus - Status of feature implementation
    * @param {string} edition - Detected product edition
    * @param {Object} evidenceSummary - Summary of evidence that led to this result
    * @param {Array} significantFindings - Key findings from the analysis
-   * @param {Array} recommendations - Not used, kept for backwards compatibility
    */
-  constructor(productName, probabilityScore, category, edition, evidenceSummary, significantFindings = [], recommendations = []) {
+  constructor(productName, implementationStatus, edition, evidenceSummary, significantFindings = []) {
     this.productName = productName;
-    this.probabilityScore = probabilityScore;
-    this.category = category;
+    this.implementationStatus = implementationStatus;
     this.edition = edition;
     this.evidenceSummary = evidenceSummary;
     this.significantFindings = significantFindings;
-    // Recommendations parameter kept for backwards compatibility but not used
-    this.recommendations = [];
     this.timestamp = new Date();
   }
   
@@ -31,7 +26,9 @@ class AnalysisResult {
    * @returns {string} - Human-readable description
    */
   getDescription() {
-    return `${this.productName} is ${this.category.toLowerCase()} (${Math.round(this.probabilityScore)}% probability) with likely ${this.edition} edition.`;
+    const implemented = this.implementationStatus.implemented.length;
+    const notImplemented = this.implementationStatus.notImplemented.length;
+    return `${this.productName} has ${implemented} implemented features and ${notImplemented} not implemented features (${this.edition} edition).`;
   }
   
   /**
@@ -42,8 +39,7 @@ class AnalysisResult {
   toJSON() {
     return {
       product: this.productName,
-      score: this.probabilityScore,
-      category: this.category,
+      implementationStatus: this.implementationStatus,
       edition: this.edition,
       summary: this.evidenceSummary,
       findings: this.significantFindings,

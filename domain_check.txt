@@ -1,0 +1,52 @@
+
+=== Experience Cloud USAGE REPORT ===
+
+Overall Usage Score: 2%
+Features Detected: undefined/undefined (NaN%)
+Features Actively Used: undefined/undefined (NaN%)
+
+CATEGORY BREAKDOWN
+------------------
+Core Objects: NaN% utilized (undefined/undefined features)
+Features: NaN% utilized (undefined/undefined features)
+Developer Features: NaN% utilized (undefined/undefined features)
+Mobile and App Features: NaN% utilized (undefined/undefined features)
+Content Management: NaN% utilized (undefined/undefined features)
+Security and Authentication: NaN% utilized (undefined/undefined features)
+Engagement Features: NaN% utilized (undefined/undefined features)
+Branding and Domain: NaN% utilized (undefined/undefined features)
+
+ACTIVELY USED FEATURES
+-----------------------
+✅ Branding and Domain - Custom Domain Configuration
+
+   Domains:
+
+AVAILABLE BUT UNUSED FEATURES
+-----------------------------
+⚠️ Core Objects - Network
+⚠️ Core Objects - NetworkMember
+⚠️ Core Objects - ContentDocument
+⚠️ Core Objects - Topic
+
+UNAVAILABLE FEATURES
+-------------------
+❌ Core Objects - ManagedContent
+❌ Features - Experience Builder
+❌ Features - Branding Configuration
+❌ Features - Mobile Publisher
+❌ Features - CMS for Experience Cloud
+❌ Features - Multi-language Support
+❌ Features - Self-Registration
+❌ Features - Case Deflection
+❌ Features - Single Sign-On
+❌ Features - Multi-factor Authentication
+❌ Developer Features - Integration with External Systems
+❌ Mobile and App Features - Mobile Publisher Configuration
+❌ Content Management - Dynamic Content Delivery
+❌ Security and Authentication - Single Sign-On Configuration
+❌ Security and Authentication - Custom Sharing Rules
+❌ Engagement Features - Gamification
+❌ Branding and Domain - Custom Branding Theme
+
+

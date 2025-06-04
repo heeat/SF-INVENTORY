@@ -8,15 +8,13 @@ class Evidence {
    * @param {string} type - Type of evidence (object, feature, activity, etc.)
    * @param {string} name - Name of the evidence
    * @param {boolean} detected - Whether the evidence was detected
-   * @param {number} weight - The importance weight of this evidence
    * @param {Object} details - Additional details about the evidence
    * @param {Date} timestamp - When the evidence was collected or last observed
    */
-  constructor(type, name, detected, weight, details = {}, timestamp = new Date()) {
+  constructor(type, name, detected, details = {}, timestamp = new Date()) {
     this.type = type;
     this.name = name;
     this.detected = detected;
-    this.weight = weight;
     this.details = details;
     this.timestamp = timestamp;
   }

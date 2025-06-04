@@ -12,11 +12,10 @@ const { loadConfiguration } = require('./config-loader');
  * Evidence class for storing analysis results
  */
 class Evidence {
-  constructor(type, name, detected, weight = 1.0, details = {}) {
+  constructor(type, name, detected, details = {}) {
     this.type = type;
     this.name = name;
     this.detected = detected;
-    this.weight = weight;
     this.details = details;
   }
 }
@@ -291,7 +290,7 @@ class Analyzer {
         objectInfo = await this.connection.describe(objectName);
       } catch (e) {
         // Object doesn't exist or no access
-        return new Evidence('objectPresence', objectName, false, options.weight || 1.0);
+        return new Evidence('objectPresence', objectName, false);
       }
       
       // Check required fields if specified
@@ -317,8 +316,7 @@ class Analyzer {
       return new Evidence(
         'objectPresence', 
         objectName, 
-        true, 
-        options.weight || 1.0,
+        true,
         {
           requiredFieldsPresent,
           recordCount,
@@ -332,8 +330,7 @@ class Analyzer {
       return new Evidence(
         'objectPresence', 
         objectName, 
-        false, 
-        options.weight || 1.0,
+        false,
         { error: error.message }
       );
     }
@@ -1179,20 +1176,13 @@ class Analyzer {
       activeItems += category.items.filter(item => item.active).length;
     }
     
-    // Calculate scores
-    const detectionScore = totalCategories > 0 ? (detectedCategories / totalCategories) * 100 : 0;
-    const usageScore = totalItems > 0 ? (activeItems / totalItems) * 100 : 0;
-    
     return {
       totalCategories,
       detectedCategories,
       activeCategories,
       totalItems,
       detectedItems,
-      activeItems,
-      detectionScore: Math.round(detectionScore),
-      usageScore: Math.round(usageScore),
-      overallScore: Math.round((detectionScore + usageScore) / 2)
+      activeItems
     };
   }
   
@@ -1202,29 +1192,43 @@ class Analyzer {
    */
   async outputResults(results) {
     const reportGenerator = require('./report-generator');
+    const excelGenerator = require('./utils/excel-generator');
+    const fs = require('fs');
+    const path = require('path');
     
-    // Generate the usage report
-    const report = reportGenerator.generateUsageReport(results);
-    
-    if (this.options.outputFile) {
-      // Write the report to a file
-      const fs = require('fs');
-      try {
-        fs.writeFileSync(this.options.outputFile, report);
-        console.log(`Results written to ${this.options.outputFile}`);
-      } catch (error) {
-        console.error(`Error writing to file: ${error.message}`);
-        console.log(report);
-      }
-    } else {
-      // Print the report to the console
-      console.log(report);
+    try {
+      // Generate timestamp for filenames
+      const timestamp = new Date().toISOString().replace(/:/g, '-').split('.')[0];
       
-      // Also output the JSON if the verbose option is enabled
-      if (this.options.verbose) {
-        console.log('Detailed Analysis Results (JSON):');
-        console.log(JSON.stringify(results, null, 2));
+      // Generate the usage report
+      const report = reportGenerator.generateUsageReport(results);
+      
+      if (this.options.outputFile) {
+        // Write the text report
+        const textFile = this.options.outputFile;
+        fs.writeFileSync(textFile, report);
+        console.log(`Text report written to ${textFile}`);
+        
+        // Generate and write Excel report
+        const excelBuffer = await excelGenerator.generateExcelReport(results);
+        const excelFile = path.join(
+          path.dirname(this.options.outputFile),
+          `${path.basename(this.options.outputFile, path.extname(this.options.outputFile))}_${timestamp}.xlsx`
+        );
+        fs.writeFileSync(excelFile, excelBuffer);
+        console.log(`Excel report written to ${excelFile}`);
+      } else {
+        // Print the report to the console
+        console.log(report);
+        
+        // Also output the JSON if the verbose option is enabled
+        if (this.options.verbose) {
+          console.log('Detailed Analysis Results (JSON):');
+          console.log(JSON.stringify(results, null, 2));
+        }
       }
+    } catch (error) {
+      console.error(`Error generating reports: ${error.message}`);
     }
   }
   

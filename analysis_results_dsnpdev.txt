@@ -1,0 +1,69 @@
+
+=== Experience Cloud USAGE REPORT ===
+
+Overall Usage Score: 2%
+Features Detected: undefined/undefined (NaN%)
+Features Actively Used: undefined/undefined (NaN%)
+
+CATEGORY BREAKDOWN
+------------------
+Core Objects: NaN% utilized (undefined/undefined features)
+Features: NaN% utilized (undefined/undefined features)
+Developer Features: NaN% utilized (undefined/undefined features)
+Mobile and App Features: NaN% utilized (undefined/undefined features)
+Content Management: NaN% utilized (undefined/undefined features)
+Security and Authentication: NaN% utilized (undefined/undefined features)
+Engagement Features: NaN% utilized (undefined/undefined features)
+Branding and Domain: NaN% utilized (undefined/undefined features)
+
+ACTIVELY USED FEATURES
+-----------------------
+✅ Branding and Domain - Custom Domain Configuration
+   Found 0 custom domain(s): 
+   Configured domains: 
+
+AVAILABLE BUT UNUSED FEATURES
+-----------------------------
+⚠️ Core Objects - Network
+⚠️ Core Objects - NetworkMember
+⚠️ Core Objects - ContentDocument
+⚠️ Core Objects - Topic
+
+UNAVAILABLE FEATURES
+-------------------
+❌ Core Objects - ManagedContent
+   Reason: Not available or not detected
+❌ Features - Experience Builder
+   Reason: Not available or not detected
+❌ Features - Branding Configuration
+   Reason: Not available or not detected
+❌ Features - Mobile Publisher
+   Reason: Not available or not detected
+❌ Features - CMS for Experience Cloud
+   Reason: Not available or not detected
+❌ Features - Multi-language Support
+   Reason: Not available or not detected
+❌ Features - Self-Registration
+   Reason: Not available or not detected
+❌ Features - Case Deflection
+   Reason: Not available or not detected
+❌ Features - Single Sign-On
+   Reason: Not available or not detected
+❌ Features - Multi-factor Authentication
+   Reason: Not available or not detected
+❌ Developer Features - Integration with External Systems
+   Reason: Not available or not detected
+❌ Mobile and App Features - Mobile Publisher Configuration
+   Reason: Not available or not detected
+❌ Content Management - Dynamic Content Delivery
+   Reason: Not available or not detected
+❌ Security and Authentication - Single Sign-On Configuration
+   Reason: Not available or not detected
+❌ Security and Authentication - Custom Sharing Rules
+   Reason: Not available or not detected
+❌ Engagement Features - Gamification
+   Reason: Not available or not detected
+❌ Branding and Domain - Custom Branding Theme
+   Reason: Not available or not detected
+
+

@@ -1,0 +1,78 @@
+
+=== Experience Cloud USAGE REPORT ===
+
+Overall Usage Score: 6%
+Features Detected: 6/18 (33%)
+Features Actively Used: 1/18 (6%)
+
+CATEGORY BREAKDOWN
+------------------
+Core Objects: 0% utilized (0/4 features)
+Content Management: 0% utilized (0/4 features)
+Authentication: 0% utilized (0/5 features)
+Advanced Content: 0% utilized (0/4 features)
+Domain Configuration: 100% utilized (1/1 features)
+
+ACTIVELY USED FEATURES
+-----------------------
+✅ Domain Configuration - Custom Domain Configuration
+   Custom domains configured: s
+
+AVAILABLE BUT UNUSED FEATURES
+-----------------------------
+⚠️ Core Objects - Experience Sites
+
+⚠️ Core Objects - Experience Members
+
+⚠️ Core Objects - Experience Activity
+
+⚠️ Content Management - Content Sharing
+
+⚠️ Content Management - Topics
+
+UNAVAILABLE FEATURES
+-------------------
+❌ Core Objects - Experience Builder
+   Reason: 
+SELECT Id, MasterLabel FROM ExperienceBundle LIMIT 5
+                            ^
+ERROR at Row:1:Column:29
+sObject type 'ExperienceBundle' is not supported. If you are attempting to use a custom object, be sure to append the '__c' after the entity name. Please reference your WSDL or the describe call for the appropriate names.
+
+❌ Content Management - CMS for Experience Cloud
+   Reason: sObject type 'ManagedContentType' is not supported.
+
+❌ Content Management - Knowledge Integration
+   Reason: 
+SELECT Id FROM NetworkTabSet WHERE TabType = 'Knowledge'
+               ^
+ERROR at Row:1:Column:16
+sObject type 'NetworkTabSet' is not supported. If you are attempting to use a custom object, be sure to append the '__c' after the entity name. Please reference your WSDL or the describe call for the appropriate names.
+
+❌ Authentication - Single Sign-On (SSO)
+   Reason: Not available or not detected
+
+❌ Authentication - Passwordless Login
+   Reason: Not available or not detected
+
+❌ Authentication - Custom Login Flows
+   Reason: Not available or not detected
+
+❌ Authentication - Just-in-time User Provisioning
+   Reason: Not available or not detected
+
+❌ Authentication - Multi-factor Authentication
+   Reason: Not available or not detected
+
+❌ Advanced Content - Multi-language Support
+   Reason: Not available or not detected
+
+❌ Advanced Content - SEO Optimization
+   Reason: Not available or not detected
+
+❌ Advanced Content - Personalized Content
+   Reason: Not available or not detected
+
+❌ Advanced Content - Advanced Search
+   Reason: Not available or not detected
+

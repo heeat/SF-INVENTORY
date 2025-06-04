@@ -29,7 +29,7 @@ class EvidenceCollector {
       const objectInfo = await this.describeObject(objectName);
       
       if (!objectInfo) {
-        return new Evidence('objectPresence', objectName, false, options.weight || 1.0);
+        return new Evidence('objectPresence', objectName, false);
       }
       
       // Check required fields if specified
@@ -57,8 +57,7 @@ class EvidenceCollector {
       return new Evidence(
         'objectPresence', 
         objectName, 
-        true, 
-        options.weight || 1.0,
+        true,
         {
           requiredFieldsPresent,
           recordCount,
@@ -75,8 +74,7 @@ class EvidenceCollector {
       return new Evidence(
         'objectPresence', 
         objectName, 
-        false, 
-        options.weight || 1.0,
+        false,
         { error: error.message }
       );
     }
@@ -115,7 +113,6 @@ class EvidenceCollector {
         'objectUsage',
         `${objectName} Usage`,
         count > 0,
-        options.weight || 1.0,
         {
           count,
           threshold: options.threshold || 10,
@@ -128,7 +125,6 @@ class EvidenceCollector {
         'objectUsage',
         `${objectName} Usage`,
         false,
-        options.weight || 1.0,
         { error: error.message }
       );
     }
@@ -177,7 +173,6 @@ class EvidenceCollector {
             'featureConfiguration',
             featureName,
             true,
-            options.weight || 1.0,
             details
           );
         }
@@ -187,8 +182,7 @@ class EvidenceCollector {
       return new Evidence(
         'featureConfiguration',
         featureName,
-        false,
-        options.weight || 1.0
+        false
       );
     } catch (error) {
       console.error(`Error checking feature ${featureName}:`, error);
@@ -196,7 +190,6 @@ class EvidenceCollector {
         'featureConfiguration',
         featureName,
         false,
-        options.weight || 1.0,
         { error: error.message }
       );
     }
@@ -221,7 +214,6 @@ class EvidenceCollector {
         'apiUsage',
         name,
         simulatedUsage > 0,
-        options.weight || 1.0,
         {
           count: simulatedUsage,
           threshold: options.threshold || 100,
@@ -235,7 +227,6 @@ class EvidenceCollector {
         'apiUsage',
         name,
         false,
-        options.weight || 1.0,
         { error: error.message }
       );
     }
@@ -261,7 +252,6 @@ class EvidenceCollector {
           'userActivity',
           name,
           simulatedCount > 0,
-          options.weight || 1.0,
           {
             count: simulatedCount,
             threshold: options.threshold || 50,
@@ -276,7 +266,6 @@ class EvidenceCollector {
         'userActivity',
         name,
         false,
-        options.weight || 1.0,
         { error: 'Unsupported activity type' }
       );
     } catch (error) {
@@ -285,7 +274,6 @@ class EvidenceCollector {
         'userActivity',
         name,
         false,
-        options.weight || 1.0,
         { error: error.message }
       );
     }
@@ -316,7 +304,6 @@ class EvidenceCollector {
             'codeReferences',
             name,
             false,
-            options.weight || 1.0,
             { error: 'No search criteria specified' }
           );
         }
@@ -330,7 +317,6 @@ class EvidenceCollector {
           'codeReferences',
           name,
           matchingClasses.length > 0,
-          options.weight || 1.0,
           {
             count: matchingClasses.length,
             matches: matchingClasses.map(cls => cls.Name),
@@ -344,7 +330,6 @@ class EvidenceCollector {
           'codeReferences',
           name,
           Math.random() > 0.5, // Simulate 50% chance of finding components
-          options.weight || 1.0,
           {
             count: Math.floor(Math.random() * 5),
             matches: ['Component1', 'Component2'],
@@ -357,7 +342,6 @@ class EvidenceCollector {
         'codeReferences',
         name,
         false,
-        options.weight || 1.0,
         { error: 'Unsupported code type' }
       );
     } catch (error) {
@@ -366,7 +350,6 @@ class EvidenceCollector {
         'codeReferences',
         name,
         false,
-        options.weight || 1.0,
         { error: error.message }
       );
     }
