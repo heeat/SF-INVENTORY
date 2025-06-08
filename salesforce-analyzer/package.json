@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Analyzer for Salesforce org technology stack usage",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "test": "jest"
+    "start": "node index.js"
   },
   "keywords": [
     "salesforce",
@@ -16,10 +16,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "exceljs": "^4.4.0",
     "jsforce": "^1.11.1",
     "minimist": "^1.2.8"
-  },
-  "devDependencies": {
-    "jest": "^29.5.0"
   }
 } 

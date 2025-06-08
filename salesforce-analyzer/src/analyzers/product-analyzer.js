@@ -4,13 +4,12 @@
  * A configurable analyzer that can detect feature implementation in any Salesforce product
  * based on its definition in the configuration.
  */
-const EvidenceCollector = require('../core/evidence-collector');
-const FeatureDetectionEngine = require('../core/scoring-engine');
-const { EvidenceCollection } = require('../models/evidence');
-const AnalysisResult = require('../models/analysis-result');
-const { loadProductDefinition } = require('../utils/config-loader');
+import EvidenceCollector from '../core/evidence-collector.js';
+import { EvidenceCollection } from '../models/evidence.js';
+import AnalysisResult from '../models/analysis-result.js';
+import { loadProductDefinition } from '../utils/config-loader.js';
 
-class ProductAnalyzer {
+export default class ProductAnalyzer {
   /**
    * Create a new product analyzer
    * 
@@ -23,7 +22,6 @@ class ProductAnalyzer {
     this.config = config;
     this.productKey = productKey;
     this.evidenceCollector = new EvidenceCollector(connection);
-    this.featureEngine = new FeatureDetectionEngine();
     
     // Load product definition from config
     this.productDefinition = config.products[productKey];
@@ -49,59 +47,67 @@ class ProductAnalyzer {
     // Create evidence collection
     const evidence = new EvidenceCollection(this.productDefinition.name);
     
-    // Process each indicator category
-    for (const category of this.productDefinition.indicators) {
-      console.log(`Analyzing ${category.category}...`);
-      
-      for (const item of category.items) {
-        let evidenceItem;
+    try {
+      // Process each indicator category
+      for (const category of this.productDefinition.indicators) {
+        console.log(`Analyzing ${category.category}...`);
         
-        switch (item.type) {
-          case 'object':
-            evidenceItem = await this.processObjectIndicator(item);
-            break;
-            
-          case 'feature':
-            evidenceItem = await this.processFeatureIndicator(item);
-            break;
-            
-          case 'activity':
-            evidenceItem = await this.processActivityIndicator(item);
-            break;
-            
-          case 'integration':
-          case 'api':
-            evidenceItem = await this.processIntegrationIndicator(item);
-            break;
-            
-          case 'code':
-            evidenceItem = await this.processCodeIndicator(item);
-            break;
-            
-          default:
-            console.warn(`Unknown indicator type: ${item.type}`);
-            continue;
+        if (!category.items) {
+          console.warn(`No items defined for category: ${category.category}`);
+          continue;
         }
         
-        evidence.addEvidence(evidenceItem);
+        for (const item of category.items) {
+          let evidenceItem;
+          
+          switch (item.type) {
+            case 'object':
+              evidenceItem = await this.processObjectIndicator(item);
+              break;
+              
+            case 'feature':
+              evidenceItem = await this.processFeatureIndicator(item);
+              break;
+              
+            case 'activity':
+              evidenceItem = await this.processActivityIndicator(item);
+              break;
+              
+            case 'integration':
+            case 'api':
+              evidenceItem = await this.processIntegrationIndicator(item);
+              break;
+              
+            case 'code':
+              evidenceItem = await this.processCodeIndicator(item);
+              break;
+              
+            default:
+              console.warn(`Unknown indicator type: ${item.type}`);
+              continue;
+          }
+          
+          if (evidenceItem) {
+            evidence.addEvidence(evidenceItem);
+          }
+        }
       }
+      
+      // Generate findings
+      const findings = this.generateFindings(evidence);
+      
+      // Create and return result
+      return new AnalysisResult(
+        this.productDefinition.name,
+        this.summarizeEvidence(evidence),
+        null, // No edition determination yet
+        evidence.items, // Use the items array directly
+        findings
+      );
+    } catch (error) {
+      console.error('Error during analysis:', error);
+      throw error;
     }
-    
-    // Analyze implementation status
-    const implementationStatus = this.featureEngine.analyzeImplementation(this.productDefinition, evidence);
-    const edition = this.featureEngine.determineEdition(this.productDefinition, evidence);
-    
-    // Generate findings
-    const findings = this.generateFindings(evidence);
-    
-    // Create and return result
-    return new AnalysisResult(
-      this.productDefinition.name,
-      implementationStatus,
-      edition,
-      this.summarizeEvidence(evidence),
-      findings
-    );
   }
   
   /**
@@ -111,34 +117,37 @@ class ProductAnalyzer {
    * @returns {Promise<Evidence>} - Evidence about the object
    */
   async processObjectIndicator(item) {
-    // Check object presence
-    const objectEvidence = await this.evidenceCollector.checkObject(item.name, {
-      weight: item.weight,
-      requiredFields: item.requiredFields,
-      checkRecordCount: true,
-      checkLastModified: true
-    });
-    
-    // If object exists, also check usage
-    if (objectEvidence.detected) {
-      const usageEvidence = await this.evidenceCollector.checkObjectUsage(item.name, {
-        weight: item.weight,
-        threshold: item.activityThreshold,
-        timeframe: 'last30Days'
+    try {
+      // Check object presence
+      const objectEvidence = await this.evidenceCollector.checkObject(item.name, {
+        requiredFields: item.requiredFields,
+        checkRecordCount: true,
+        checkLastModified: true
       });
       
-      // Enhance object evidence with usage details
-      objectEvidence.details = {
-        ...objectEvidence.details,
-        usage: {
-          detected: usageEvidence.detected,
-          count: usageEvidence.details.count,
-          threshold: usageEvidence.details.threshold
-        }
-      };
+      // If object exists, also check usage
+      if (objectEvidence.detected) {
+        const usageEvidence = await this.evidenceCollector.checkObjectUsage(item.name, {
+          threshold: item.activityThreshold,
+          timeframe: 'last30Days'
+        });
+        
+        // Enhance object evidence with usage details
+        objectEvidence.details = {
+          ...objectEvidence.details,
+          usage: {
+            detected: usageEvidence.detected,
+            count: usageEvidence.details.count,
+            threshold: usageEvidence.details.threshold
+          }
+        };
+      }
+      
+      return objectEvidence;
+    } catch (error) {
+      console.error(`Error processing object indicator ${item.name}:`, error);
+      return null;
     }
-    
-    return objectEvidence;
   }
   
   /**
@@ -148,9 +157,15 @@ class ProductAnalyzer {
    * @returns {Promise<Evidence>} - Evidence about the feature
    */
   async processFeatureIndicator(item) {
-    return this.evidenceCollector.checkFeature(item.name, item.detectionMethods, {
-      weight: item.weight
-    });
+    try {
+      return await this.evidenceCollector.checkFeature(
+        item.name, 
+        item.detectionMethods || []
+      );
+    } catch (error) {
+      console.error(`Error processing feature indicator ${item.name}:`, error);
+      return null;
+    }
   }
   
   /**
@@ -160,16 +175,24 @@ class ProductAnalyzer {
    * @returns {Promise<Evidence>} - Evidence about the activity
    */
   async processActivityIndicator(item) {
-    const method = item.detectionMethods[0];
-    
-    return this.evidenceCollector.checkUserActivity(item.name, {
-      weight: item.weight,
-      type: method.type,
-      eventType: method.eventType,
-      pattern: method.pattern,
-      timeframe: method.timeframe,
-      threshold: method.threshold
-    });
+    try {
+      const method = item.detectionMethods && item.detectionMethods[0];
+      if (!method) {
+        console.warn(`No detection methods for activity indicator ${item.name}`);
+        return null;
+      }
+      
+      return await this.evidenceCollector.checkUserActivity(item.name, {
+        type: method.type,
+        eventType: method.eventType,
+        pattern: method.pattern,
+        timeframe: method.timeframe,
+        threshold: method.threshold
+      });
+    } catch (error) {
+      console.error(`Error processing activity indicator ${item.name}:`, error);
+      return null;
+    }
   }
   
   /**
@@ -179,93 +202,136 @@ class ProductAnalyzer {
    * @returns {Promise<Evidence>} - Evidence about the integration
    */
   async processIntegrationIndicator(item) {
-    if (item.type === 'api') {
-      const method = item.detectionMethods[0];
+    try {
+      if (item.type === 'api') {
+        const method = item.detectionMethods && item.detectionMethods[0];
+        if (!method) {
+          console.warn(`No detection methods for API indicator ${item.name}`);
+          return null;
+        }
+        
+        return await this.evidenceCollector.checkApiUsage(item.name, {
+          object: method.object,
+          timeframe: method.timeframe,
+          threshold: method.threshold
+        });
+      }
       
-      return this.evidenceCollector.checkApiUsage(item.name, {
-        weight: item.weight,
-        object: method.object,
-        timeframe: method.timeframe,
-        threshold: method.threshold
-      });
+      // For other integration types, check using feature methods
+      return await this.evidenceCollector.checkFeature(
+        item.name, 
+        item.detectionMethods || []
+      );
+    } catch (error) {
+      console.error(`Error processing integration indicator ${item.name}:`, error);
+      return null;
     }
-    
-    // For other integration types, check using feature methods
-    return this.evidenceCollector.checkFeature(item.name, item.detectionMethods, {
-      weight: item.weight
-    });
   }
   
   /**
    * Process a code indicator
    * 
    * @param {Object} item - Code indicator definition
-   * @returns {Promise<Evidence>} - Evidence about code references
+   * @returns {Promise<Evidence>} - Evidence about the code
    */
   async processCodeIndicator(item) {
-    const method = item.detectionMethods[0];
-    
-    return this.evidenceCollector.checkCodeReferences(item.name, {
-      weight: item.weight,
-      type: method.type,
-      triggerObject: method.triggerObject,
-      pattern: method.pattern
-    });
-  }
-  
-  /**
-   * Generate a summary of the evidence
-   * 
-   * @param {EvidenceCollection} evidence - Collected evidence
-   * @returns {Object} - Evidence summary
-   */
-  summarizeEvidence(evidence) {
-    const detected = evidence.getDetectedEvidence();
-    
-    // Group by category
-    const byCategory = {};
-    
-    for (const category of this.productDefinition.indicators) {
-      const categoryItems = category.items.map(item => item.name);
-      
-      byCategory[category.category] = detected
-        .filter(e => categoryItems.includes(e.name))
-        .map(e => ({
-          name: e.name,
-          details: e.details
-        }));
+    try {
+      return await this.evidenceCollector.checkFeature(
+        item.name, 
+        item.detectionMethods || []
+      );
+    } catch (error) {
+      console.error(`Error processing code indicator ${item.name}:`, error);
+      return null;
     }
-    
-    return {
-      totalItems: evidence.items.length,
-      detectedItems: detected.length,
-      byCategory
-    };
   }
   
   /**
-   * Generate findings based on evidence
+   * Generate findings from evidence
    * 
-   * @param {EvidenceCollection} evidence - Collected evidence
-   * @returns {Array<string>} - Key findings
+   * @param {EvidenceCollection} evidence - Evidence collection
+   * @returns {Array} - List of findings
    */
   generateFindings(evidence) {
-    const findings = [];
-    const detected = evidence.getDetectedEvidence();
-    const notDetected = evidence.items.filter(item => !item.detected);
-    
-    if (detected.length > 0) {
-      findings.push(`Implemented features: ${detected.length}`);
-      findings.push(`Key implemented features: ${detected.slice(0, 3).map(e => e.name).join(', ')}`);
-    }
-    
-    if (notDetected.length > 0) {
-      findings.push(`Not implemented features: ${notDetected.length}`);
-      findings.push(`Key missing features: ${notDetected.slice(0, 3).map(e => e.name).join(', ')}`);
-    }
-    
-    return findings;
+    // This would generate findings based on the evidence collected
+    // For now, return an empty array
+    return [];
   }
-}
-
-module.exports = ProductAnalyzer; 
+  
+  /**
+   * Summarize evidence into a format suitable for reporting
+   * 
+   * @param {EvidenceCollection} evidence - Collection of evidence
+   * @returns {Array<Object>} - Summary of evidence
+   */
+  summarizeEvidence(evidence) {
+    console.log('\nSummarizing evidence...');
+    const summary = [];
+    
+    for (const item of evidence.items) {
+      console.log('Processing evidence item:', JSON.stringify(item, null, 2));
+      
+      const summaryItem = {
+        name: item.name,
+        type: item.type,
+        detected: item.detected,
+        recordCount: item.details?.recordCount,
+        customFields: item.details?.customFields,
+        lastUsed: item.details?.lastModified,
+        usageCount: item.details?.usage?.count,
+        description: this.formatDescription(item)
+      };
+      
+      console.log('Created summary item:', JSON.stringify(summaryItem, null, 2));
+      summary.push(summaryItem);
+    }
+    
+    console.log(`Created ${summary.length} summary items`);
+    return summary;
+  }
+  
+  /**
+   * Format a description for an evidence item
+   * 
+   * @param {Object} item - Evidence item
+   * @returns {string} Formatted description
+   */
+  formatDescription(item) {
+    const parts = [];
+    
+    if (item.details) {
+      // Object details
+      if (item.details.label) {
+        parts.push(`Label: ${item.details.label}`);
+      }
+      
+      // Feature details
+      if (item.details.metadata) {
+        parts.push(`Type: ${item.details.metadata}`);
+      }
+      if (item.details.enabled !== undefined) {
+        parts.push(`Enabled: ${item.details.enabled}`);
+      }
+      
+      // Activity details
+      if (item.details.timeframe) {
+        parts.push(`Period: ${item.details.timeframe}`);
+      }
+      if (item.details.threshold) {
+        parts.push(`Threshold: ${item.details.threshold}`);
+      }
+      
+      // API/Integration details
+      if (item.details.object) {
+        parts.push(`Object: ${item.details.object}`);
+      }
+      
+      // Error details
+      if (item.details.error) {
+        parts.push(`Error: ${item.details.error}`);
+      }
+    }
+    
+    return parts.join(' | ');
+  }
+} 

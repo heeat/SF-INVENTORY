@@ -3,8 +3,12 @@
  * 
  * Provides functions for loading and validating configuration files
  */
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /**
  * Load the main configuration file
@@ -12,7 +16,7 @@ const path = require('path');
  * @param {string} configPath - Optional path to the config file
  * @returns {Object} - Loaded configuration
  */
-function loadMainConfig(configPath) {
+export function loadMainConfig(configPath) {
   const defaultPath = path.resolve(__dirname, '../../config/analyzer-config.json');
   const filePath = configPath || defaultPath;
   
@@ -30,11 +34,11 @@ function loadMainConfig(configPath) {
 /**
  * Load a specific product definition
  * 
- * @param {string} productKey - Product key (e.g., 'salesCloud')
+ * @param {string} productKey - Product key from configuration
  * @param {string} configDir - Optional directory containing product configs
  * @returns {Object} - Loaded product definition
  */
-function loadProductDefinition(productKey, configDir) {
+export function loadProductDefinition(productKey, configDir) {
   const defaultDir = path.resolve(__dirname, '../../config/products');
   const directory = configDir || defaultDir;
   const filePath = path.join(directory, `${productKey}.json`);
@@ -56,7 +60,7 @@ function loadProductDefinition(productKey, configDir) {
  * @param {string} configDir - Optional directory containing product configs
  * @returns {Object} - Map of product definitions keyed by product key
  */
-function loadAllProductDefinitions(configDir) {
+export function loadAllProductDefinitions(configDir) {
   const defaultDir = path.resolve(__dirname, '../../config/products');
   const directory = configDir || defaultDir;
   
@@ -81,26 +85,20 @@ function loadAllProductDefinitions(configDir) {
  * @param {Object} config - Configuration to validate
  * @returns {boolean} - Whether the configuration is valid
  */
-function validateConfig(config) {
+export function validateConfig(config) {
   // Check required top-level properties
-  if (!config.scoringEngine || !config.scoringEngine.algorithms) {
-    throw new Error('Invalid configuration: missing scoringEngine.algorithms');
+  if (!config.products) {
+    throw new Error('Invalid configuration: missing products section');
   }
   
-  // Check for default algorithm
-  if (!config.scoringEngine.algorithms.default) {
-    throw new Error('Invalid configuration: missing default algorithm');
-  }
-  
-  // Check for required algorithm properties
-  const algorithm = config.scoringEngine.algorithms.default;
-  
-  if (!algorithm.evidenceWeights) {
-    throw new Error('Invalid configuration: missing evidenceWeights');
-  }
-  
-  if (!algorithm.thresholds) {
-    throw new Error('Invalid configuration: missing thresholds');
+  // Check for required product properties
+  for (const [key, product] of Object.entries(config.products)) {
+    if (!product.name) {
+      throw new Error(`Invalid product configuration for ${key}: missing name`);
+    }
+    if (!product.configFile) {
+      throw new Error(`Invalid product configuration for ${key}: missing configFile`);
+    }
   }
   
   return true;
@@ -112,7 +110,7 @@ function validateConfig(config) {
  * @param {Object} definition - Product definition to validate
  * @returns {boolean} - Whether the definition is valid
  */
-function validateProductDefinition(definition) {
+export function validateProductDefinition(definition) {
   // Check required properties
   if (!definition.name) {
     throw new Error('Invalid product definition: missing name');
@@ -130,19 +128,11 @@ function validateProductDefinition(definition) {
     
     // Check each indicator item
     for (const item of category.items) {
-      if (!item.type || !item.name || item.weight === undefined) {
-        throw new Error(`Invalid indicator item in ${category.category}: missing type, name, or weight`);
+      if (!item.type || !item.name) {
+        throw new Error(`Invalid indicator item in ${category.category}: missing type or name`);
       }
     }
   }
   
   return true;
-}
-
-module.exports = {
-  loadMainConfig,
-  loadProductDefinition,
-  loadAllProductDefinitions,
-  validateConfig,
-  validateProductDefinition
-}; 
+} 

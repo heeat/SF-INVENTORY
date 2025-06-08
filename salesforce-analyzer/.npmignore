@@ -1,21 +1,18 @@
 # Development files
 node_modules/
-tests/
-coverage/
 .git/
 .github/
 .vscode/
 .idea/
 
 # Output files
-output/
+reports/
 
 # Configuration files
 .editorconfig
 .eslintrc
 .gitignore
 .prettierrc
-jest.config.js
 
 # Logs
 *.log

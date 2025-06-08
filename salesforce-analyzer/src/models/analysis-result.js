@@ -1,7 +1,7 @@
 /**
  * Model representing the result of an analysis for a specific product
  */
-class AnalysisResult {
+export default class AnalysisResult {
   /**
    * Create a new analysis result
    * 
@@ -46,6 +46,4 @@ class AnalysisResult {
       analyzedAt: this.timestamp
     };
   }
-}
-
-module.exports = AnalysisResult; 
+} 

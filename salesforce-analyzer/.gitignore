@@ -1,11 +1,8 @@
 # Dependency directories
 node_modules/
 
-# Output of analyzer
-output/
-
-# Coverage directory
-coverage/
+# Output directories
+reports/
 
 # Environment variables
 .env

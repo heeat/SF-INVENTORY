@@ -3,7 +3,7 @@
  * 
  * Provides functions for interacting with SFDX CLI to get org access details
  */
-const { execSync } = require('child_process');
+import { execSync } from 'child_process';
 
 /**
  * Get access details for an authorized SFDX org
@@ -11,7 +11,7 @@ const { execSync } = require('child_process');
  * @param {string} orgName - Username or alias of the org
  * @returns {Promise<Object>} - Connection details with accessToken and instanceUrl
  */
-async function getSfdxOrgCredentials(orgName) {
+export async function getSfdxOrgCredentials(orgName) {
   try {
     // Try the new SFDX command format first
     try {
@@ -62,7 +62,7 @@ async function getSfdxOrgCredentials(orgName) {
  * 
  * @returns {Promise<Array>} - List of all available orgs
  */
-async function listSfdxOrgs() {
+export async function listSfdxOrgs() {
   try {
     // Execute the CLI command directly and parse the output
     const output = execSync('sfdx auth list').toString();
@@ -125,13 +125,7 @@ async function listSfdxOrgs() {
  * 
  * @returns {Promise<Array>} - List of all connected orgs
  */
-async function getConnectedOrgs() {
+export async function getConnectedOrgs() {
   // All orgs from auth list are considered connected
   return listSfdxOrgs();
-}
-
-module.exports = {
-  getSfdxOrgCredentials,
-  listSfdxOrgs,
-  getConnectedOrgs
-}; 
+} 

@@ -29,8 +29,8 @@
           "justification": "NetworkMember records indicate active users in the Experience.",
           "detectionMethods": [
             {"type": "metadata", "path": "NetworkMember", "minCount": 1}
-          ]
-        },
+      ]
+    },
         {
           "type": "object",
           "name": "ContentDocument",
@@ -135,8 +135,8 @@
           "justification": "Self-registration shows focus on user onboarding.",
           "detectionMethods": [
             {"type": "metadata", "path": "NetworkSelfRegistration", "minCount": 1}
-          ]
-        },
+      ]
+    },
         {
           "type": "feature",
           "name": "Case Deflection",
@@ -253,9 +253,9 @@
             {"type": "metadata", "path": "SharingRules", "minCount": 1}
           ]
         }
-      ]
-    },
-    {
+          ]
+        },
+        {
       "category": "Engagement Features",
       "description": "User engagement and gamification features",
       "justification": "Engagement features indicate focus on user participation and retention.",

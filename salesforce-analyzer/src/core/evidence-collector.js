@@ -4,9 +4,9 @@
  * This class provides methods to interact with Salesforce APIs
  * and collect evidence about product usage.
  */
-const Evidence = require('../models/evidence');
+import { Evidence } from '../models/evidence.js';
 
-class EvidenceCollector {
+export default class EvidenceCollector {
   /**
    * Create a new evidence collector
    * 
@@ -57,7 +57,7 @@ class EvidenceCollector {
       return new Evidence(
         'objectPresence', 
         objectName, 
-        true,
+        true, 
         {
           requiredFieldsPresent,
           recordCount,
@@ -74,7 +74,7 @@ class EvidenceCollector {
       return new Evidence(
         'objectPresence', 
         objectName, 
-        false,
+        false, 
         { error: error.message }
       );
     }
@@ -503,6 +503,4 @@ class EvidenceCollector {
     // Default to all time if we can't parse
     return '';
   }
-}
-
-module.exports = EvidenceCollector; 
+} 

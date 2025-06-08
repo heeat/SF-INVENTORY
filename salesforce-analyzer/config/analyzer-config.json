@@ -6,5 +6,19 @@
     "codeReferences",
     "userActivity",
     "apiUsage"
-  ]
+  ],
+  "products": {
+    "salesCloud": {
+      "name": "Sales Cloud",
+      "configFile": "sales-cloud.json"
+    },
+    "serviceCloud": {
+      "name": "Service Cloud",
+      "configFile": "service-cloud.json"
+    },
+    "experienceCloud": {
+      "name": "Experience Cloud",
+      "configFile": "experience-cloud.json"
+    }
+  }
 } 

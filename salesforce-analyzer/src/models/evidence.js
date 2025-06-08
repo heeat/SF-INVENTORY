@@ -1,7 +1,7 @@
 /**
  * Model representing a piece of evidence collected during analysis
  */
-class Evidence {
+export class Evidence {
   /**
    * Create a new evidence item
    * 
@@ -23,7 +23,7 @@ class Evidence {
 /**
  * Collection of evidence for a specific product
  */
-class EvidenceCollection {
+export class EvidenceCollection {
   /**
    * Create a new evidence collection
    * 
@@ -69,9 +69,4 @@ class EvidenceCollection {
   getDetectedEvidence() {
     return this.items.filter(item => item.detected);
   }
-}
-
-module.exports = {
-  Evidence,
-  EvidenceCollection
-}; 
+} 
