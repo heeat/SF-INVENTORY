@@ -29,17 +29,6 @@
           "justification": "NetworkMember records indicate active users in the Experience.",
           "detectionMethods": [
             {"type": "metadata", "path": "NetworkMember", "minCount": 1}
-      ]
-    },
-        {
-          "type": "object",
-          "name": "ContentDocument",
-          "productFamily": "Content",
-          "product": "Files",
-          "description": "Shared files and content",
-          "justification": "Content documents indicate file sharing within Experiences.",
-          "detectionMethods": [
-            {"type": "metadata", "path": "ContentDocument", "minCount": 1}
           ]
         },
         {
@@ -135,17 +124,6 @@
           "justification": "Self-registration shows focus on user onboarding.",
           "detectionMethods": [
             {"type": "metadata", "path": "NetworkSelfRegistration", "minCount": 1}
-      ]
-    },
-        {
-          "type": "feature",
-          "name": "Case Deflection",
-          "productFamily": "Service Cloud",
-          "product": "Case Management",
-          "description": "Reduce case creation",
-          "justification": "Case deflection shows self-service strategy.",
-          "detectionMethods": [
-            {"type": "metadata", "path": "CaseSettings", "minCount": 1}
           ]
         },
         {
@@ -253,9 +231,9 @@
             {"type": "metadata", "path": "SharingRules", "minCount": 1}
           ]
         }
-          ]
-        },
-        {
+      ]
+    },
+    {
       "category": "Engagement Features",
       "description": "User engagement and gamification features",
       "justification": "Engagement features indicate focus on user participation and retention.",
@@ -320,11 +298,6 @@
         "productFamily": "Experience Cloud",
         "product": "Experience Cloud Platform"
       },
-      "ContentDocument": {
-        "message": "File sharing is enabled",
-        "productFamily": "Content",
-        "product": "Files"
-      },
       "Topic": {
         "message": "Topics are enabled for content organization",
         "productFamily": "Experience Cloud",
@@ -356,11 +329,6 @@
         "message": "Content Management System is enabled",
         "productFamily": "Experience Cloud",
         "product": "CMS for Experience Cloud"
-      },
-      "Case Deflection": {
-        "message": "Case deflection is enabled",
-        "productFamily": "Service Cloud",
-        "product": "Case Management"
       },
       "Topics": {
         "message": "Topics are enabled",

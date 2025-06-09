@@ -1,171 +1,82 @@
 {
   "name": "Service Cloud",
   "description": "Salesforce's customer service and support platform",
-  "justification": "Service Cloud is a core Salesforce product for customer service organizations. Analyzing its actual usage provides insights into how effectively an organization has implemented support operations in Salesforce.",
+  "justification": "Service Cloud enables organizations to deliver exceptional customer service and support.",
   "indicators": [
     {
-      "category": "Core Support Objects",
-      "description": "Primary objects that form the foundation of Service Cloud",
-      "justification": "These objects represent the fundamental building blocks of Service Cloud. Their presence, customization, and active use are the strongest indicators of Service Cloud adoption.",
+      "category": "Core Objects",
+      "description": "Essential Salesforce objects that indicate Service Cloud presence",
+      "justification": "These objects represent the fundamental data structures that must be present for Service Cloud to be in use.",
       "items": [
         {
           "type": "object",
           "name": "Case",
-          "weight": 0.9,
-          "description": "Primary object for tracking customer issues and requests",
-          "justification": "The Case object is the central component of Service Cloud. It's virtually impossible to use Service Cloud without utilizing Cases. High weight (0.9) reflects this critical importance.",
-          "requiredFields": ["Status", "Origin", "Priority"],
-          "activityThreshold": 20
+          "productFamily": "Service Cloud",
+          "product": "Case Management",
+          "description": "Primary object for tracking customer issues",
+          "justification": "Case management is the core functionality of Service Cloud.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "Case", "minCount": 1}
+          ]
         },
         {
           "type": "object",
           "name": "Contact",
-          "weight": 0.5,
-          "description": "Customer contact information linked to cases",
-          "justification": "While Contacts are part of the standard CRM, they play an important role in Service Cloud for customer identification. Medium weight (0.5) acknowledges their importance but recognizes they're not exclusive to Service Cloud.",
-          "activityThreshold": 10
+          "productFamily": "Service Cloud",
+          "product": "Contact Management",
+          "description": "Customer contact information",
+          "justification": "Contact management is essential for customer service.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "Contact", "minCount": 1}
+          ]
         },
-        {
-          "type": "object",
-          "name": "CaseComment",
-          "weight": 0.7,
-          "description": "Comments on case resolution and updates",
-          "justification": "Case Comments indicate active case collaboration. High weight (0.7) reflects that organizations actively using Service Cloud typically have significant case comment activity.",
-          "activityThreshold": 30
-        },
-        {
-          "type": "object",
-          "name": "Solution",
-          "weight": 0.6,
-          "description": "Standard solutions to common problems (legacy)",
-          "justification": "Solutions are an older Service Cloud feature. Medium-high weight (0.6) indicates their relevance while acknowledging many organizations now use Knowledge instead.",
-          "activityThreshold": 10
-        }
-      ]
-    },
-    {
-      "category": "Knowledge Management",
-      "description": "Evidence of knowledge base usage for support",
-      "justification": "Knowledge management is a key differentiator of Service Cloud implementations. Organizations with mature service operations typically invest heavily in knowledge management.",
-      "items": [
         {
           "type": "object",
           "name": "Knowledge__kav",
-          "weight": 0.8,
-          "description": "Knowledge articles for self-service and agent assistance",
-          "justification": "Knowledge articles represent a significant investment in service quality. High weight (0.8) reflects both the importance of knowledge in Service Cloud and the effort required to implement it.",
-          "activityThreshold": 10
-        },
-        {
-          "type": "feature",
-          "name": "Knowledge Settings",
-          "weight": 0.7,
-          "description": "Knowledge base configuration indicating investment in agent knowledge",
-          "justification": "Configured knowledge settings indicate commitment to knowledge-centered support. High weight (0.7) as this represents intentional implementation rather than incidental usage.",
+          "productFamily": "Service Cloud",
+          "product": "Knowledge Management",
+          "description": "Knowledge articles",
+          "justification": "Knowledge management is key for service efficiency.",
           "detectionMethods": [
-            {"type": "metadata", "path": "KnowledgeSettings", "enabled": true}
-          ]
-        },
-        {
-          "type": "feature",
-          "name": "Article Types",
-          "weight": 0.8,
-          "description": "Custom article types indicate structured knowledge management",
-          "justification": "Custom article types show sophisticated knowledge management. High weight (0.8) as this indicates significant investment in content strategy.",
-          "detectionMethods": [
-            {"type": "metadata", "path": "ArticleType", "minCount": 2}
-          ]
-        },
-        {
-          "type": "activity",
-          "name": "Knowledge Usage",
-          "weight": 0.7,
-          "description": "Evidence of agents viewing and using knowledge articles",
-          "justification": "Knowledge usage shows actual adoption by service agents. High weight (0.7) as it demonstrates real-world value beyond just configuration.",
-          "detectionMethods": [
-            {"type": "eventLog", "eventType": "URI", "pattern": "/lightning/[rk]/Knowledge__kav/", "timeframe": "last30Days", "threshold": 20}
+            {"type": "metadata", "path": "Knowledge__kav", "minCount": 1}
           ]
         }
       ]
     },
     {
-      "category": "Service Console",
-      "description": "Evidence of Service Console usage for agent productivity",
-      "justification": "The Service Console provides the primary interface for agent productivity in Service Cloud. Its presence and customization strongly indicate Service Cloud investment.",
+      "category": "Features",
+      "description": "Configured features and capabilities in Service Cloud",
+      "justification": "These features represent the actual functionality implemented in the Service Cloud instance.",
       "items": [
         {
           "type": "feature",
-          "name": "Service Console App",
-          "weight": 0.8,
-          "description": "Dedicated console application for service agents",
-          "justification": "A dedicated Service Console app is central to agent efficiency. High weight (0.8) reflects its importance to service operations.",
+          "name": "Service Console",
+          "productFamily": "Service Cloud",
+          "product": "Service Console",
+          "description": "Agent workspace",
+          "justification": "Service Console provides efficient workspace for agents.",
           "detectionMethods": [
-            {"type": "metadata", "path": "CustomApplication", "pattern": "Service|Support|Case|Help", "console": true}
+            {"type": "metadata", "path": "CustomApplication", "pattern": "Service", "console": true}
           ]
         },
         {
           "type": "feature",
-          "name": "Console Customizations",
-          "weight": 0.7,
-          "description": "Custom console components and utilities",
-          "justification": "Console customizations indicate investment in agent experience. High weight (0.7) as it shows commitment to optimizing service workflows.",
+          "name": "Case Assignment Rules",
+          "productFamily": "Service Cloud",
+          "product": "Case Management",
+          "description": "Case routing rules",
+          "justification": "Assignment rules show automated case handling.",
           "detectionMethods": [
-            {"type": "metadata", "path": "FlexiPage", "pattern": "Service|Case|Support", "minCount": 1}
-          ]
-        },
-        {
-          "type": "activity",
-          "name": "Console Usage",
-          "weight": 0.9,
-          "description": "Evidence of agents actively using the Service Console",
-          "justification": "Actual console usage is the strongest indicator of Service Cloud adoption. Very high weight (0.9) as it directly measures active utilization.",
-          "detectionMethods": [
-            {"type": "eventLog", "eventType": "URI", "pattern": "/lightning/n/Service_Console", "timeframe": "last30Days", "threshold": 50}
-          ]
-        },
-        {
-          "type": "feature",
-          "name": "Quick Text",
-          "weight": 0.6,
-          "description": "Pre-defined text snippets for consistent agent responses",
-          "justification": "Quick Text indicates investment in efficiency and consistency. Medium-high weight (0.6) as it's a valuable but not essential Service Cloud feature.",
-          "detectionMethods": [
-            {"type": "metadata", "path": "QuickText", "minCount": 5}
-          ]
-        },
-        {
-          "type": "feature",
-          "name": "Macros",
-          "weight": 0.7,
-          "description": "Automated agent workflows for common tasks",
-          "justification": "Macros show investment in agent efficiency. High weight (0.7) as they represent significant effort to streamline service processes.",
-          "detectionMethods": [
-            {"type": "metadata", "path": "Macro", "minCount": 3}
-          ]
-        }
-      ]
-    },
-    {
-      "category": "Customer Self-Service",
-      "description": "Evidence of customer self-service capabilities",
-      "justification": "Self-service capabilities are increasingly central to modern Service Cloud implementations, reducing case volume and improving customer satisfaction.",
-      "items": [
-        {
-          "type": "feature",
-          "name": "Experience Cloud for Service",
-          "weight": 0.8,
-          "description": "Customer self-service portal or community",
-          "justification": "Service communities represent significant investment in self-service. High weight (0.8) as they indicate strategic commitment to digital service channels.",
-          "detectionMethods": [
-            {"type": "metadata", "path": "Network", "template": "Service", "minCount": 1}
+            {"type": "metadata", "path": "AssignmentRule", "entity": "Case", "minCount": 1}
           ]
         },
         {
           "type": "feature",
           "name": "Web-to-Case",
-          "weight": 0.7,
-          "description": "Online case submission form for customers",
-          "justification": "Web-to-Case indicates digital service channel investment. High weight (0.7) as it's a common and important Service Cloud implementation.",
+          "productFamily": "Service Cloud",
+          "product": "Case Management",
+          "description": "Web case submission",
+          "justification": "Web-to-Case enables digital service channels.",
           "detectionMethods": [
             {"type": "metadata", "path": "WebToCase", "enabled": true}
           ]
@@ -173,346 +84,73 @@
         {
           "type": "feature",
           "name": "Email-to-Case",
-          "weight": 0.7,
-          "description": "Email integration for case creation",
-          "justification": "Email-to-Case shows integration of email channels with service processes. High weight (0.7) as it's a fundamental service integration.",
+          "productFamily": "Service Cloud",
+          "product": "Case Management",
+          "description": "Email case creation",
+          "justification": "Email-to-Case enables email support channels.",
           "detectionMethods": [
             {"type": "metadata", "path": "EmailServicesFunction", "function": "EmailToCase"}
           ]
         },
         {
-          "type": "object",
-          "name": "EmailMessage",
-          "weight": 0.6,
-          "description": "Email messages related to cases",
-          "justification": "EmailMessage records indicate active email channel usage. Medium-high weight (0.6) shows importance of email for service communications.",
-          "activityThreshold": 20
-        },
-        {
           "type": "feature",
-          "name": "Chat for Service",
-          "weight": 0.7,
-          "description": "Live chat capabilities for customer support",
-          "justification": "Chat implementation shows investment in real-time service channels. High weight (0.7) as it represents significant channel expansion.",
+          "name": "Knowledge Management",
+          "productFamily": "Service Cloud",
+          "product": "Knowledge Management",
+          "description": "Knowledge base",
+          "justification": "Knowledge management enables self-service and agent efficiency.",
           "detectionMethods": [
-            {"type": "metadata", "path": "LiveChatDeployment", "minCount": 1},
-            {"type": "metadata", "path": "LiveChatButton", "minCount": 1}
+            {"type": "metadata", "path": "KnowledgeSettings", "enabled": true}
           ]
         }
       ]
     },
     {
-      "category": "Service Automation",
-      "description": "Evidence of automated service processes",
-      "justification": "Service automation indicates process maturity and efficiency focus, typically seen in more sophisticated Service Cloud implementations.",
+      "category": "Developer Features",
+      "description": "Advanced development and customization capabilities",
+      "justification": "These features indicate sophisticated technical implementation.",
       "items": [
         {
           "type": "feature",
-          "name": "Case Assignment Rules",
-          "weight": 0.8,
-          "description": "Automated case routing to appropriate agents or queues",
-          "justification": "Assignment rules indicate structured service processes. High weight (0.8) as they're fundamental to efficient case handling.",
+          "name": "Service Cloud API Integration",
+          "productFamily": "Service Cloud",
+          "product": "Developer Tools",
+          "description": "API integrations",
+          "justification": "API usage indicates system integration.",
           "detectionMethods": [
-            {"type": "metadata", "path": "AssignmentRule", "entity": "Case", "minCount": 1}
-          ]
-        },
-        {
-          "type": "feature",
-          "name": "Auto-Response Rules",
-          "weight": 0.6,
-          "description": "Automated customer notifications when cases are created",
-          "justification": "Auto-response rules show attention to customer communication. Medium-high weight (0.6) as they enhance the customer experience.",
-          "detectionMethods": [
-            {"type": "metadata", "path": "AutoResponseRule", "minCount": 1}
-          ]
-        },
-        {
-          "type": "feature",
-          "name": "Escalation Rules",
-          "weight": 0.7,
-          "description": "Time-based rules to escalate unresolved cases",
-          "justification": "Escalation rules indicate sophisticated case management. High weight (0.7) as they show commitment to service level adherence.",
-          "detectionMethods": [
-            {"type": "metadata", "path": "EscalationRule", "minCount": 1}
-          ]
-        },
-        {
-          "type": "feature",
-          "name": "Case Queues",
-          "weight": 0.7,
-          "description": "Shared queues for case assignment to teams",
-          "justification": "Case queues indicate team-based support structure. High weight (0.7) as they're central to most service operations.",
-          "detectionMethods": [
-            {"type": "metadata", "path": "Queue", "sobjectType": "Case", "minCount": 1}
-          ]
-        },
-        {
-          "type": "feature",
-          "name": "Case Record Types",
-          "weight": 0.6,
-          "description": "Different case types for varied support processes",
-          "justification": "Case record types show process differentiation by issue type. Medium-high weight (0.6) as they indicate process sophistication.",
-          "detectionMethods": [
-            {"type": "metadata", "path": "RecordType", "entity": "Case", "minCount": 2}
-          ],
-          "edition": "Enterprise+"
-        }
-      ]
-    },
-    {
-      "category": "Entitlements and SLAs",
-      "description": "Evidence of service level management",
-      "justification": "Entitlement and SLA tracking indicate advanced service operations with formalized service commitments, typically found in mature Service Cloud implementations.",
-      "items": [
-        {
-          "type": "object",
-          "name": "Entitlement",
-          "weight": 0.7,
-          "description": "Entitlements for tracking customer service agreements",
-          "justification": "Entitlements indicate formalized service contracts. High weight (0.7) as they represent sophisticated service delivery.",
-          "activityThreshold": 5,
-          "edition": "Enterprise+"
-        },
-        {
-          "type": "object",
-          "name": "ServiceContract",
-          "weight": 0.6,
-          "description": "Service contracts for customers",
-          "justification": "Service contracts show formalized customer service relationships. Medium-high weight (0.6) as they indicate advanced service operations.",
-          "activityThreshold": 5,
-          "edition": "Enterprise+"
-        },
-        {
-          "type": "feature",
-          "name": "Entitlement Processes",
-          "weight": 0.8,
-          "description": "Processes for enforcing SLAs on cases",
-          "justification": "Entitlement processes show sophisticated SLA enforcement. High weight (0.8) as they represent significant implementation effort.",
-          "detectionMethods": [
-            {"type": "metadata", "path": "EntitlementProcess", "minCount": 1}
-          ],
-          "edition": "Enterprise+"
-        },
-        {
-          "type": "feature",
-          "name": "Milestone Tracking",
-          "weight": 0.7,
-          "description": "Tracking of service milestones for cases",
-          "justification": "Milestone tracking indicates detailed SLA management. High weight (0.7) as it shows sophisticated service timing enforcement.",
-          "detectionMethods": [
-            {"type": "metadata", "path": "MilestoneType", "minCount": 1}
-          ],
-          "edition": "Enterprise+"
-        }
-      ]
-    },
-    {
-      "category": "Field Service",
-      "description": "Evidence of field service management capabilities",
-      "justification": "Field Service indicators show extension of service operations to on-site work, representing an expanded Service Cloud implementation.",
-      "items": [
-        {
-          "type": "object",
-          "name": "WorkOrder",
-          "weight": 0.8,
-          "description": "Work orders for field service operations",
-          "justification": "Work orders are the central object for Field Service. High weight (0.8) as they directly indicate Field Service adoption.",
-          "activityThreshold": 10,
-          "edition": "Enterprise+"
-        },
-        {
-          "type": "object",
-          "name": "ServiceAppointment",
-          "weight": 0.7,
-          "description": "Appointments for field service visits",
-          "justification": "Service appointments represent scheduled field work. High weight (0.7) as they're core to field service operations.",
-          "activityThreshold": 10,
-          "edition": "Enterprise+"
-        },
-        {
-          "type": "object",
-          "name": "ServiceResource",
-          "weight": 0.6,
-          "description": "Resources that can be assigned to field service work",
-          "justification": "Service resources indicate technician management. Medium-high weight (0.6) as they show field workforce configuration.",
-          "activityThreshold": 5,
-          "edition": "Enterprise+"
-        },
-        {
-          "type": "feature",
-          "name": "Field Service Settings",
-          "weight": 0.8,
-          "description": "Configuration of Field Service Lightning",
-          "justification": "Field Service settings indicate intentional FSL implementation. High weight (0.8) as they show deliberate enablement.",
-          "detectionMethods": [
-            {"type": "metadata", "path": "FieldServiceSettings", "enabled": true}
-          ],
-          "edition": "Enterprise+"
-        }
-      ]
-    },
-    {
-      "category": "User Activity",
-      "description": "Evidence of active usage by service agents",
-      "justification": "User activity provides direct evidence of actual Service Cloud adoption, beyond mere configuration. These behavioral indicators are highly weighted as they demonstrate value realization.",
-      "items": [
-        {
-          "type": "activity",
-          "name": "Case Views",
-          "weight": 0.9,
-          "description": "Evidence of agents working cases",
-          "justification": "Case views directly indicate agent engagement with Service Cloud. Very high weight (0.9) as this is the clearest signal of active usage.",
-          "detectionMethods": [
-            {"type": "eventLog", "eventType": "URI", "pattern": "/lightning/[ro]/Case/", "timeframe": "last30Days", "threshold": 100}
-          ]
-        },
-        {
-          "type": "activity",
-          "name": "Case List Views",
-          "weight": 0.7,
-          "description": "Evidence of agents monitoring case queues",
-          "justification": "Case list view activity shows queue management. High weight (0.7) as it indicates active case workload handling.",
-          "detectionMethods": [
-            {"type": "eventLog", "eventType": "URI", "pattern": "/lightning/o/Case/list", "timeframe": "last30Days", "threshold": 50}
-          ]
-        },
-        {
-          "type": "activity",
-          "name": "Service Dashboards",
-          "weight": 0.6,
-          "description": "Evidence of service performance monitoring",
-          "justification": "Service dashboard usage indicates data-driven management. Medium-high weight (0.6) as it shows analytical approach to service operations.",
-          "detectionMethods": [
-            {"type": "eventLog", "eventType": "URI", "pattern": "/lightning/r/Dashboard/.*Service", "timeframe": "last30Days", "threshold": 20}
-          ]
-        },
-        {
-          "type": "activity",
-          "name": "Service Reports",
-          "weight": 0.6,
-          "description": "Evidence of service analytics usage",
-          "justification": "Service reports usage indicates performance analysis. Medium-high weight (0.6) as it demonstrates management oversight.",
-          "detectionMethods": [
-            {"type": "metadata", "path": "Report", "folder": "Service|Support|Case", "minCount": 5}
+            {"type": "metadata", "path": "RemoteSiteSetting", "minCount": 1}
           ]
         }
       ]
     },
     {
       "category": "Integration Points",
-      "description": "Evidence of Service Cloud being integrated with other systems",
-      "justification": "Integrations indicate that Service Cloud has been embedded into the broader service technology ecosystem, showing strategic commitment.",
+      "description": "Integration with other systems and platforms",
+      "justification": "These integrations show how Service Cloud connects with other tools.",
       "items": [
         {
-          "type": "integration",
+          "type": "feature",
           "name": "CTI Integration",
-          "weight": 0.8,
-          "description": "Phone system integration for service operations",
-          "justification": "CTI integration is critical for contact center operations. High weight (0.8) as it represents significant service infrastructure investment.",
+          "productFamily": "Service Cloud",
+          "product": "Computer Telephony Integration",
+          "description": "Phone system integration",
+          "justification": "CTI integration enables phone support channel.",
           "detectionMethods": [
-            {"type": "metadata", "path": "CallCenter", "minCount": 1},
-            {"type": "object", "name": "Task", "recordType": "Call", "minCount": 20}
+            {"type": "metadata", "path": "CallCenter", "minCount": 1}
           ]
         },
         {
-          "type": "integration",
-          "name": "Social Customer Service",
-          "weight": 0.7,
-          "description": "Integration with social media for service",
-          "justification": "Social channel integration shows omni-channel service approach. High weight (0.7) as it represents channel expansion.",
+          "type": "feature",
+          "name": "Chat Integration",
+          "productFamily": "Service Cloud",
+          "product": "Digital Engagement",
+          "description": "Live chat integration",
+          "justification": "Chat integration enables real-time support channel.",
           "detectionMethods": [
-            {"type": "metadata", "path": "SocialCustomerServiceSettings", "enabled": true}
+            {"type": "metadata", "path": "LiveChatDeployment", "minCount": 1}
           ]
-        },
-        {
-          "type": "api",
-          "name": "Case API Calls",
-          "weight": 0.7,
-          "description": "API integration with Case object indicates programmatic service operations",
-          "justification": "Case API usage indicates integration with other systems. High weight (0.7) as it shows service process automation.",
-          "detectionMethods": [
-            {"type": "apiUsage", "object": "Case", "threshold": 100, "timeframe": "last7Days"}
-          ],
-          "edition": "Enterprise+"
-        }
-      ]
-    },
-    {
-      "category": "Code Customization",
-      "description": "Evidence of custom code interacting with Service Cloud",
-      "justification": "Custom code development represents significant investment in tailoring Service Cloud to specific business needs, indicating deep commitment.",
-      "items": [
-        {
-          "type": "code",
-          "name": "Case Triggers",
-          "weight": 0.7,
-          "description": "Custom Apex on cases indicates advanced service automation",
-          "justification": "Case triggers indicate sophisticated process customization. High weight (0.7) as they represent significant development investment.",
-          "detectionMethods": [
-            {"type": "apex", "triggerObject": "Case"}
-          ],
-          "edition": "Enterprise+"
-        },
-        {
-          "type": "code",
-          "name": "Knowledge Triggers",
-          "weight": 0.6,
-          "description": "Custom Apex for knowledge management",
-          "justification": "Knowledge triggers show customized knowledge processes. Medium-high weight (0.6) as they indicate tailored knowledge management.",
-          "detectionMethods": [
-            {"type": "apex", "triggerObject": "Knowledge__kav"}
-          ],
-          "edition": "Enterprise+"
-        },
-        {
-          "type": "code",
-          "name": "Service Cloud Lightning Components",
-          "weight": 0.6,
-          "description": "Custom UI components for Service Cloud indicates deep customization",
-          "justification": "Custom Service Cloud components show UI investment. Medium-high weight (0.6) as they indicate tailored agent experiences.",
-          "detectionMethods": [
-            {"type": "lightning", "pattern": "Case|Service|Support", "minCount": 2}
-          ],
-          "edition": "Enterprise+"
         }
       ]
     }
-  ],
-  "editionSignals": {
-    "Starter": ["BasicCaseManagement", "WebToCase", "EmailToCase"],
-    "Professional": ["Solutions", "ServiceConsole", "CaseQueues", "AutoResponse"],
-    "Enterprise": ["Knowledge", "Entitlements", "ServiceCommunities", "LiveAgent", "CTI"],
-    "Unlimited": ["FieldService", "SocialCustomerService", "AdvancedKnowledge"]
-  },
-  "editionJustification": "Edition detection is based on feature availability and usage patterns. Features are mapped to the editions where they first become available, with more advanced features appearing in higher editions. This helps identify both the currently licensed edition and potential upgrade paths.",
-  "findingsMap": {
-    "coreObjects": {
-      "Case": "Case management is in active use",
-      "CaseComment": "Case collaboration is being utilized",
-      "Solution": "Solutions are being used for knowledge sharing",
-      "Knowledge__kav": "Knowledge articles are being maintained",
-      "EmailMessage": "Email communication is integrated with case management",
-      "Entitlement": "Entitlement tracking is implemented",
-      "ServiceContract": "Service contracts are being managed",
-      "WorkOrder": "Field service work orders are being utilized",
-      "ServiceAppointment": "Field service appointments are being scheduled"
-    },
-    "features": {
-      "Service Console App": "Service Console is configured for agent productivity",
-      "Case Assignment Rules": "Automated case routing is configured",
-      "Auto-Response Rules": "Automated customer responses are enabled",
-      "Escalation Rules": "Case escalation processes are implemented",
-      "Email-to-Case": "Email-to-Case is configured for customer communications",
-      "Web-to-Case": "Web-to-Case is enabled for online customer requests",
-      "Case Queues": "Team-based case queues are in use",
-      "Entitlement Processes": "Service level agreement processes are configured",
-      "Field Service Settings": "Field Service Lightning is configured",
-      "Quick Text": "Quick Text is configured for consistent responses",
-      "Macros": "Macros are configured for agent efficiency",
-      "Chat for Service": "Live chat is implemented for real-time support",
-      "Experience Cloud for Service": "Customer self-service portal is implemented",
-      "Knowledge Settings": "Knowledge base is configured"
-    }
-  },
-  "findingsJustification": "Findings are mapped directly to detected evidence points, translating technical detection into business-meaningful insights. Each finding is phrased to be actionable and understandable by non-technical stakeholders."
+  ]
 }
