@@ -264,7 +264,10 @@
           "description": "Custom domains",
           "justification": "Custom domains show branded web presence.",
           "detectionMethods": [
-            {"type": "metadata", "path": "DomainSite", "minCount": 1}
+            {"type": "metadata", "path": "Domain", "minCount": 1},
+            {"type": "metadata", "path": "CustomSite", "minCount": 1},
+            {"type": "metadata", "path": "DomainSite", "minCount": 1},
+            {"type": "metadata", "path": "NetworkDomain", "minCount": 1}
           ]
         },
         {
