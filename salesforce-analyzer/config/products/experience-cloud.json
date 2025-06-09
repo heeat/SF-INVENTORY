@@ -159,6 +159,20 @@
           "detectionMethods": [
             {"type": "metadata", "path": "TwoFactorMethodsInfo", "minCount": 1}
           ]
+        },
+        {
+          "type": "feature",
+          "name": "Gamification",
+          "productFamily": "Experience Cloud",
+          "product": "Experience Cloud Platform",
+          "description": "User engagement and reputation features",
+          "justification": "Gamification shows investment in user engagement and community participation.",
+          "detectionMethods": [
+            {"type": "metadata", "path": "ReputationLevelDefinition", "minCount": 1},
+            {"type": "metadata", "path": "ReputationPointsRules", "minCount": 1},
+            {"type": "metadata", "path": "UserCriteria", "minCount": 1},
+            {"type": "metadata", "path": "NetworkUserSettings", "minCount": 1, "reputationEnabled": true}
+          ]
         }
       ]
     },
@@ -285,10 +299,27 @@
           "description": "Custom domains",
           "justification": "Custom domains show branded web presence.",
           "detectionMethods": [
-            {"type": "metadata", "path": "Domain", "minCount": 1},
-            {"type": "metadata", "path": "CustomSite", "minCount": 1},
-            {"type": "metadata", "path": "DomainSite", "minCount": 1},
-            {"type": "metadata", "path": "NetworkDomain", "minCount": 1}
+            {
+              "type": "metadata", 
+              "path": "CustomSite", 
+              "minCount": 1, 
+              "pattern": "^(?!.*\\.force\\.com$|.*\\.salesforce\\.com$|.*\\.site\\.com$).*$",
+              "description": "Matches custom site URLs that don't use Salesforce domains"
+            },
+            {
+              "type": "metadata", 
+              "path": "Network", 
+              "minCount": 1, 
+              "pattern": "^(?!.*\\.lightning\\.force\\.com|.*\\.my\\.site\\.com).*$",
+              "description": "Matches Experience Cloud networks with custom URLs"
+            },
+            {
+              "type": "metadata", 
+              "path": "Domain", 
+              "minCount": 1,
+              "pattern": "^(?!salesforce\\.com|force\\.com|site\\.com).*$",
+              "description": "Matches custom domains"
+            }
           ]
         },
         {

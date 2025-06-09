@@ -158,12 +158,27 @@ export default class ProductAnalyzer {
    */
   async processFeatureIndicator(item) {
     try {
-      return await this.evidenceCollector.checkFeature(
+      console.log(`[DEBUG] Processing feature indicator: ${item.name}`);
+      console.log(`[DEBUG] Detection methods:`, JSON.stringify(item.detectionMethods || [], null, 2));
+      
+      const evidence = await this.evidenceCollector.checkFeature(
         item.name, 
         item.detectionMethods || []
       );
+      
+      // For domain-related features, add detailed URL information to the description
+      if (item.name === "Custom Domain Configuration" && evidence.details && evidence.details.records) {
+        evidence.details.description = "Found custom domains:\n" + 
+          evidence.details.records
+            .filter(r => r.url)
+            .map(r => `- ${r.url}`)
+            .join("\n");
+      }
+      
+      console.log(`[DEBUG] Feature detection result for ${item.name}:`, JSON.stringify(evidence, null, 2));
+      return evidence;
     } catch (error) {
-      console.error(`Error processing feature indicator ${item.name}:`, error);
+      console.error(`[DEBUG] Error processing feature indicator ${item.name}:`, error);
       return null;
     }
   }
