@@ -17,7 +17,9 @@
           "justification": "The Network object is the central component of Experience Cloud. It's impossible to use Experience Cloud without this object.",
           "requiredFields": ["Status", "Name"],
           "detectionMethods": [
-            {"type": "metadata", "path": "Network", "minCount": 1}
+            {"type": "metadata", "path": "Network", "minCount": 1},
+            {"type": "metadata", "path": "NetworkStatus", "minCount": 1},
+            {"type": "metadata", "path": "NetworkMemberGroup", "minCount": 1}
           ]
         },
         {
@@ -28,7 +30,8 @@
           "description": "Experience Cloud users",
           "justification": "NetworkMember records indicate active users in the Experience.",
           "detectionMethods": [
-            {"type": "metadata", "path": "NetworkMember", "minCount": 1}
+            {"type": "metadata", "path": "NetworkMember", "minCount": 1},
+            {"type": "metadata", "path": "NetworkMembershipType", "minCount": 1}
           ]
         },
         {
@@ -39,7 +42,8 @@
           "description": "Content organization",
           "justification": "Topics indicate organized content navigation.",
           "detectionMethods": [
-            {"type": "metadata", "path": "Topic", "minCount": 1}
+            {"type": "metadata", "path": "Topic", "minCount": 1},
+            {"type": "metadata", "path": "TopicAssignment", "minCount": 1}
           ]
         },
         {
@@ -50,7 +54,9 @@
           "description": "CMS content",
           "justification": "ManagedContent objects indicate CMS usage.",
           "detectionMethods": [
-            {"type": "metadata", "path": "ManagedContent", "minCount": 1}
+            {"type": "metadata", "path": "ManagedContent", "minCount": 1},
+            {"type": "metadata", "path": "ManagedContentVersion", "minCount": 1},
+            {"type": "metadata", "path": "ManagedContentSpace", "minCount": 1}
           ]
         }
       ]
@@ -68,7 +74,9 @@
           "description": "Site builder tool",
           "justification": "Experience Builder usage indicates investment in digital experiences.",
           "detectionMethods": [
-            {"type": "metadata", "path": "ExperienceBundle", "minCount": 1}
+            {"type": "metadata", "path": "ExperienceBundle", "minCount": 1},
+            {"type": "metadata", "path": "ExperiencePropertyTypeBundle", "minCount": 1},
+            {"type": "metadata", "path": "ExperienceTemplateBundleInfo", "minCount": 1}
           ]
         },
         {
@@ -79,7 +87,8 @@
           "description": "Site branding",
           "justification": "Branding configuration shows investment in brand experience.",
           "detectionMethods": [
-            {"type": "metadata", "path": "BrandingSet", "minCount": 1}
+            {"type": "metadata", "path": "BrandingSet", "minCount": 1},
+            {"type": "metadata", "path": "ExperienceBrandingProperties", "minCount": 1}
           ]
         },
         {
@@ -90,7 +99,8 @@
           "description": "Mobile app creation",
           "justification": "Mobile Publisher indicates commitment to native mobile experience.",
           "detectionMethods": [
-            {"type": "metadata", "path": "MobilePublisher", "minCount": 1}
+            {"type": "metadata", "path": "MobilePublisher", "minCount": 1},
+            {"type": "metadata", "path": "MobilePublisherSettings", "minCount": 1}
           ]
         },
         {
@@ -101,7 +111,8 @@
           "description": "Content management",
           "justification": "CMS usage indicates content management strategy.",
           "detectionMethods": [
-            {"type": "metadata", "path": "ManagedContentType", "minCount": 1}
+            {"type": "metadata", "path": "ManagedContentType", "minCount": 1},
+            {"type": "metadata", "path": "ManagedContentNodeType", "minCount": 1}
           ]
         },
         {
@@ -112,7 +123,8 @@
           "description": "Multiple languages",
           "justification": "Multi-language support indicates global audience strategy.",
           "detectionMethods": [
-            {"type": "metadata", "path": "NetworkSelfRegistration", "minCount": 1}
+            {"type": "metadata", "path": "ExperienceLanguage", "minCount": 1},
+            {"type": "metadata", "path": "ExperienceTranslation", "minCount": 1}
           ]
         },
         {
@@ -163,7 +175,9 @@
           "description": "External integrations",
           "justification": "External integrations indicate advanced connectivity needs.",
           "detectionMethods": [
-            {"type": "metadata", "path": "RemoteSiteSetting", "minCount": 1}
+            {"type": "metadata", "path": "RemoteSiteSetting", "minCount": 1},
+            {"type": "metadata", "path": "NamedCredential", "minCount": 1},
+            {"type": "metadata", "path": "ExternalDataSource", "minCount": 1}
           ]
         }
       ]
@@ -181,7 +195,9 @@
           "description": "Mobile app settings",
           "justification": "Mobile Publisher indicates commitment to native mobile experience.",
           "detectionMethods": [
-            {"type": "metadata", "path": "MobilePublisherConfig", "minCount": 1}
+            {"type": "metadata", "path": "MobilePublisherConfig", "minCount": 1},
+            {"type": "metadata", "path": "MobileApplicationDetail", "minCount": 1},
+            {"type": "metadata", "path": "MobileSettings", "minCount": 1}
           ]
         }
       ]
@@ -199,7 +215,9 @@
           "description": "Personalized content",
           "justification": "Dynamic content delivery indicates advanced content management.",
           "detectionMethods": [
-            {"type": "metadata", "path": "ManagedContentNodeType", "minCount": 1}
+            {"type": "metadata", "path": "ManagedContentNodeType", "minCount": 1},
+            {"type": "metadata", "path": "ManagedContentVariant", "minCount": 1},
+            {"type": "metadata", "path": "ContentAsset", "minCount": 1}
           ]
         }
       ]
@@ -217,7 +235,9 @@
           "description": "SSO setup",
           "justification": "SSO implementation shows enterprise-grade authentication.",
           "detectionMethods": [
-            {"type": "metadata", "path": "SamlSsoConfig", "minCount": 1}
+            {"type": "metadata", "path": "SamlSsoConfig", "minCount": 1},
+            {"type": "metadata", "path": "AuthProvider", "minCount": 1},
+            {"type": "metadata", "path": "ConnectedApp", "minCount": 1}
           ]
         },
         {
@@ -228,7 +248,8 @@
           "description": "External sharing",
           "justification": "Custom sharing indicates sophisticated security model.",
           "detectionMethods": [
-            {"type": "metadata", "path": "SharingRules", "minCount": 1}
+            {"type": "metadata", "path": "SharingRules", "minCount": 1},
+            {"type": "metadata", "path": "NetworkSharingGroup", "minCount": 1}
           ]
         }
       ]
