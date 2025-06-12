@@ -57,7 +57,7 @@ export default class EvidenceCollector {
       return new Evidence(
         'objectPresence', 
         objectName, 
-        true, 
+        true, //detected
         {
           requiredFieldsPresent,
           recordCount,
@@ -135,10 +135,9 @@ export default class EvidenceCollector {
    * 
    * @param {string} featureName - Name of the feature
    * @param {Array} detectionMethods - Methods to detect the feature
-   * @param {Object} options - Additional options
    * @returns {Promise<Evidence>} - Evidence about feature configuration
    */
-  async checkFeature(featureName, detectionMethods, options = {}) {
+  async checkFeature(featureName, detectionMethods) {
     try {
       // Try each detection method until one succeeds
       for (const method of detectionMethods) {
@@ -146,19 +145,21 @@ export default class EvidenceCollector {
         let details = {};
         
         switch (method.type) {
-          case 'metadata':
+          case 'metadata': {
             const result = await this.checkMetadata(method);
             detected = result.detected;
             details = { ...details, ...result.details };
             break;
-            
-          case 'field':
+          }
+          
+          case 'field': {
             const fieldResult = await this.checkField(method);
             detected = fieldResult.detected;
             details = { ...details, ...fieldResult.details };
             break;
-            
-          case 'object':
+          }
+          
+          case 'object': {
             const objectResult = await this.checkObject(method.name, { checkRecordCount: true });
             detected = objectResult.detected;
             if (detected && method.minCount) {
@@ -166,6 +167,7 @@ export default class EvidenceCollector {
             }
             details = { ...details, ...objectResult.details };
             break;
+          }
         }
         
         if (detected) {
@@ -422,12 +424,9 @@ export default class EvidenceCollector {
    */
   async checkMetadata(method) {
     try {
-      console.log(`[DEBUG] Checking metadata: ${method.path}`);
-      
       // Use the Metadata API to list metadata
       const result = await this.connection.metadata.list([{type: method.path}]);
-      console.log(`[DEBUG] Metadata API result:`, JSON.stringify(result, null, 2));
-      
+      console.log('Executing query method.path:', result);
       if (!result || !Array.isArray(result)) {
         return {
           detected: false,
@@ -445,6 +444,8 @@ export default class EvidenceCollector {
         const regex = new RegExp(method.pattern);
         matchingRecords = result.filter(record => {
           // Check various fields that might contain the URL/domain
+
+          //[IGNORE REDUNDANT CODE] ===>
           const fieldsToCheck = [
             record.fullName,
             record.url,
@@ -472,7 +473,6 @@ export default class EvidenceCollector {
         }
       };
     } catch (error) {
-      console.error(`[DEBUG] Error checking metadata ${method.path}:`, error);
       return {
         detected: false,
         details: {
@@ -485,6 +485,56 @@ export default class EvidenceCollector {
   }
   
   /**
+   * Check for custom domains in the org
+   * 
+   * @returns {Promise<Object>} - Detection result for custom domains
+   */
+  async checkCustomDomains() {
+    console.log('Checking for custom domains...');
+    
+    const query = `SELECT Id, Domain FROM Domain`;
+    console.log('Executing query:', query);
+    const result = await this.connection.query(query);
+    
+    // Define Salesforce default domain patterns
+    const defaultDomainPatterns = [
+      /\.sandbox\.my\.salesforce-sites\.com$/,
+      /\.sandbox\.my\.site\.com$/,
+      /\.my\.salesforce\.com$/,
+      /\.my\.site\.com$/,
+      /\.force\.com$/,
+      /\.salesforce-sites\.com$/
+    ];
+    
+    // Filter out default Salesforce domains
+    const customDomains = result.records.filter(record => {
+      const domain = record.Domain.toLowerCase();
+      return !defaultDomainPatterns.some(pattern => pattern.test(domain));
+    });
+    
+    console.log('Found domains:', JSON.stringify(result.records.map(r => r.Domain), null, 2));
+    console.log('Custom domains found:', JSON.stringify(customDomains.map(r => r.Domain), null, 2));
+    
+    return {
+      detected: customDomains.length > 0,
+      details: {
+        fieldName: 'Domain',
+        count: customDomains.length,
+        domains: customDomains.map(record => ({
+          domain: record.Domain,
+          isCustom: true
+        })),
+        allDomains: result.records.map(record => ({
+          domain: record.Domain,
+          isCustom: !defaultDomainPatterns.some(pattern => 
+            pattern.test(record.Domain.toLowerCase())
+          )
+        }))
+      }
+    };
+  }
+  
+  /**
    * Check if a field exists and has certain values
    * 
    * @param {Object} method - Field detection method
@@ -492,6 +542,11 @@ export default class EvidenceCollector {
    */
   async checkField(method) {
     try {
+      // Special handling for Domain object custom domain check
+      if (method.object === 'Domain' && method.name === 'Domain') {
+        return await this.checkCustomDomains();
+      }
+      // If objectInfo is there we know it is detected
       const objectInfo = await this.describeObject(method.object);
       
       if (!objectInfo) {
@@ -512,24 +567,19 @@ export default class EvidenceCollector {
         fieldDetected = !!fieldInfo;
       }
       
-      if (fieldDetected && method.checkValues) {
-        // If we need to check picklist values, we would do it here
-        // This is simulated for the prototype
-        return {
-          detected: true,
-          details: {
-            fieldName: fieldInfo.name,
-            fieldType: fieldInfo.type,
-            hasCustomValues: Math.random() > 0.5
-          }
-        };
+      if (fieldDetected && method.value) {
+        // Query for records with the specified value
+        const query = `SELECT Id FROM ${method.object} WHERE ${method.name} = '${method.value}' LIMIT 1`;
+        const result = await this.connection.query(query);
+        fieldDetected = result.records.length > 0;
       }
       
       return {
         detected: fieldDetected,
         details: fieldInfo ? {
           fieldName: fieldInfo.name,
-          fieldType: fieldInfo.type
+          fieldType: fieldInfo.type,
+          fieldValue: method.value
         } : {}
       };
     } catch (error) {

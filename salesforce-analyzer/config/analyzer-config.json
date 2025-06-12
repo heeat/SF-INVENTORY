@@ -19,6 +19,10 @@
     "experienceCloud": {
       "name": "Experience Cloud",
       "configFile": "experience-cloud.json"
+    },
+    "healthCloud": {
+      "name": "Health Cloud",
+      "configFile": "health-cloud.json"
     }
   }
 } 

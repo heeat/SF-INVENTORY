@@ -74,9 +74,8 @@
           "description": "Site builder tool",
           "justification": "Experience Builder usage indicates investment in digital experiences.",
           "detectionMethods": [
-            {"type": "metadata", "path": "ExperienceBundle", "minCount": 1},
-            {"type": "metadata", "path": "ExperiencePropertyTypeBundle", "minCount": 1},
-            {"type": "metadata", "path": "ExperienceTemplateBundleInfo", "minCount": 1}
+            {"type": "metadata", "path": "Network", "minCount": 1},
+            {"type": "object", "name": "Site", "minCount": 1}
           ]
         },
         {
@@ -87,8 +86,7 @@
           "description": "Site branding",
           "justification": "Branding configuration shows investment in brand experience.",
           "detectionMethods": [
-            {"type": "metadata", "path": "BrandingSet", "minCount": 1},
-            {"type": "metadata", "path": "ExperienceBrandingProperties", "minCount": 1}
+            {"type": "metadata", "path": "BrandingSet", "minCount": 1}
           ]
         },
         {
@@ -136,17 +134,6 @@
           "justification": "Self-registration shows focus on user onboarding.",
           "detectionMethods": [
             {"type": "metadata", "path": "NetworkSelfRegistration", "minCount": 1}
-          ]
-        },
-        {
-          "type": "feature",
-          "name": "Single Sign-On",
-          "productFamily": "Identity",
-          "product": "Single Sign-On",
-          "description": "SSO authentication",
-          "justification": "SSO implementation shows enterprise authentication.",
-          "detectionMethods": [
-            {"type": "metadata", "path": "SamlSsoConfig", "minCount": 1}
           ]
         },
         {
@@ -269,24 +256,6 @@
       ]
     },
     {
-      "category": "Engagement Features",
-      "description": "User engagement and gamification features",
-      "justification": "Engagement features indicate focus on user participation and retention.",
-      "items": [
-        {
-          "type": "feature",
-          "name": "Gamification",
-          "productFamily": "Experience Cloud",
-          "product": "Experience Cloud Platform",
-          "description": "User engagement",
-          "justification": "Gamification shows investment in user engagement.",
-          "detectionMethods": [
-            {"type": "metadata", "path": "ReputationLevelDefinition", "minCount": 1}
-          ]
-        }
-      ]
-    },
-    {
       "category": "Branding and Domain",
       "description": "Custom branding and domain configuration",
       "justification": "Branding features indicate investment in brand identity.",
@@ -295,30 +264,14 @@
           "type": "feature",
           "name": "Custom Domain Configuration",
           "productFamily": "Experience Cloud",
-          "product": "Aura and LWR Sites",
-          "description": "Custom domains",
-          "justification": "Custom domains show branded web presence.",
+          "product": "Custom Domains",
+          "description": "Custom domain configuration for digital experiences",
+          "justification": "Custom domains indicate branded digital experience implementation",
           "detectionMethods": [
             {
-              "type": "metadata", 
-              "path": "CustomSite", 
-              "minCount": 1, 
-              "pattern": "^(?!.*\\.force\\.com$|.*\\.salesforce\\.com$|.*\\.site\\.com$).*$",
-              "description": "Matches custom site URLs that don't use Salesforce domains"
-            },
-            {
-              "type": "metadata", 
-              "path": "Network", 
-              "minCount": 1, 
-              "pattern": "^(?!.*\\.lightning\\.force\\.com|.*\\.my\\.site\\.com).*$",
-              "description": "Matches Experience Cloud networks with custom URLs"
-            },
-            {
-              "type": "metadata", 
-              "path": "Domain", 
-              "minCount": 1,
-              "pattern": "^(?!salesforce\\.com|force\\.com|site\\.com).*$",
-              "description": "Matches custom domains"
+              "type": "field",
+              "object": "Domain",
+              "name": "Domain"
             }
           ]
         },

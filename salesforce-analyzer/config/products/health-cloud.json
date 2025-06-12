@@ -1,0 +1,443 @@
+{
+  "name": "Health Cloud",
+  "description": "Salesforce's healthcare-specific CRM platform for patient engagement and care management",
+  "justification": "Health Cloud enables healthcare organizations to manage patient relationships, care plans, and healthcare services.",
+  "indicators": [
+    {
+      "category": "Core Objects",
+      "description": "Essential Salesforce objects that indicate Health Cloud presence",
+      "justification": "These objects represent the fundamental data structures that must be present for Health Cloud to be in use.",
+      "items": [
+        {
+          "type": "object",
+          "name": "Care_Plan__c",
+          "productFamily": "Health Cloud",
+          "product": "Care Plan Management",
+          "description": "Care plan for patients",
+          "justification": "Care Plans are central to Health Cloud patient management",
+          "detectionMethods": [
+            {"type": "metadata", "path": "Care_Plan__c", "minCount": 1},
+            {"type": "metadata", "path": "CarePlanTemplate", "minCount": 1}
+          ]
+        },
+        {
+          "type": "object",
+          "name": "HealthCloudGA__EhrPatient__c",
+          "productFamily": "Health Cloud",
+          "product": "Patient Management",
+          "description": "Patient records",
+          "justification": "Patient records are fundamental to Health Cloud operations",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__EhrPatient__c", "minCount": 1}
+          ]
+        },
+        {
+          "type": "object",
+          "name": "HealthCloudGA__Clinical_Encounter__c",
+          "productFamily": "Health Cloud",
+          "product": "Clinical Encounters",
+          "description": "Patient encounters and visits",
+          "justification": "Clinical encounters track patient interactions",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__Clinical_Encounter__c", "minCount": 1}
+          ]
+        },
+        {
+          "type": "object",
+          "name": "HealthCloudGA__Medication__c",
+          "productFamily": "Health Cloud",
+          "product": "Medication Management",
+          "description": "Patient medications",
+          "justification": "Medication tracking is essential for patient care",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__Medication__c", "minCount": 1}
+          ]
+        },
+        {
+          "type": "object",
+          "name": "HealthCloudGA__Condition__c",
+          "productFamily": "Health Cloud",
+          "product": "Patient Management",
+          "description": "Patient health conditions and diagnoses",
+          "justification": "Condition tracking is essential for patient care management",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__Condition__c", "minCount": 1}
+          ]
+        },
+        {
+          "type": "object",
+          "name": "HealthCloudGA__ContactEncounter__c",
+          "productFamily": "Health Cloud",
+          "product": "Patient Engagement",
+          "description": "Patient contact and interaction records",
+          "justification": "Contact encounters track all patient interactions",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__ContactEncounter__c", "minCount": 1}
+          ]
+        },
+        {
+          "type": "object",
+          "name": "HealthCloudGA__Appointment__c",
+          "productFamily": "Health Cloud",
+          "product": "Scheduling",
+          "description": "Patient appointments and scheduling",
+          "justification": "Appointment management is crucial for healthcare operations",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__Appointment__c", "minCount": 1}
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Features",
+      "description": "Configured features and capabilities in Health Cloud",
+      "justification": "These features represent the actual functionality implemented in the Health Cloud instance.",
+      "items": [
+        {
+          "type": "feature",
+          "name": "Care Plans",
+          "productFamily": "Health Cloud",
+          "product": "Care Plan Management",
+          "description": "Patient care planning",
+          "justification": "Care plan features indicate care coordination usage",
+          "detectionMethods": [
+            {"type": "metadata", "path": "CarePlanTemplates", "minCount": 1},
+            {"type": "metadata", "path": "CarePlanGoals", "minCount": 1},
+            {"type": "metadata", "path": "CarePlanProblems", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Provider Management",
+          "productFamily": "Health Cloud",
+          "product": "Provider Network Management",
+          "description": "Healthcare provider management",
+          "justification": "Provider management indicates network coordination",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__Provider__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__ProviderSpecialty__c", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Patient Timeline",
+          "productFamily": "Health Cloud",
+          "product": "Patient Engagement",
+          "description": "Patient health timeline",
+          "justification": "Timeline feature shows patient monitoring implementation",
+          "detectionMethods": [
+            {"type": "metadata", "path": "TimelineViewConfiguration", "minCount": 1},
+            {"type": "metadata", "path": "TimelineObjectConfiguration", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Care Team Management",
+          "productFamily": "Health Cloud",
+          "product": "Care Coordination",
+          "description": "Care team collaboration",
+          "justification": "Care team features indicate collaborative care",
+          "detectionMethods": [
+            {"type": "metadata", "path": "CareTeamMember", "minCount": 1},
+            {"type": "metadata", "path": "CareTeamRole", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Assessments",
+          "productFamily": "Health Cloud",
+          "product": "Patient Assessment",
+          "description": "Patient health assessments",
+          "justification": "Assessment tools indicate clinical evaluation usage",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__Assessment__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__AssessmentQuestion__c", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Intelligent Appointment Management",
+          "productFamily": "Health Cloud",
+          "product": "Patient Scheduling",
+          "description": "Smart scheduling and appointment management",
+          "justification": "Advanced scheduling features indicate sophisticated patient management",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__SchedulingPolicy__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__AppointmentBlock__c", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Provider Search and Scheduling",
+          "productFamily": "Health Cloud",
+          "product": "Provider Network Management",
+          "description": "Provider search and availability management",
+          "justification": "Provider search features indicate advanced network utilization",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__ProviderSearchConfig__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__ProviderAvailability__c", "minCount": 1}
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Clinical Features",
+      "description": "Healthcare-specific clinical capabilities",
+      "justification": "These features indicate specialized clinical implementations in Health Cloud.",
+      "items": [
+        {
+          "type": "feature",
+          "name": "Clinical Data Model",
+          "productFamily": "Health Cloud",
+          "product": "Clinical Data Management",
+          "description": "Clinical data structures",
+          "justification": "Clinical data model usage indicates medical record keeping",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__Diagnosis__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__Procedure__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__Laboratory_Result__c", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Care Gaps",
+          "productFamily": "Health Cloud",
+          "product": "Population Health",
+          "description": "Patient care gap tracking",
+          "justification": "Care gaps indicate population health management",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__CareGap__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__CareGapRule__c", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Social Determinants",
+          "productFamily": "Health Cloud",
+          "product": "Patient Insights",
+          "description": "Social health factors",
+          "justification": "Social determinants tracking indicates holistic care approach",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__SocialDeterminant__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__BarrierToAccess__c", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Care Program Management",
+          "productFamily": "Health Cloud",
+          "product": "Care Programs",
+          "description": "Structured care program management",
+          "justification": "Care programs indicate organized healthcare delivery",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__CareProgram__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__CareProgramEnrollee__c", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Clinical Protocols",
+          "productFamily": "Health Cloud",
+          "product": "Clinical Pathways",
+          "description": "Standardized clinical protocols and pathways",
+          "justification": "Clinical protocols indicate standardized care delivery",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__ClinicalProtocol__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__ProtocolStep__c", "minCount": 1}
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Integration Features",
+      "description": "Healthcare system integration capabilities",
+      "justification": "These features indicate integration with healthcare systems and standards.",
+      "items": [
+        {
+          "type": "feature",
+          "name": "FHIR Integration",
+          "productFamily": "Health Cloud",
+          "product": "Interoperability",
+          "description": "FHIR standard support",
+          "justification": "FHIR integration indicates healthcare interoperability",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__FhirResource__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__FhirMapping__c", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "EHR Integration",
+          "productFamily": "Health Cloud",
+          "product": "EHR Integration",
+          "description": "Electronic Health Record integration",
+          "justification": "EHR integration shows connected health records",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__EhrConfiguration__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__EhrConnection__c", "minCount": 1}
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Patient Engagement Features",
+      "description": "Patient engagement and communication capabilities",
+      "justification": "These features focus on patient interaction and engagement.",
+      "items": [
+        {
+          "type": "feature",
+          "name": "Patient Portal Integration",
+          "productFamily": "Health Cloud",
+          "product": "Patient Experience",
+          "description": "Patient portal and self-service features",
+          "justification": "Portal integration indicates patient self-service capabilities",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__PatientPortalSettings__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__PortalUserConfig__c", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Patient Education",
+          "productFamily": "Health Cloud",
+          "product": "Patient Education",
+          "description": "Patient education and resource management",
+          "justification": "Education features indicate patient empowerment focus",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__EducationMaterial__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__PatientResource__c", "minCount": 1}
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Advanced Clinical Features",
+      "description": "Specialized clinical and medical management capabilities",
+      "justification": "These features represent advanced clinical workflows and patient care management.",
+      "items": [
+        {
+          "type": "feature",
+          "name": "Risk Stratification",
+          "productFamily": "Health Cloud",
+          "product": "Population Health Analytics",
+          "description": "Patient risk assessment and stratification",
+          "justification": "Risk stratification indicates advanced population health management",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__RiskScore__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__RiskFactor__c", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Prior Authorization Management",
+          "productFamily": "Health Cloud",
+          "product": "Utilization Management",
+          "description": "Healthcare service authorization workflow",
+          "justification": "Prior authorization features indicate insurance integration",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__PriorAuthorization__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__AuthorizationRequest__c", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Virtual Care",
+          "productFamily": "Health Cloud",
+          "product": "Telehealth",
+          "description": "Telehealth and virtual care management",
+          "justification": "Virtual care features indicate remote healthcare delivery",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__VirtualVisit__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__TelehealthConfig__c", "minCount": 1}
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Care Coordination Features",
+      "description": "Enhanced care coordination and team collaboration capabilities",
+      "justification": "These features enable better care team coordination and patient management.",
+      "items": [
+        {
+          "type": "feature",
+          "name": "Care Team Collaboration",
+          "productFamily": "Health Cloud",
+          "product": "Care Coordination",
+          "description": "Enhanced care team communication and collaboration",
+          "justification": "Collaboration features indicate advanced care coordination",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__CareTeamChat__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__CareTeamTask__c", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Referral Management",
+          "productFamily": "Health Cloud",
+          "product": "Care Network",
+          "description": "Patient referral and care network management",
+          "justification": "Referral management indicates care network utilization",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__Referral__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__ReferralNetwork__c", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Care Transitions",
+          "productFamily": "Health Cloud",
+          "product": "Care Coordination",
+          "description": "Patient care transition management",
+          "justification": "Care transition features indicate coordinated care delivery",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__CareTransition__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__TransitionPlan__c", "minCount": 1}
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Administrative Features",
+      "description": "Healthcare administrative and operational capabilities",
+      "justification": "These features support healthcare operations and administration.",
+      "items": [
+        {
+          "type": "feature",
+          "name": "Document Management",
+          "productFamily": "Health Cloud",
+          "product": "Clinical Documentation",
+          "description": "Clinical document management and sharing",
+          "justification": "Document management indicates clinical documentation capabilities",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__ClinicalDocument__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__DocumentTemplate__c", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Inventory Management",
+          "productFamily": "Health Cloud",
+          "product": "Medical Supply Management",
+          "description": "Medical supplies and inventory tracking",
+          "justification": "Inventory features indicate supply chain management",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__MedicalSupply__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__InventoryItem__c", "minCount": 1}
+          ]
+        },
+        {
+          "type": "feature",
+          "name": "Compliance Tracking",
+          "productFamily": "Health Cloud",
+          "product": "Regulatory Compliance",
+          "description": "Healthcare compliance and regulation management",
+          "justification": "Compliance features indicate regulatory adherence",
+          "detectionMethods": [
+            {"type": "metadata", "path": "HealthCloudGA__ComplianceRecord__c", "minCount": 1},
+            {"type": "metadata", "path": "HealthCloudGA__RegulatoryRequirement__c", "minCount": 1}
+          ]
+        }
+      ]
+    }
+  ]
+} 

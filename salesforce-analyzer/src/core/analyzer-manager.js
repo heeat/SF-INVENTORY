@@ -66,10 +66,10 @@ export class AnalyzerManager {
     
     for (const productKey of this.availableProducts) {
       console.log(`Starting analysis for ${productKey}...`);
+      console.log(`config analysis for ${JSON.parse(JSON.stringify(this.config))}...`);
       const analyzer = new ProductAnalyzer(this.connection, this.config, productKey);
       results[productKey] = await analyzer.analyze();
       // Debug: Log the actual results structure
-      console.log(`\nResults for ${productKey}:`, JSON.stringify(results[productKey], null, 2));
       console.log(`Analysis complete for ${productKey}`);
     }
     

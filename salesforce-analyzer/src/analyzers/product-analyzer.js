@@ -94,7 +94,7 @@ export default class ProductAnalyzer {
       }
       
       // Generate findings
-      const findings = this.generateFindings(evidence);
+      const findings = this.generateFindings();
       
       // Create and return result
       return new AnalysisResult(
@@ -158,27 +158,13 @@ export default class ProductAnalyzer {
    */
   async processFeatureIndicator(item) {
     try {
-      console.log(`[DEBUG] Processing feature indicator: ${item.name}`);
-      console.log(`[DEBUG] Detection methods:`, JSON.stringify(item.detectionMethods || [], null, 2));
-      
       const evidence = await this.evidenceCollector.checkFeature(
         item.name, 
         item.detectionMethods || []
       );
-      
-      // For domain-related features, add detailed URL information to the description
-      if (item.name === "Custom Domain Configuration" && evidence.details && evidence.details.records) {
-        evidence.details.description = "Found custom domains:\n" + 
-          evidence.details.records
-            .filter(r => r.url)
-            .map(r => `- ${r.url}`)
-            .join("\n");
-      }
-      
-      console.log(`[DEBUG] Feature detection result for ${item.name}:`, JSON.stringify(evidence, null, 2));
       return evidence;
     } catch (error) {
-      console.error(`[DEBUG] Error processing feature indicator ${item.name}:`, error);
+      console.error(`Error processing feature indicator ${item.name}:`, error);
       return null;
     }
   }
@@ -216,6 +202,7 @@ export default class ProductAnalyzer {
    * @param {Object} item - Integration indicator definition
    * @returns {Promise<Evidence>} - Evidence about the integration
    */
+  //YET TO BE IMPLEMENTED --- IGNORE FOR NOW
   async processIntegrationIndicator(item) {
     try {
       if (item.type === 'api') {
@@ -264,10 +251,10 @@ export default class ProductAnalyzer {
   /**
    * Generate findings from evidence
    * 
-   * @param {EvidenceCollection} evidence - Evidence collection
    * @returns {Array} - List of findings
    */
-  generateFindings(evidence) {
+  generateFindings() {
+    // TODO: Will implement findings generation using evidence parameter
     // This would generate findings based on the evidence collected
     // For now, return an empty array
     return [];
@@ -280,12 +267,9 @@ export default class ProductAnalyzer {
    * @returns {Array<Object>} - Summary of evidence
    */
   summarizeEvidence(evidence) {
-    console.log('\nSummarizing evidence...');
     const summary = [];
     
     for (const item of evidence.items) {
-      console.log('Processing evidence item:', JSON.stringify(item, null, 2));
-      
       const summaryItem = {
         name: item.name,
         type: item.type,
@@ -297,11 +281,9 @@ export default class ProductAnalyzer {
         description: this.formatDescription(item)
       };
       
-      console.log('Created summary item:', JSON.stringify(summaryItem, null, 2));
       summary.push(summaryItem);
     }
     
-    console.log(`Created ${summary.length} summary items`);
     return summary;
   }
   
@@ -322,31 +304,10 @@ export default class ProductAnalyzer {
       
       // Feature details
       if (item.details.metadata) {
-        parts.push(`Type: ${item.details.metadata}`);
-      }
-      if (item.details.enabled !== undefined) {
-        parts.push(`Enabled: ${item.details.enabled}`);
-      }
-      
-      // Activity details
-      if (item.details.timeframe) {
-        parts.push(`Period: ${item.details.timeframe}`);
-      }
-      if (item.details.threshold) {
-        parts.push(`Threshold: ${item.details.threshold}`);
-      }
-      
-      // API/Integration details
-      if (item.details.object) {
-        parts.push(`Object: ${item.details.object}`);
-      }
-      
-      // Error details
-      if (item.details.error) {
-        parts.push(`Error: ${item.details.error}`);
+        parts.push(`Metadata: ${JSON.stringify(item.details.metadata)}`);
       }
     }
     
-    return parts.join(' | ');
+    return parts.join('\n');
   }
-} 
+}

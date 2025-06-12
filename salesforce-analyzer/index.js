@@ -127,16 +127,6 @@ async function main() {
     try {
       const timestamp = new Date().toISOString().replace(/:/g, '-').split('.')[0];
       
-      // Debug: Log the results structure
-      console.log('\nAnalysis Results Structure:');
-      for (const [productKey, productData] of Object.entries(results)) {
-        console.log(`\nProduct: ${productKey}`);
-        console.log('Features:', productData.summary ? productData.summary.length : 0);
-        if (productData.summary && productData.summary.length > 0) {
-          console.log('Sample Feature:', JSON.stringify(productData.summary[0], null, 2));
-        }
-      }
-      
       // Create reports directory if it doesn't exist
       const outputDir = path.join(process.cwd(), 'reports');
       if (!fs.existsSync(outputDir)) {
