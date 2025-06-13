@@ -1,0 +1,21 @@
+{
+  "name": "sf-offline-analyzer",
+  "version": "1.0.0",
+  "description": "Offline Salesforce Org Analyzer",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@salesforce/core": "^5.0.0",
+    "@salesforce/cli-plugins-apex": "^3.0.0",
+    "@salesforce/cli-plugins-metadata": "^3.0.0",
+    "better-sqlite3": "^9.0.0",
+    "commander": "^11.0.0",
+    "fs-extra": "^11.0.0",
+    "glob": "^10.0.0",
+    "winston": "^3.0.0"
+  }
+} 
